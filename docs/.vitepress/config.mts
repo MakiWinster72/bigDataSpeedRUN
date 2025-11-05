@@ -7,22 +7,52 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
-    ],
+          { text: '首页', link: '/' },
+          { text: '资源', link: '/resources' },
+        ],
 
     sidebar: [
       {
-        text: 'Examples',
+        text: '实验一：虚拟机环境',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: '虚拟机配置', link: '/lab1/virtualMachine' }
+        ]
+      },
+      {
+        text: '实验二：Hadoop 集群',
+        items: [
+          { text: 'Hadoop 安装', link: '/lab2/hadoopInstall' },
+          { text: 'Hadoop 集群搭建', link: '/lab2/hadoopCluster' }
+        ]
+      },
+      {
+        text: '实验三：HBase',
+        items: [
+          { text: 'HBase 基础', link: '/lab3/hbase' }
+        ]
+      },
+      {
+        text: '实验四：数据库与 NoSQL',
+        items: [
+          { text: 'NoSQL 概述', link: '/lab4/noSQL' },
+          { text: 'RDS for MySQL', link: '/lab4/rds_for_mySQL' }
+        ]
+      },
+      {
+        text: '实验五：MapReduce',
+        items: [
+          { text: 'MapReduce 案例', link: '/lab5/mapReduce' }
+        ]
+      },
+      {
+        text: '其他资料',
+        items: [
+          { text: '资源', link: '/resources' }
         ]
       }
     ],
-
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/MakiWinster72/bigDataSpeedRUN' }
     ]
   }
 })
