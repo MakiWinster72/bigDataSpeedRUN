@@ -1,0 +1,123 @@
+本文章是除共享文件夹外，主机与虚拟机沟通传输文件的方法。
+
+## Python HTTP Server
+>此方法适用于Ubuntu Desktop，或者server安装了桌面环境，例如xfce,gnome等
+#### Windows 启动Python http服务器
+按下`Windows`键，输入cmd，按下`Enter`
+![](assets/2025-11-09-21.png)
+
+复制要共享的文件夹的路径，在cmd中输入`cd 路径`，回车
+![](assets/2025-11-09-22.png)
+转入到目标文件夹后，输入
+```bash
+python -m http.server -p 8000  #可以手动指定端口
+```
+出现下图情况就是Python未安装，或者环境变量每配置好，请自行搜索安装Python的方法。
+![](assets/2025-11-09-23.png)
+#### 获取windows IP地址
+在cmd中输入`ipconfig`即可查看ipv4地址。
+![](assets/2025-11-09-24.png)
+记住图中ipv4地址，常见192或172开头。
+
+在虚拟机中，打开浏览器，一般默认安装了Firefox。
+在地址栏里面输入:
+```
+http://WindowIP地址:8000
+```
+
+即可看见主机共享的文件夹了。
+
+## rsync & scp
+
+### ① 获取虚拟机 IP 地址
+
+1. 在 Ubuntu 虚拟机终端执行：
+    
+
+```bash
+ip addr show
+```
+
+2. 找到 `eth0` 或 `enp0s3`（网卡）下的 `inet` 地址，比如：
+    
+
+```
+inet 192.168.56.101/24
+```
+
+这里 `192.168.56.101` 就是虚拟机 IP。
+
+---
+
+### ② 使用 SCP 传文件
+
+**SCP（Secure Copy）** 通过 SSH 传输文件，需要虚拟机开启 SSH 服务：
+
+```bash
+sudo apt install -y openssh-server
+sudo systemctl enable ssh
+sudo systemctl start ssh
+```
+
+#### 从 Windows 传文件到 Ubuntu
+
+1. 安装 **WinSCP** 或使用 **PowerShell/命令提示符**：
+    
+
+```powershell
+scp C:\Users\Maki\Documents\file.txt username@192.168.56.101:/home/username/
+```
+>注意路径不要有中文，比如有人的用户名有中文，比如最后文件夹是shared folder等，用双引号括起来。
+
+
+- `C:\Users\Maki\Documents\file.txt`：Windows 文件路径
+    
+- `username`：Ubuntu 用户名
+    
+- `/home/username/`：虚拟机目标路径
+    
+
+2. 输入虚拟机密码后，文件即可传输。
+    
+
+#### 从 Ubuntu 拉文件到 Windows
+
+```bash
+scp username@192.168.56.101:/home/username/file.txt C:\Users\Maki\Downloads\
+```
+
+---
+
+### ③ 使用 rsync 传文件
+
+**rsync** 更适合传大文件或目录，并支持增量同步。
+
+1. 在 Ubuntu 安装 rsync：
+    
+
+```bash
+sudo apt install -y rsync
+```
+
+2. Windows 端安装 **Cygwin** 或 **WSL**，确保有 rsync 命令。
+    
+3. 从 Windows 传文件到 Ubuntu：
+    
+
+```bash
+rsync -avz /mnt/c/Users/Maki/Documents/file.txt username@192.168.56.101:/home/username/
+```
+
+- `-a`：归档模式（保留权限等）
+    
+- `-v`：显示详细信息
+    
+- `-z`：压缩传输
+    
+
+4. 从 Ubuntu 拉文件到 Windows：
+    
+
+```bash
+rsync -avz username@192.168.56.101:/home/username/file.txt /mnt/c/Users/Maki/Downloads/
+```

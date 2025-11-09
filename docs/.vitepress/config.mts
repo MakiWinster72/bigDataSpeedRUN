@@ -2,8 +2,27 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  markdown:{
+    breaks: true,
+    config: (md) => {
+      // 注册自定义组件
+      md.use((md) => {
+        // 替换图片渲染器
+        const defaultRender = md.renderer.rules.image
+        md.renderer.rules.image = (tokens, idx, options, env, self) => {
+          const token = tokens[idx]
+          const src = token.attrGet('src')
+          const alt = token.content
+          
+          // 使用自定义组件代替默认的 img 标签
+          return `<ImageLightbox src="${src}" alt="${alt}" />`
+        }
+      })
+    }
+  },
   title: "Big Data SpeedRUN",
   description: "A site that helps bigdata lab course.",
+  base:'/bigdata/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
