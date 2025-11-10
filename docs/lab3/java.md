@@ -1,7 +1,8 @@
-[hbaseInstall](hbaseInstall.md)
-本教程演示如何使用 **Java 程序**和 **HBase Shell** 对 HBase 进行常用操作，包括列出表、扫描数据、修改列族、清空表以及统计行数。
+> [!note]  
+> 本教程演示如何使用 **Java 程序**和 **HBase Shell** 对 HBase 进行常用操作，包括列出表、扫描数据、修改列族、清空表以及统计行数。  
+>   
+> 请先完成 [伪分布式](../lab1/PseudoDistributed.md) 安装。
 
----
 
 ## 一、列出所有表信息
 

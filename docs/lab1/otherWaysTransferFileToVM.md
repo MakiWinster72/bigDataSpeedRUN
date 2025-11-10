@@ -1,18 +1,21 @@
 本文章是除共享文件夹外，主机与虚拟机沟通传输文件的方法。
 
 ## Python HTTP Server
->此方法适用于Ubuntu Desktop，或者server安装了桌面环境，例如xfce,gnome等
+>此方法比较适用于Ubuntu Desktop，或者server安装了桌面环境，例如xfce,gnome等
 #### Windows 启动Python http服务器
 按下`Windows`键，输入cmd，按下`Enter`
 ![](assets/2025-11-09-21.png)
 
 复制要共享的文件夹的路径，在cmd中输入`cd 路径`，回车
 ![](assets/2025-11-09-22.png)
+
+>注意路径是否有空格，比如有人的用户名有空格，或者最后文件夹是shared folder等，路径需要用**双引号**括起来。
+
 转入到目标文件夹后，输入
 ```bash
 python -m http.server -p 8000  #可以手动指定端口
 ```
-出现下图情况就是Python未安装，或者环境变量每配置好，请自行搜索安装Python的方法。
+出现下图情况就是Python未安装，或者环境变量没配置好，请自行搜索安装Python的方法。
 ![](assets/2025-11-09-23.png)
 #### 获取windows IP地址
 在cmd中输入`ipconfig`即可查看ipv4地址。
@@ -27,6 +30,21 @@ http://WindowIP地址:8000
 
 即可看见主机共享的文件夹了。
 
+#### Server无图形界面可采用如下方法
+>sudo apt install -y wget curl
+
+- 使用 `wget` 或 `curl` 下载文件：
+    
+    ```bash
+    wget http://192.168.1.10:8080/filename.zip
+    ```
+    
+    或者：
+    
+    ```bash
+    curl -O http://192.168.1.10:8080/filename.zip
+    ```
+    
 ## rsync & scp
 
 ### ① 获取虚拟机 IP 地址
@@ -67,7 +85,7 @@ sudo systemctl start ssh
 ```powershell
 scp C:\Users\Maki\Documents\file.txt username@192.168.56.101:/home/username/
 ```
->注意路径不要有中文，比如有人的用户名有中文，比如最后文件夹是shared folder等，用双引号括起来。
+
 
 
 - `C:\Users\Maki\Documents\file.txt`：Windows 文件路径

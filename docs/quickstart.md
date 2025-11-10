@@ -29,10 +29,10 @@
 ### 3. HBase 实验
 - **HBase 安装**：在 Hadoop 基础上安装 HBase
 - **Shell 操作**：HBase 基本命令和表操作
-- **Java/Python API**：编程接口使用
+- 编程接口使用
 
 ### 4. 数据库实验
-- **NoSQL 对比**：理解不同 NoSQL 数据库特性
+
 - **云数据库**：RDS for MySQL 的使用
 - **SQL 对比**：传统 SQL 与 NoSQL 的差异
 
@@ -78,6 +78,6 @@ chmod +x hbaseInstall.sh
 
 - [实验一：虚拟机安装](./lab1/virtualMachine)
 - [实验二：Hadoop 集群安装与HDFS的常见命令](./lab1/hadoopInstall)
-- [实验三：HBase与HBase Shell](./lab3/hbaseInstall)
+- [实验三：HBase与HBase Shell](./lab3/hbaseInstall).
 - [实验四：云数据库与 NoSQL](./lab4/RDS)
 - [实验五：MapReduce](./lab5/python)

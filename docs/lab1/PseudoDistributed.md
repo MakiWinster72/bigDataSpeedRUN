@@ -1,4 +1,6 @@
->已有sh脚本可一键安装完成 -> [shell](../other/shell.md)
+> [!tip] 🎉
+> 已有sh脚本可一键安装完成 -> [shell](../other/shell.md#hadoop伪分布式)
+
 ## Hadoop 伪分布式安装
 
 ### 修改 core-site.xml 与 hdfs-site.xml

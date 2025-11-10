@@ -1,6 +1,41 @@
+# 实验目的
+1. 理解四种数据库(MySQL,HBase,Redis,MongoDB)的概念以及不同点;
+2. 熟练使用四种数据库操作常用的Shell命令；
+3. 熟悉四种数据库操作常用的Java API。
+
+---
+
 # 1️⃣ MySQL 
 
-Ubuntu 20.04 起默认用 MariaDB, 因为它开源社区主导、维护活跃且与 MySQL 兼容。MySQL 和 MariaDB 功能、命令和配置基本兼容，本质相似。
+> [!note]
+> Ubuntu 20.04 起默认用 MariaDB, 因为它开源社区主导、维护活跃且与 MySQL 兼容。MySQL 和 MariaDB 功能、命令和配置基本兼容，本质相似。
+### 实验要求
+
+#### 学生表 `student`
+
+|Name|English|Math|Computer|
+|---|---|---|---|
+|zhangsan|69|86|77|
+|lisi|55|100|88|
+
+#### 操作要求
+
+① 设计 `student` 表格，`SELECT` 输出所有信息；  
+② 查询 `zhangsan` 的 `Computer` 成绩；  
+③ 修改 `lisi` 的 `Math` 成绩为 95。
+
+#### Java 客户端操作
+
+① 添加学生数据：
+
+|Name|English|Math|Computer|
+|---|---|---|---|
+|scofield|45|89|100|
+
+② 获取 `scofield` 的 `English` 成绩。
+
+---
+
 
 ### ① 安装 MySQL / MariaDB
 
@@ -115,7 +150,30 @@ java -cp .:/usr/share/java/mariadb-java-client.jar MysqlStudent
 ---
 
 # 2️⃣ HBase 
-[hbaseInstall](../lab3/hbaseInstall.md)
+
+请前往此处安装好HBase -> [hbaseInstall](../lab3/hbaseInstall.md)
+
+### 实验要求
+
+#### 学生表 `student`
+
+|name|score|English|Math|Computer|
+|---|---|---|---|---|
+|zhangsan|69|86|77||
+|lisi|55|100|88||
+
+#### 操作要求
+
+① 用 HBase Shell 设计表格并 `scan` 浏览；  
+② 查询 `zhangsan` 的 `Computer` 成绩；  
+③ 修改 `lisi` 的 `Math` 成绩为 95。
+
+#### Java API 操作
+
+① 添加学生 `scofield`：English:45, Math:89, Computer:100；  
+② 获取 `scofield` 的 `English` 成绩。
+
+---
 
 ### ① HBase Shell 操作
 
@@ -212,6 +270,49 @@ java -cp $(hbase classpath):. HBaseStudent
 
 # 3️⃣ Redis 
 
+### 实验要求
+
+### 3.3 Redis 数据库操作
+
+#### 学生键值对（哈希结构）
+
+- student.zhangsan:
+    
+
+```text
+English: 69
+Math: 86
+Computer: 77
+```
+
+- student.lisi:
+    
+
+```text
+English: 55
+Math: 100
+Computer: 88
+```
+
+#### 操作要求
+
+① 用 `hgetall` 输出 `zhangsan` 和 `lisi` 的成绩；  
+② 用 `hget` 查询 `zhangsan` 的 `Computer` 成绩；  
+③ 修改 `lisi` 的 `Math` 成绩为 95。
+
+#### Java 客户端 (Jedis)
+
+① 添加学生 `scofield`:
+
+```text
+English: 45
+Math: 89
+Computer: 100
+```
+
+② 获取 `scofield` 的 `English` 成绩。
+
+
 ### ① 安装 Redis
 
 ```bash
@@ -289,7 +390,39 @@ java -cp .:jedis-5.1.0.jar RedisStudent
 ---
 
 # 4️⃣ MongoDB 
+### 实验要求
 
+#### 学生文档 `student` 集合
+
+```json
+{
+  "name": "zhangsan",
+  "score": { "English": 69, "Math": 86, "Computer": 77 }
+}
+{
+  "name": "lisi",
+  "score": { "English": 55, "Math": 100, "Computer": 88 }
+}
+```
+
+#### 操作要求
+
+① 用 `find()` 输出两个学生的信息；  
+② 查询 `zhangsan` 的所有成绩（只显示 `score` 列）；  
+③ 修改 `lisi` 的 `Math` 成绩为 95。
+
+#### Java 客户端操作
+
+① 添加学生 `scofield`:
+
+```json
+{
+  "name": "scofield",
+  "score": { "English": 45, "Math": 89, "Computer": 100 }
+}
+```
+
+② 获取 `scofield` 的所有成绩信息（只显示 `score` 列）。
 ### ① 安装 MongoDB
 
 ```bash

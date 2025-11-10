@@ -1,6 +1,8 @@
-本文是Hadoop完全分布式安装教程
->已有sh脚本可一键安装完成 -> [shell](../other/shell.md)
+> [!tip] 🎉
+> 已有sh脚本可一键安装完成 -> [shell](../other/shell.md#hadoop完全分布式)
 
+
+本文是Hadoop完全分布式安装教程
 ## 环境说明
 
 - **系统**: Ubuntu 24.04  
@@ -78,6 +80,7 @@ sudo tar -zxf hadoop-3.4.2.tar.gz -C /usr/local/
 sudo mv /usr/local/hadoop-3.4.2 /usr/local/hadoop
 sudo chown -R hadoop:hadoop /usr/local/hadoop
 ```
+![](assets/2025-09-20-4.png)
 
 ① **配置 Hadoop 环境变量**
 
@@ -159,7 +162,6 @@ ping hadoop02 -c 3
 ping hadoop03 -c 3
 ```
 
-![](assets/2025-09-20-4.png)
 
 > 确保三台主机互 ping 成功
 
@@ -398,11 +400,11 @@ mapred --daemon start historyserver
 # 在hadoop01上执行
 jps
 
-# NameNode, SecondaryNameNode, ResourceManager, JobHistoryServer
+## NameNode, SecondaryNameNode, ResourceManager, JobHistoryServer
 
 # 在hadoop02和hadoop03上执行
 jps
-# DataNode, NodeManager
+## DataNode, NodeManager
 
 # 以上少一个都是报错
 ```
@@ -480,9 +482,9 @@ Num of Blocks: 0
 
 ①**Web 界面访问**
 
-- NameNode: http://或域名:9870
-- ResourceManager: http://IP:8088
-- JobHistory: http://IP:19888
+- NameNode: `http://IP:9870`
+- ResourceManager: `http://IP:8088`
+- JobHistory: `http://IP:19888`
 
 ## 第七阶段：测试 MapReduce
 

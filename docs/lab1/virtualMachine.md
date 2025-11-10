@@ -1,7 +1,8 @@
 # 本教程使用Ubuntu24.04.03 LTS
-前往resources页面下：载[resources](../resources.md)
+iso文件请前往resources页面下：载[resources](../resources.md)
 ## VMWare
-TODO
+> [!todo]
+> TODO
 
 
 ## VirtualBox
@@ -36,10 +37,13 @@ TODO
 
 ## Ubuntu Desktop安装教程
 <div id="ubuntudesktop"></div>
+
 1. 点击try or install ubuntu
 ![](assets/2025-11-09-7.png)
+
 2. 选英文选英文选英文选英文选英文选英文选英文选英文
 ![](assets/2025-11-09-8.png)
+
 >强烈建议在使用Linux系统时默认使用英文作为首选语言，输入法问题可通过安装fcitx5或者ibus解决。
 
 3. 一直下一步就可以了

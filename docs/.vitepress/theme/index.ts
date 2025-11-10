@@ -1,4 +1,4 @@
-import DefaultTheme from 'vitepress/theme'
+import DefaultTheme from 'vitepress/theme-without-fonts'
 import ImageLightbox from '../components/ImageLightbox.vue'
 import type { EnhanceAppContext } from 'vitepress'
 import './custom.css'

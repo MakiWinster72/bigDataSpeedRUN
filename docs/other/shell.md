@@ -3,7 +3,7 @@
 ## hadoop伪分布式
 为节省时间可预先下载好安装包与sh脚本放与同一目录下。脚本内也提供了下载连接，若未检测到安装包会询问是否在线下载[resources](../resources.md)。
 ![](assets/2025-11-10-1.png)
->从windows传输文件可参考[sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
+>从windows向虚拟机传输文件可参考[sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
 
 为脚本赋予执行权限：
 ```
@@ -34,8 +34,9 @@ sudo chmod ~/hadoopInstall.sh
 
 ## hadoop完全分布式
 为节省时间可预先下载好安装包与sh脚本放与同一目录下。脚本内也提供了下载连接，若未检测到安装包会询问是否在线下载[resources](../resources.md)。
+
 ![](assets/2025-11-10-4.png)
->从windows传输文件可参考[sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
+>从windows向虚拟机传输文件可参考[sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
 
 #### .env文件
 在脚本同目录下，创建一个`.env`文件
@@ -45,11 +46,11 @@ vim .env
 
 内容入下：
 ```bash
-CURRENT_USER_PASSWORD="当前用户密码（注意所有节点应当使用相同的用户名和密码）"
-MASTER_IP="IPv4"
-SLAVE_COUNT=2~指定数量
+CURRENT_USER_PASSWORD="123456" #当前用户密码（注意所有节点应当使用相同的用户名和密码）
+MASTER_IP="192.168.1.100" # Master下用 ip addr show查看
+SLAVE_COUNT=2 # 指定具体整数，与下方ip个数一致
 SLAVE_IPS_STR="IPv4,IPv4"
-HADOOP_PASSWORD="hadoop用户的密码"
+HADOOP_PASSWORD="123456" # hadoop用户的密码
 ```
 
 #### 执行文件
@@ -68,14 +69,14 @@ sit back, relax, enjoy the show
 ![](assets/2025-11-10-7.png)
 点击链接即可自动在浏览器中打开
 ![](assets/2025-11-10-8.png)
-
+执行完后请手动`source ~/.bashrc`或重新打开一个终端才能识别hdfs命令
 ## hbase
 需要hdfs安装作为前提。
 
 为节省时间可预先下载好安装包与sh脚本放与同一目录下。脚本内也提供了下载连接，若未检测到安装包会询问是否在线下载[resources](../resources.md)。
 
 ![](assets/2025-11-10-9.png)
->从windows传输文件可参考[sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
+>从windows向虚拟机传输文件可参考[sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
 
 
 添加执行权限
@@ -99,3 +100,4 @@ source ~/.bashrc
 
 输入12,等待完成
 ![](assets/2025-11-10-12.png)
+执行完后请手动`source ~/.bashrc`或重新打开一个终端

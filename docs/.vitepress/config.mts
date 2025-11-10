@@ -3,48 +3,64 @@ import taskLists from 'markdown-it-task-lists'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  markdown:{
+  markdown: {
     breaks: true,
     config: (md) => {
       // 启用任务列表插件
       md.use(taskLists)
-      // 注册自定义组件
-      md.use((md) => {
-        // 替换图片渲染器
-        const defaultRender = md.renderer.rules.image
-        md.renderer.rules.image = (tokens, idx, options, env, self) => {
-          const token = tokens[idx]
-          const src = token.attrGet('src')
-          const alt = token.content
-          
-          // 使用自定义组件代替默认的 img 标签
-          return `<ImageLightbox src="${src}" alt="${alt}" />`
-        }
-      })
-      
+
+      // 注册自定义组件：替换图片渲染器
+      const defaultRender = md.renderer.rules.image
+      md.renderer.rules.image = (tokens, idx, options, env, self) => {
+        const token = tokens[idx]
+        const src = token.attrGet('src')
+        const alt = token.content
+        return `<ImageLightbox src="${src}" alt="${alt}" />`
+      }
+
       // 支持自定义容器
       const containerTypes = ['tip', 'warning', 'danger', 'info', 'note', 'todo']
       containerTypes.forEach(type => {
         md.use((md) => {
-          md.renderer.rules[`container_${type}_open`] = (tokens, idx) => {
-            return `<div class="custom-container ${type}">`
-          }
-          md.renderer.rules[`container_${type}_close`] = (tokens, idx) => {
-            return '</div>'
-          }
+          md.renderer.rules[`container_${type}_open`] = () =>
+            `<div class="custom-container ${type}">`
+          md.renderer.rules[`container_${type}_close`] = () => '</div>'
         })
       })
     }
   },
-  title: "Big Data SpeedRUN",
-  description: "A site that helps bigdata lab course.",
-  base:'/bigdata/',
+
+  // 网站基础信息
+  title: 'Big Data SpeedRUN',
+  description: 'A site that helps bigdata lab course.',
+  base: '/bigdata/',
+
+  // ✅ 新增：构建时自动预加载字体
+  transformHead({ assets }) {
+    const myFontFile = assets.find(file =>
+      /HurmitNerdFontMono-Bold\.[\w-]+\.(otf|woff2?)/.test(file)
+    )
+    if (myFontFile) {
+      return [
+        [
+          'link',
+          {
+            rel: 'preload',
+            href: myFontFile,
+            as: 'font',
+            type: 'font/otf',
+            crossorigin: ''
+          }
+        ]
+      ]
+    }
+  },
+
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
     nav: [
-          { text: '首页', link: '/' },
-          { text: '资源', link: '/resources' },
-        ],
+      { text: '首页', link: '/' },
+      { text: '资源', link: '/resources' }
+    ],
 
     sidebar: [
       {
@@ -65,22 +81,21 @@ export default defineConfig({
           { text: 'Hadoop 安装', link: '/lab1/hadoopInstall' },
           { text: '伪分布式模式', link: '/lab1/PseudoDistributed' },
           { text: '完全分布式', link: '/lab1/Cluster' }
-
         ]
       },
       {
-        text: '实验二：HDFS ',
+        text: '实验二：HDFS',
         items: [
-          { text: 'Java ', link: '/lab2/java' },
-          { text: 'Python ', link: '/lab2/python' }
+          { text: 'HDFS Java', link: '/lab2/java' },
+          { text: 'HDFS Python', link: '/lab2/python' }
         ]
       },
       {
         text: '实验三：HBase',
         items: [
           { text: 'HBase 安装', link: '/lab3/hbaseInstall' },
-          { text: 'Java ', link: '/lab3/java' },
-          { text: 'Python ', link: '/lab3/python' }
+          { text: 'HBase Java', link: '/lab3/java' },
+          { text: 'HBase Python', link: '/lab3/python' }
         ]
       },
       {
@@ -93,7 +108,7 @@ export default defineConfig({
       {
         text: '实验五：MapReduce',
         items: [
-          { text: 'Python 编程', link: '/lab5/python' }
+          { text: 'MapReduce Python', link: '/lab5/python' }
         ]
       },
       {
@@ -101,11 +116,12 @@ export default defineConfig({
         items: [
           { text: '资源下载', link: '/resources' },
           { text: 'sh脚本一键安装', link: '/other/shell' },
-          { text: '文件传输', link: '/other/sharedFileToVM' },
-          { text: '领取ECS和RDS', link: '/other/freeECS' }
+          { text: '领取ECS', link: '/other/freeECS' },
+          { text: '领取RDS', link: '/other/freeRDS' }
         ]
       }
     ],
+
     socialLinks: [
       { icon: 'github', link: 'https://github.com/MakiWinster72/bigDataSpeedRUN' }
     ]

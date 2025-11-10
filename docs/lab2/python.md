@@ -1,3 +1,11 @@
+> [!note]
+> 本教程演示如何通过 **Python** 实现 Hadoop Shell 的常见文件操作，包括上传、下载、查看、删除、移动等。
+> 需确保已正确配置 `HADOOP_HOME` 环境变量。
+> [Hadoop伪分布式安装](../lab1/PseudoDistributed.md)
+
+
+---
+
 使用python操控hdfs需要预安装hdfs依赖
 ```bash
 sudo apt install pip python3.12-venv

@@ -2,16 +2,22 @@
 [hadoop伪分布式](https://res.makis-life.cn/shared/hadoopInstall.sh)
 ```bash
 wget https://res.makis-life.cn/shared/hadoopInstall.sh
+chmod +x hadoopInstall.sh
+./hadoopInstall.sh
 ```
 
 [hadooop完全分布式](https://res.makis-life.cn/shared/hadoopCluster.sh)
 ```bash
 wget https://res.makis-life.cn/shared/hadoopCluster.sh
+chmod +x hadoopCluster.sh
+./hadoopCluster.sh
 ```
 
 [hbase](https://res.makis-life.cn/shared/hbaseInstall.sh)
 ```bash
 wget https://res.makis-life.cn/shared/hbaseInstall.sh
+chmod +x hbaseInstall.sh
+./hbaseInstall.sh
 ```
 
 # 系统
@@ -22,7 +28,10 @@ wget https://res.makis-life.cn/shared/hbaseInstall.sh
 可选择desktop或server进行安装。
 
 ### 服务器
-[学生领取ECS服务器](other/freeECS.md)
+[领取ECS服务器](other/freeECS.md)
+
+### 云数据库
+[领取RDS云数据库](other/freeRDS.md)
 
 # 大数据组件
 [Hadoop 3.4.2](https://mirrors.aliyun.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz)

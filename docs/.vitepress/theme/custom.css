@@ -1,3 +1,18 @@
+@font-face {
+  font-family: 'HurmitNerdMono';
+  src: url('../public/assets/HurmitNerdFontMono-Bold.otf') format('opentype');
+  /* src: url('../public/assets/HurmitNerdFontMono-Regular.otf') format('opentype'); */
+  font-weight: bold;
+  font-style: normal;
+}
+
+:root {
+  /* 设置默认字体 */
+  --vp-font-family-base: 'HurmitNerdMono', monospace;
+  --vp-font-family-mono: 'HurmitNerdMono', monospace;
+}
+
+
 /* 自定义容器样式 */
 .custom-container {
   border: 1px solid transparent;
@@ -254,17 +269,6 @@ a:hover::after {
   background: var(--vp-c-brand-dark);
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .custom-container {
-    padding: 12px 16px;
-    margin: 12px 0;
-  }
-  
-  .custom-container-title {
-    font-size: 13px;
-  }
-}
 
 /* 加载动画 */
 .VPLoading {
@@ -285,4 +289,81 @@ a:hover::after {
 .page-leave-to {
   opacity: 0;
   transform: translateY(-20px);
+}
+
+/* 移动端优化 - 禁用触摸触发动画 */
+@media (hover: none) and (pointer: coarse) {
+  /* 禁用自定义容器的悬停效果 */
+  .custom-container:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* 禁用按钮悬停效果 */
+  .VPButton:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .VPButton:hover::before {
+    left: -100%;
+  }
+  
+  /* 禁用链接悬停效果 */
+  a:hover {
+    color: inherit;
+  }
+  
+  a:hover::after {
+    width: 0;
+  }
+  
+  /* 禁用代码块悬停效果 */
+  .vp-doc div[class*="language-"]:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* 禁用表格行悬停效果 */
+  .vp-doc table tr:hover {
+    background-color: transparent;
+    transform: none;
+  }
+  
+  /* 禁用图片悬停效果 */
+  .vp-doc img:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* 禁用列表项悬停效果 */
+  .vp-doc li:hover {
+    background-color: transparent;
+    padding-left: 0;
+    border-radius: 0;
+  }
+  
+  /* 禁用滚动条悬停效果 */
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--vp-c-brand);
+  }
+}
+
+/* 触摸设备优化 - 减少过渡动画 */
+@media (hover: none) and (pointer: coarse) {
+  /* 减少或移除触摸设备的过渡动画 */
+  .custom-container,
+  .VPButton,
+  a,
+  .vp-doc div[class*="language-"],
+  .vp-doc table tr,
+  .vp-doc img,
+  .vp-doc li {
+    transition: none !important;
+  }
+  
+  /* 移除触摸设备的点击反馈动画 */
+  .VPButton:active {
+    transform: none;
+  }
 }
