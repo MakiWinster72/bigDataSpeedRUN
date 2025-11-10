@@ -1,10 +1,13 @@
 import { defineConfig } from 'vitepress'
+import taskLists from 'markdown-it-task-lists'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   markdown:{
     breaks: true,
     config: (md) => {
+      // 启用任务列表插件
+      md.use(taskLists)
       // 注册自定义组件
       md.use((md) => {
         // 替换图片渲染器

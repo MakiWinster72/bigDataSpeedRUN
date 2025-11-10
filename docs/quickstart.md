@@ -1,7 +1,5 @@
 # 快速开始
 
-欢迎使用大数据实验指导！本页面将帮助您快速了解项目概况并开始实验。
-
 ## 系统要求
 
 下为本项目使用的系统/软件/组件版本：
@@ -23,7 +21,7 @@
 - **基础软件**：安装 Java、SSH 等必要工具
 - **文件传输**：掌握多种文件传输方式
 
-### 2. Hadoop 实验
+### 2. HDFS 实验
 - **伪分布式模式**：单节点 Hadoop 环境搭建
 - **完全分布式**：多节点 Hadoop 集群配置
 - **HDFS 操作**：文件系统基本命令和使用
@@ -60,7 +58,7 @@ chmod +x hadoopCluster.sh
 ./hadoopCluster.sh
 ```
 
-### HBase 安装
+### HBase 安装（需要先安装好HDFS）
 ```bash
 wget https://res.makis-life.cn/shared/hbaseInstall.sh
 chmod +x hbaseInstall.sh
@@ -75,26 +73,11 @@ chmod +x hbaseInstall.sh
 - Java 开发工具包
 - 自动化安装脚本
 
-## 开始实验
-
-1. **新手入门**：从[实验一：虚拟机环境](./lab1/virtualMachine)开始
-2. **环境搭建**：按照实验指导逐步配置环境
-3. **实践操作**：完成每个实验的实践任务
-4. **问题排查**：参考常见问题解决方法
-
-## 注意事项
-
-- 建议使用国内镜像站下载，避免网络问题
-- 阿里云 ECS 用户可使用内网地址加速下载
-- 实验过程中注意保存配置和备份数据
-- 遇到问题可查看对应实验的详细说明
-
 ---
 
-**准备好开始了吗？** 选择下面的实验开始您的学习之旅！
 
-- [实验一：虚拟机环境](./lab1/virtualMachine)
-- [实验二：Hadoop 集群](./lab1/hadoopInstall)
-- [实验三：HBase](./lab3/hbaseInstall)
-- [实验四：数据库与 NoSQL](./lab4/RDS)
+- [实验一：虚拟机安装](./lab1/virtualMachine)
+- [实验二：Hadoop 集群安装与HDFS的常见命令](./lab1/hadoopInstall)
+- [实验三：HBase与HBase Shell](./lab3/hbaseInstall)
+- [实验四：云数据库与 NoSQL](./lab4/RDS)
 - [实验五：MapReduce](./lab5/python)

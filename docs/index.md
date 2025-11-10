@@ -11,7 +11,7 @@ hero:
       text: "🚀 快速开始"
       link: /quickstart
     - theme: alt
-      text: "📚 实验资源"
+      text: "实验资源"
       link: /resources
 
 features:
