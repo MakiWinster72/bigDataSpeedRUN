@@ -114,5 +114,24 @@ sudo apt update
 ```
 
 ```bash
-sudo apt install -y wget curl vim nano zip unzip tar openssh-server htop lsof git net-tools
+sudo apt install -y wget curl vim nano zip unzip tar openssh-server htop lsof git net-tool sshpass
+```
+
+### Server配置无密码登录
+执行
+```bash
+sudo systemctl edit getty@tty1.service
+```
+
+输入
+![](assets/2025-11-09-26.png)
+>这里user是用户名
+>在nano中，按Ctrl+x,输入Y,回车，即可保存并退出
+
+重新加载systemd
+```bash
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl restart getty@tty1.service
+
 ```

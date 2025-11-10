@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import ImageLightbox from '../components/ImageLightbox.vue'
 import type { EnhanceAppContext } from 'vitepress'
+import './custom.css'
 
 export default {
   extends: DefaultTheme,

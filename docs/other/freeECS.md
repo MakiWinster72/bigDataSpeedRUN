@@ -114,3 +114,6 @@ sudo ls /root
 ```
 
 之后就可以ssh 用户名@公网ip登录了
+
+> [!todo]
+> RDS

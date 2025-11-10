@@ -1,4 +1,6 @@
-本文是Hadoop完全分布式安装教程  
+本文是Hadoop完全分布式安装教程
+>已有sh脚本可一键安装完成 -> [shell](../other/shell.md)
+
 ## 环境说明
 
 - **系统**: Ubuntu 24.04  
@@ -97,8 +99,6 @@ export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 ```bash
 source ~/.bashrc
 ```
-
-> 💡笔者使用 zsh + oh-my-zsh，为三台主机设置不同 THEME 方便识别。
 
 ---
 

@@ -1,4 +1,6 @@
-# 1️⃣ MySQL 实验
+# 1️⃣ MySQL 
+
+Ubuntu 20.04 起默认用 MariaDB, 因为它开源社区主导、维护活跃且与 MySQL 兼容。MySQL 和 MariaDB 功能、命令和配置基本兼容，本质相似。
 
 ### ① 安装 MySQL / MariaDB
 
@@ -13,7 +15,7 @@ sudo mysql_secure_installation
 ### ② 登录 MySQL
 
 ```bash
-sudo mariadb -u root -p
+sudo mariadb -u root -p #若没有设置密码请直接Enter
 ```
 
 ### ③ 创建数据库和表格
@@ -58,7 +60,7 @@ sudo apt install openjdk-17-jdk -y
 2. 创建源文件：
 
 ```bash
-nano MysqlStudent.java
+vim MysqlStudent.java
 ```
 
 粘贴：
@@ -89,6 +91,19 @@ public class MysqlStudent {
     }
 }
 ```
+① **导入 JDBC**：`import java.sql.*;` 导入了 JDBC 所需的所有类，包括 `Connection`、`Statement`、`ResultSet`。
+
+② **加载驱动**：`Class.forName("org.mariadb.jdbc.Driver");` 用于动态加载 MariaDB JDBC 驱动。
+
+③ **建立连接**：`DriverManager.getConnection(...)` 返回数据库连接对象。URL 指向本地数据库 `school`，包含时区和 SSL 设置。
+
+④ **创建语句对象**：`Statement stmt = conn.createStatement();` 用于执行 SQL 语句。
+
+⑤ **插入数据**：`executeUpdate` 执行增、删、改操作。
+
+⑥ **查询数据**：`executeQuery` 返回 `ResultSet`，循环读取结果，使用 `rs.getInt("English")` 获取指定列。
+
+⑦ **关闭资源**：`ResultSet`、`Statement`、`Connection` 都必须关闭以释放数据库连接。
 
 3. 编译运行：
 
@@ -99,32 +114,10 @@ java -cp .:/usr/share/java/mariadb-java-client.jar MysqlStudent
 
 ---
 
-# 2️⃣ HBase 实验
+# 2️⃣ HBase 
+[hbaseInstall](../lab3/hbaseInstall.md)
 
-### ① 安装 HBase（单节点测试）
-
-```bash
-sudo apt install openjdk-17-jdk -y
-wget https://downloads.apache.org/hbase/3.5.3/hbase-3.5.3-bin.tar.gz
-tar -xzf hbase-3.5.3-bin.tar.gz
-mv hbase-3.5.3 /opt/hbase
-```
-
-### ② 配置环境变量
-
-```bash
-echo 'export HBASE_HOME=/opt/hbase' >> ~/.bashrc
-echo 'export PATH=$PATH:$HBASE_HOME/bin' >> ~/.bashrc
-source ~/.bashrc
-```
-
-### ③ 启动 HBase
-
-```bash
-$HBASE_HOME/bin/start-hbase.sh
-```
-
-### ④ HBase Shell 操作
+### ① HBase Shell 操作
 
 ```bash
 hbase shell
@@ -148,15 +141,76 @@ get 'student', 'zhangsan', 'score:Computer'
 put 'student', 'lisi', 'score:Math', '95'
 ```
 
-### ⑤ Java 客户端操作
+### ② Java 客户端操作
 
 1. 下载 HBase 依赖 jar（示例使用 Maven 或自行下载 hbase-client、hadoop-common 等 jar）
 2. 编写 Java 源文件 `HBaseStudent.java`
-3. 编译运行（注意添加所有 HBase 依赖到 classpath）
+```java
+import org.apache.hadoop.hbase.*;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.conf.Configuration;
 
+public class HBaseStudent {
+    public static void main(String[] args) throws Exception {
+        Configuration config = HBaseConfiguration.create();
+        Connection connection = ConnectionFactory.createConnection(config);
+        Table table = connection.getTable(TableName.valueOf("student"));
+
+        // 添加数据
+        Put put = new Put("scofield".getBytes());
+        put.addColumn("score".getBytes(), "English".getBytes(), "45".getBytes());
+        put.addColumn("score".getBytes(), "Math".getBytes(), "89".getBytes());
+        put.addColumn("score".getBytes(), "Computer".getBytes(), "100".getBytes());
+        table.put(put);
+
+        // 获取 English 成绩
+        Get get = new Get("scofield".getBytes());
+        get.addColumn("score".getBytes(), "English".getBytes());
+        Result result = table.get(get);
+        byte[] value = result.getValue("score".getBytes(), "English".getBytes());
+        System.out.println("scofield English: " + new String(value));
+
+        table.close();
+        connection.close();
+    }
+}
+```
+① **导入 HBase API**：包括 `Connection`、`Table`、`Put`、`Get`、`Result` 等。
+
+② **创建连接**：通过 `HBaseConfiguration.create()` 获取默认配置，然后 `ConnectionFactory.createConnection(config)` 建立连接。
+
+③ **获取表对象**：`connection.getTable(TableName.valueOf("student"))` 用于操作指定表。
+
+④ **添加数据**：
+
+- `Put put = new Put("rowKey".getBytes());` 定义行键
+    
+- `addColumn(family, qualifier, value)` 指定列族、列名和数据
+    
+- `table.put(put)` 写入表中
+    
+
+⑤ **读取数据**：
+
+- `Get get = new Get(rowKey)` 定义要读取的行
+    
+- `addColumn(family, qualifier)` 指定列
+    
+- `table.get(get)` 返回 `Result` 对象
+    
+- `result.getValue(family, qualifier)` 获取列值
+    
+
+⑥ **关闭资源**：HBase 连接和表对象需要手动关闭，否则可能导致资源泄漏。
+
+3. 编译运行
+```bash
+javac -cp $(hbase classpath):. HBaseStudent.java
+java -cp $(hbase classpath):. HBaseStudent
+```
 ---
 
-# 3️⃣ Redis 实验
+# 3️⃣ Redis 
 
 ### ① 安装 Redis
 
@@ -214,6 +268,16 @@ public class RedisStudent {
     }
 }
 ```
+① **导入 Jedis**：Jedis 是 Redis 的 Java 客户端。
+
+② **建立连接**：`new Jedis("localhost")` 连接本地 Redis 服务器，默认端口 6379。
+
+③ **写入哈希表**：`hset("key", "field", "value")` 向哈希结构插入字段和值。
+
+④ **读取字段**：`hget("key", "field")` 获取指定字段的值。
+
+⑤ **关闭连接**：`jedis.close()` 释放 Redis 连接。
+
 
 3. 编译运行：
 
@@ -224,7 +288,7 @@ java -cp .:jedis-5.1.0.jar RedisStudent
 
 ---
 
-# 4️⃣ MongoDB 实验
+# 4️⃣ MongoDB 
 
 ### ① 安装 MongoDB
 
@@ -259,7 +323,9 @@ db.student.updateOne({name:"lisi"}, {$set: {"score.Math":95}})
 
 ```bash
 wget https://repo1.maven.org/maven2/org/mongodb/mongodb-driver-sync/4.11.1/mongodb-driver-sync-4.11.1.jar
+
 wget https://repo1.maven.org/maven2/org/mongodb/bson/4.11.1/bson-4.11.1.jar
+
 wget https://repo1.maven.org/maven2/org/mongodb/mongodb-driver-core/4.11.1/mongodb-driver-core-4.11.1.jar
 ```
 
@@ -289,6 +355,32 @@ public class MongoStudent {
     }
 }
 ```
+① **导入 MongoDB Java 驱动**：`com.mongodb.client.*` 和 `org.bson.Document`。
+
+② **连接 MongoDB**：`MongoClients.create("mongodb://localhost:27017")` 返回客户端对象。
+
+③ **获取数据库和集合**：`getDatabase`、`getCollection` 用于操作特定数据库和集合（表的概念）。
+
+④ **插入文档**：
+
+- `Document` 类表示 MongoDB 的 JSON 文档
+    
+- `append` 方法用于嵌套字段
+    
+- `insertOne` 写入集合
+    
+
+⑤ **查询文档**：
+
+- `find` 查询指定条件
+    
+- `projection` 排除 `_id` 字段，只返回 `score`
+    
+- `first()` 获取第一个匹配文档
+    
+
+⑥ **关闭客户端**：`client.close()` 释放资源。
+
 
 3. 编译运行：
 

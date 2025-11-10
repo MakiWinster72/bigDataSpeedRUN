@@ -1,19 +1,40 @@
-> 避免网络问题，均使用国内镜像站下载。
+# Shell
+[hadoop伪分布式](https://res.makis-life.cn/shared/hadoopInstall.sh)
+```bash
+wget https://res.makis-life.cn/shared/hadoopInstall.sh
+```
+
+[hadooop完全分布式](https://res.makis-life.cn/shared/hadoopCluster.sh)
+```bash
+wget https://res.makis-life.cn/shared/hadoopCluster.sh
+```
+
+[hbase](https://res.makis-life.cn/shared/hbaseInstall.sh)
+```bash
+wget https://res.makis-life.cn/shared/hbaseInstall.sh
+```
+
 # 系统
+
+> 避免网络问题，均使用国内镜像站下载。
+
 [阿里云](https://mirrors.aliyun.com/ubuntu-releases/)
 可选择desktop或server进行安装。
 
-[学生领取ECS服务器](freeECS.md)
+### 服务器
+[学生领取ECS服务器](other/freeECS.md)
 
 # 大数据组件
 [Hadoop 3.4.2](https://mirrors.aliyun.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz)
 ```bash
 wget https://mirrors.aliyun.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
 ```
+
 [HBase 2.6.3](https://mirrors.aliyun.com/apache/hbase/2.6.3/hbase-2.6.3-bin.tar.gz)
 ```bash
 wget https://mirrors.aliyun.com/apache/hbase/2.6.3/hbase-2.6.3-bin.tar.gz
 ```
+
 [ZooKeeper 3.8.5](https://mirrors.aliyun.com/apache/zookeeper/zookeeper-3.8.5/apache-zookeeper-3.8.5-bin.tar.gz)
 ```bash
 wget https://mirrors.aliyun.com/apache/zookeeper/zookeeper-3.8.5/apache-zookeeper-3.8.5-bin.tar.gz
