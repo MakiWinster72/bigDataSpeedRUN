@@ -71,7 +71,7 @@ wget https://mirrors.aliyun.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.t
 > 阿里云服务器可以使用以下内网传输
 > wget [http://mirrors.cloud.aliyuncs.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz](http://mirrors.cloud.aliyuncs.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz)
 
-![](assets/2025-09-20-3.png)
+![](../assets/2025-09-20-3.png)
 
 ① **解压并安装**
 
@@ -80,7 +80,7 @@ sudo tar -zxf hadoop-3.4.2.tar.gz -C /usr/local/
 sudo mv /usr/local/hadoop-3.4.2 /usr/local/hadoop
 sudo chown -R hadoop:hadoop /usr/local/hadoop
 ```
-![](assets/2025-09-20-4.png)
+![](../assets/2025-09-20-4.png)
 
 ① **配置 Hadoop 环境变量**
 
@@ -502,7 +502,7 @@ hdfs dfs -put $HADOOP_HOME/etc/hadoop/*.xml input
 ```bash
 hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar wordcount input output
 ```
-![](assets/2025-09-22-1.png)
+![](../assets/2025-09-22-1.png)
 
 ### 查看结果
 

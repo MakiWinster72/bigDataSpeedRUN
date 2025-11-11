@@ -65,7 +65,7 @@ sudo apt install -y build-essential dkms
 4. 文件夹名称 (Folder Name)：给虚拟机用的名称
 5. 挂载点 (Mount Point)：注意文件夹需要存在
 6. 自动挂载 (Auto-mount)：勾选
-![](assets/2025-11-09-20.png)
+![](../assets/2025-11-09-20.png)
 
 重启后查看是否已经挂载成功
 *ls /mnt*

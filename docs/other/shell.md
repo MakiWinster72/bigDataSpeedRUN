@@ -2,7 +2,7 @@
 请前往[resources](../resources.md)获取下载链接。
 ## hadoop伪分布式
 为节省时间可预先下载好安装包与sh脚本放与同一目录下。脚本内也提供了下载连接，若未检测到安装包会询问是否在线下载[resources](../resources.md)。
-![](assets/2025-11-10-1.png)
+![](assets/hadoopShell.png)
 >从windows向虚拟机传输文件可参考[sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
 
 为脚本赋予执行权限：
@@ -12,7 +12,7 @@ sudo chmod +x path/to/sh
 # sudo chmod +x ~/hadoopInstall.sh
 ```
 
-![](assets/2025-11-10-2.png)
+![](assets/chmodShell.png)
 
 
 运行sh文件
@@ -20,7 +20,7 @@ sudo chmod +x path/to/sh
 bash path/to/sh
 # 例如 bash ~/hadoopInstall.sh
 ```
-![](assets/2025-11-10-3.png)
+![](../assets/2025-11-10-3.png)
 <center>运行效果</center>
 
 普通用户在运行步骤1后，需要将脚本移动到hadoop目录下执行
@@ -35,7 +35,7 @@ sudo chmod ~/hadoopInstall.sh
 ## hadoop完全分布式
 为节省时间可预先下载好安装包与sh脚本放与同一目录下。脚本内也提供了下载连接，若未检测到安装包会询问是否在线下载[resources](../resources.md)。
 
-![](assets/2025-11-10-4.png)
+![](../assets/2025-11-10-4.png)
 >从windows向虚拟机传输文件可参考[sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
 
 #### .env文件
@@ -59,23 +59,23 @@ bash ~/hadoopCluster.sh  # 记得chmod +x hadoopCluster.sh添加权限
 ```
 
 会提示你检查信息是否有问题
-![](assets/2025-11-10-5.png)
+![](../assets/2025-11-10-5.png)
 
 输入1后
 sit back, relax, enjoy the show
-![](assets/2025-11-10-6.png)
+![](../assets/2025-11-10-6.png)
 
 完成后将提示
-![](assets/2025-11-10-7.png)
+![](../assets/2025-11-10-7.png)
 点击链接即可自动在浏览器中打开
-![](assets/2025-11-10-8.png)
+![](../assets/2025-11-10-8.png)
 执行完后请手动`source ~/.bashrc`或重新打开一个终端才能识别hdfs命令
 ## hbase
 需要hdfs安装作为前提。
 
 为节省时间可预先下载好安装包与sh脚本放与同一目录下。脚本内也提供了下载连接，若未检测到安装包会询问是否在线下载[resources](../resources.md)。
 
-![](assets/2025-11-10-9.png)
+![](../assets/2025-11-10-9.png)
 >从windows向虚拟机传输文件可参考[sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
 
 
@@ -90,14 +90,14 @@ bash path/to/hbaseInstall.sh
 ```
 
 会通过echo $HADOOP_HOME检测是否已经安装好hdfs
-![](assets/2025-11-10-10.png)
+![](../assets/2025-11-10-10.png)
 
 如果刚安装hadoop,运行hbaseInstall还是提示HADOOP_HOME未设置，请执行
 ```bash
 source ~/.bashrc
 ```
-![](assets/2025-11-10-11.png)
+![](../assets/2025-11-10-11.png)
 
 输入12,等待完成
-![](assets/2025-11-10-12.png)
+![](../assets/2025-11-10-12.png)
 执行完后请手动`source ~/.bashrc`或重新打开一个终端

@@ -113,7 +113,7 @@ vim $HBASE_HOME/conf/hbase-env.sh
 找到JAVA_HOME(vim使用'/'进入搜索模式),添加为自己的java。
 可以使用`update-alternatives --query java`查看jala路径
 
-![](assets/2025-11-10-1.png)
+![](../assets/2025-11-10-1.png)
 >e.g:此处JAVA_HOME=/usr/lib/jvm/jdk1.8.0_202
 ---
 
@@ -147,7 +147,7 @@ vim $HBASE_HOME/conf/hbase-env.sh
     若显示 `Master is running` 和 `RegionServers` 列表，则启动成功。
     
 查看jps
-![](assets/2025-11-10-2.png)
+![](../assets/2025-11-10-2.png)
 
 
 ---

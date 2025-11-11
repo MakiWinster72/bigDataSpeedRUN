@@ -55,7 +55,7 @@
 mariadb -h 数据库地址 -P 3306 -u 用户名 -p --ssl=0
 ```
 
-![](assets/2025-11-11-1.png)
+![](../assets/2025-11-11-1.png)
 
 - 查看 mydb 数据库是否存在
     
@@ -67,7 +67,7 @@ SHOW DATABASES;
 CREATE DATABASE mydb;
 ```
 
-![](assets/2025-11-11-3.png)
+![](../assets/2025-11-11-3.png)
 
 > 实验要求创建 mysql，但 DATABASE mysql 是预装就有的，用于存放用户数据，所以我们换一个名字。
 
@@ -83,7 +83,7 @@ CREATE TABLE user (
 );
 ```
 
-![](assets/2025-11-11-4.png)
+![](../assets/2025-11-11-4.png)
 
 - 插入数据
     
@@ -96,7 +96,7 @@ INSERT INTO user (id, name, age, sex)
 VALUES (2, 'Box', 25, 'M');
 ```
 
-![](assets/2025-11-11-5.png)
+![](../assets/2025-11-11-5.png)
 
 - 查询数据
     
@@ -105,7 +105,7 @@ VALUES (2, 'Box', 25, 'M');
 SELECT * FROM user;
 ```
 
-![](assets/2025-11-11-6.png)
+![](../assets/2025-11-11-6.png)
 
 - 更新数据
     
@@ -118,7 +118,7 @@ WHERE id=2;
 SELECT * FROM user;
 ```
 
-![](assets/2025-11-11-7.png)
+![](../assets/2025-11-11-7.png)
 
 - 删除数据
     
@@ -131,7 +131,7 @@ WHERE id=1;
 SELECT * FROM user;
 ```
 
-![](assets/2025-11-11-8.png)
+![](../assets/2025-11-11-8.png)
 
 ## 任务三
 ① 在本地新建 MySQL 数据库。  
@@ -154,7 +154,7 @@ Ubuntu 20.04或更早
 mysql -u root -p
 ```
 
-![](assets/2025-11-11-9.png)
+![](../assets/2025-11-11-9.png)
 
 - 创建 mydb 数据库并新建 user 表，插入示例数据
     
@@ -167,7 +167,7 @@ INSERT INTO user (id, name, age, sex) VALUES (4, 'Dia', 21, 'F');
 INSERT INTO user (id, name, age, sex) VALUES (5, 'Eve', 23, 'F');
 ```
 
-![](assets/2025-11-11-10.png)
+![](../assets/2025-11-11-10.png)
 
 - 创建迁移账号
     
@@ -176,7 +176,7 @@ INSERT INTO user (id, name, age, sex) VALUES (5, 'Eve', 23, 'F');
 CREATE USER '用户名'@'%' IDENTIFIED BY '密码';
 ```
 
-![](assets/2025-11-11-11.png)
+![](../assets/2025-11-11-11.png)
 
 - 授权迁移账号
     
@@ -186,7 +186,7 @@ GRANT ALL PRIVILEGES ON mydb.* TO '用户名'@'%';
 FLUSH PRIVILEGES;
 ```
 
-![](assets/2025-11-11-12.png)
+![](../assets/2025-11-11-12.png)
 
 - 编辑 /etc/my.cnf.d/server.cnf
     
@@ -198,7 +198,7 @@ binlog_format = ROW
 server-id = 1
 ```
 
-![](assets/2025-11-11-13.png)
+![](../assets/2025-11-11-13.png)
 
 - 重新启动 MariaDB 服务
     
@@ -214,7 +214,7 @@ sudo systemctl restart mariadb.service
 mariadb -u 用户名 -p密码 -e "SHOW VARIABLES LIKE 'binlog_format';"
 ```
 
-![](assets/2025-11-11-14.png)
+![](../assets/2025-11-11-14.png)
 
 - 导出本地数据库
     
@@ -223,8 +223,8 @@ mariadb -u 用户名 -p密码 -e "SHOW VARIABLES LIKE 'binlog_format';"
 mysqldump -u 用户名 -p密码 --databases mydb --routines --triggers --single-transaction --master-data=2 > 文件名.sql
 ```
 
-![](assets/2025-11-11-15.png)  
-![](assets/2025-11-11-17.png)
+![](../assets/2025-11-11-15.png)  
+![](../assets/2025-11-11-17.png)
 
 - 导入到 RDS
     
@@ -233,7 +233,7 @@ mysqldump -u 用户名 -p密码 --databases mydb --routines --triggers --single-
 mariadb -h RDS地址 -P 3306 -u 用户名 -p --ssl=0 < 备份的sql文件
 ```
 
-![](assets/2025-11-11-18.png)
+![](../assets/2025-11-11-18.png)
 
 - 连接 RDS 并查询
     
@@ -247,7 +247,7 @@ USE mydb;
 SELECT * FROM user;
 ```
 
-![](assets/2025-11-11-20.png)
+![](../assets/2025-11-11-20.png)
 
 > 数据与本地 user 表相符，导入成功 🥳
 
@@ -296,11 +296,11 @@ UPLOAD_DIR=绝对路径/photo-wall/uploads
 ```
 
 效果：
-![](assets/2025-11-11-21.png)
-![](assets/2025-11-11-22.png)
+![](../assets/2025-11-11-21.png)
+![](../assets/2025-11-11-22.png)
 
 添加/删除照片时，RDS 会同步更新：
-![](assets/2025-11-11-23.png)
+![](../assets/2025-11-11-23.png)
 
 ### 关键代码
 

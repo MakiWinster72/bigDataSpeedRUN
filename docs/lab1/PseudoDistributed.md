@@ -48,7 +48,7 @@
 ./sbin/start-dfs.sh
 ```
 
-![](assets/2025-09-20-7.png)
+![](../assets/2025-09-20-7.png)
 
 > 若报错找不到 `JAVA_HOME`，是因为 Hadoop 启动脚本不读取 `~/.bashrc`。
 > 需在 `$HADOOP_HOME/etc/hadoop/hadoop-env.sh` 中添加：
@@ -56,7 +56,7 @@
 > `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64`
 
 使用 `jps` 可查看 Hadoop 启动的 Java 进程，如：
-![](assets/2025-09-20-11.png)
+![](../assets/2025-09-20-11.png)
 
 ---
 
@@ -65,7 +65,7 @@
 若在云服务器上运行，需要在控制台安全组中开放 **9870** 端口（用于访问 Hadoop Dashboard）。
 
 以阿里云为例：
-![](assets/2025-09-20-9.png)
+![](../assets/2025-09-20-9.png)
 
 ---
 
@@ -77,7 +77,7 @@
 http://<服务器IP>:9870
 ```
 
-![](assets/2025-09-20-8.png)
+![](../assets/2025-09-20-8.png)
 
 ---
 
@@ -101,7 +101,7 @@ hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.
 ./bin/hdfs dfs -cat output/*
 ```
 
-![](assets/2025-09-20-10.png)
+![](../assets/2025-09-20-10.png)
 
 ---
 
@@ -111,4 +111,4 @@ hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.
 ./sbin/stop-dfs.sh
 ```
 
-![](assets/2025-09-20-12.png)
+![](../assets/2025-09-20-12.png)
