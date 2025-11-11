@@ -367,3 +367,76 @@ a:hover::after {
     transform: none;
   }
 }
+
+/* 图片查看器样式 */
+.vp-doc img {
+  cursor: zoom-in;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+}
+
+.vp-doc img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Medium Zoom 样式覆盖 */
+.medium-zoom-overlay {
+  background: rgba(0, 0, 0, 0.9) !important;
+  z-index: 1000;
+}
+
+.medium-zoom-image {
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+}
+
+.medium-zoom-image--opened {
+  cursor: zoom-out;
+}
+
+/* 图片查看器控件样式 */
+.medium-zoom-image--opened {
+  position: relative;
+}
+
+.medium-zoom-image--opened::after {
+  content: '点击图片或按 ESC 键关闭';
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  z-index: 1002;
+  pointer-events: none;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* 移动端图片查看器优化 */
+@media (max-width: 768px) {
+  .medium-zoom-image {
+    max-width: 95vw;
+    max-height: 80vh;
+  }
+  
+  .medium-zoom-image--opened::after {
+    font-size: 12px;
+    bottom: 10px;
+    padding: 6px 12px;
+  }
+}
+
+/* 禁用移动端图片悬停效果 */
+@media (hover: none) and (pointer: coarse) {
+  .vp-doc img:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}

@@ -50,6 +50,38 @@ if __name__ == "__main__":
     upload_file(sys.argv[1], sys.argv[2], sys.argv[3].lower() == 'true')
 ```
 
+> **`from hdfs import InsecureClient`**
+> 从 `hdfs` 库导入 `InsecureClient`，用于在无认证模式下连接 HDFS。
+>
+> **`import sys, os`**
+> 导入 `sys` 和 `os` 模块，用于读取命令行参数和处理文件路径。
+>
+> **函数参数说明：**
+>
+> * `sys.argv[1]`：本地文件路径。
+> * `sys.argv[2]`：HDFS 上的目标路径。
+> * `sys.argv[3]`：是否以追加（`True`/`False`）方式写入。
+>
+> **`client = InsecureClient('http://localhost:9870', user='hadoop')`**
+> 创建 HDFS 客户端，连接到 `http://localhost:9870`，用户为 `hadoop`。
+>
+> **`if client.status(hdfs_path, strict=False):`**
+> 检查目标路径是否存在，若存在则进入更新逻辑。
+>
+> **`if append:`**
+> 若选择追加模式：
+>
+> * 打开本地文件并读取全部数据；
+> * 使用 `client.write(..., append=True)` 将内容追加到 HDFS 文件末尾。
+>
+> **`else:`**
+> 若非追加模式，则调用 `client.upload(..., overwrite=True)` 覆盖上传目标文件。
+>
+> **`else:`**
+> 若目标路径不存在，直接上传新文件。
+> **`if __name__ == "__main__":`**
+> 当脚本被直接运行时，从命令行读取参数并调用 `upload_file()` 执行上传。
+
 **Shell 命令：**
 
 ```bash
@@ -86,6 +118,12 @@ if __name__ == "__main__":
     download_file(sys.argv[1], sys.argv[2])
 ```
 
+> **`if os.path.exists(local_file):`**
+> 检查本地目标文件是否已存在，若存在则在文件名后追加 `_new`，避免覆盖。
+>
+> **`client.download(hdfs_file, local_file, overwrite=True)`**
+> 从 HDFS 下载指定文件到本地路径，若存在同名文件则覆盖。
+
 **Shell 命令：**
 
 ```bash
@@ -113,6 +151,13 @@ def cat_file(hdfs_file):
 if __name__ == "__main__":
     cat_file(sys.argv[1])
 ```
+
+> **`with client.read(hdfs_file, encoding='utf-8') as reader:`**
+> 打开 HDFS 文件用于读取，按 UTF-8 解码。
+>
+> **`print(reader.read())`**
+> 读取整个文件内容并输出到终端。
+
 
 **Shell 命令：**
 
@@ -146,6 +191,22 @@ if __name__ == "__main__":
     file_info(sys.argv[1])
 ```
 
+> **`status = client.status(hdfs_file)`**
+> 获取 HDFS 文件的状态信息，包括权限、大小、修改时间等。
+>
+> **`print("权限:", status['permission'])`**
+> 输出文件权限。
+>
+> **`print("大小:", status['length'])`**
+> 输出文件大小（字节）。
+>
+> **`print("修改时间:", time.strftime(...))`**
+> 将文件的修改时间（毫秒）转换为可读的年月日时分秒格式并输出。
+>
+> **`print("路径:", status['pathSuffix'])`**
+> 输出文件在 HDFS 中的路径后缀（不含父目录）。
+
+
 **Shell 命令：**
 
 ```bash
@@ -178,6 +239,15 @@ def list_dir(hdfs_dir):
 if __name__ == "__main__":
     list_dir(sys.argv[1])
 ```
+
+> **`for item in client.list(path, status=True):`**
+> 列出指定 HDFS 目录下的所有文件和子目录，并获取状态信息。
+>
+> **`print(f"{path}/{item[0]} 权限:{info['permission']} 大小:{info['length']}")`**
+> 输出每个文件或目录的完整路径、权限和大小。
+>
+> **`if info['type'] == 'DIRECTORY': recurse(...)`**
+> 如果是子目录，则递归遍历其内容，实现目录树式列出所有文件。
 
 **Shell 命令：**
 
@@ -216,6 +286,21 @@ if __name__ == "__main__":
     create_delete_file(sys.argv[1], sys.argv[2].lower() == 'true')
 ```
 
+> **`if create:`**
+> 判断操作类型：若为 `True`，执行创建文件操作；否则执行删除。
+>
+> **`if not client.status(parent, strict=False): client.makedirs(parent)`**
+> 若文件的父目录不存在，则先创建父目录。
+>
+> **`client.write(hdfs_path, b"", overwrite=True)`**
+> 创建一个空文件，若同名文件存在则覆盖。
+>
+> **`client.delete(hdfs_path)`**
+> 删除指定 HDFS 文件。
+>
+> **`print(...)`**
+> 输出文件创建或删除的提示信息。
+
 **Shell 命令：**
 
 ```bash
@@ -251,6 +336,18 @@ if __name__ == "__main__":
     recursive = len(sys.argv) > 3 and sys.argv[3].lower() == 'true'
     create_delete_dir(sys.argv[1], sys.argv[2].lower() == 'true', recursive)
 ```
+
+> **`if create:`**
+> 判断操作类型：若为 `True`，执行创建目录；否则执行删除目录。
+>
+> **`client.makedirs(hdfs_dir)`**
+> 创建指定 HDFS 目录（若父目录不存在会一并创建）。
+>
+> **`client.delete(hdfs_dir, recursive=recursive)`**
+> 删除指定 HDFS 目录，参数 `recursive=True` 可递归删除子目录和文件。
+>
+> **`print(...)`**
+> 输出目录创建或删除的提示信息。
 
 **Shell 命令：**
 
@@ -296,6 +393,19 @@ if __name__ == "__main__":
     append_file(sys.argv[1], sys.argv[2], sys.argv[3].lower() == 'true')
 ```
 
+> **`with open(content_file, 'rb') as f: new_data = f.read()`**
+> 读取本地文件内容，用于追加到 HDFS 文件。
+>
+> **`if append_to_end: client.write(hdfs_file, new_data, append=True)`**
+> 若选择追加到末尾，直接使用 HDFS 的追加功能。
+>
+> **`else:`**
+> 若选择追加到开头：
+>
+> * 先下载原 HDFS 文件到临时文件；
+> * 读取原文件内容；
+> * 将新内容与原内容合并后覆盖写入 HDFS，实现“追加到开头”。
+
 **Shell 命令：**
 
 ```bash
@@ -322,6 +432,9 @@ def delete_file(hdfs_file):
 if __name__ == "__main__":
     delete_file(sys.argv[1])
 ```
+
+> **`client.delete(hdfs_file)`**
+> 删除指定的 HDFS 文件。
 
 **Shell 命令：**
 
@@ -350,6 +463,9 @@ def move_file(src_path, dst_path):
 if __name__ == "__main__":
     move_file(sys.argv[1], sys.argv[2])
 ```
+
+> **`client.rename(src_path, dst_path)`**
+> 将 HDFS 中的源文件重命名或移动到目标路径。
 
 **Shell 命令：**
 

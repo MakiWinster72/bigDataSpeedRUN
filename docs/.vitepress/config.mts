@@ -9,24 +9,6 @@ export default defineConfig({
       // 启用任务列表插件
       md.use(taskLists)
 
-      // 注册自定义组件：替换图片渲染器
-      const defaultRender = md.renderer.rules.image
-      md.renderer.rules.image = (tokens, idx, options, env, self) => {
-        const token = tokens[idx]
-        const src = token.attrGet('src')
-        const alt = token.content
-        return `<ImageLightbox src="${src}" alt="${alt}" />`
-      }
-
-      // 支持自定义容器
-      const containerTypes = ['tip', 'warning', 'danger', 'info', 'note', 'todo']
-      containerTypes.forEach(type => {
-        md.use((md) => {
-          md.renderer.rules[`container_${type}_open`] = () =>
-            `<div class="custom-container ${type}">`
-          md.renderer.rules[`container_${type}_close`] = () => '</div>'
-        })
-      })
     }
   },
 
@@ -61,7 +43,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '资源', link: '/resources' }
     ],
-
+    
     sidebar: [
       {
         text: '快速开始',
@@ -121,7 +103,7 @@ export default defineConfig({
         ]
       }
     ],
-
+    
     socialLinks: [
       { icon: 'github', link: 'https://github.com/MakiWinster72/bigDataSpeedRUN' }
     ]
