@@ -4,10 +4,10 @@
 >此方法比较适用于Ubuntu Desktop，或者server安装了桌面环境，例如xfce,gnome等
 #### Windows 启动Python http服务器
 按下`Windows`键，输入cmd，按下`Enter`
-![](../assets/2025-11-09-21.png)
+![](https://img.makis-life.cn/images/20251110181534127.png)
 
 复制要共享的文件夹的路径，在cmd中输入`cd 路径`，回车
-![](../assets/2025-11-09-22.png)
+![](https://img.makis-life.cn/images/20251110181534128.png)
 
 >注意路径是否有空格，比如有人的用户名有空格，或者最后文件夹是shared folder等，路径需要用**双引号**括起来。
 
@@ -16,10 +16,10 @@
 python -m http.server -p 8000  #可以手动指定端口
 ```
 出现下图情况就是Python未安装，或者环境变量没配置好，请自行搜索安装Python的方法。
-![](../assets/2025-11-09-23.png)
+![](https://img.makis-life.cn/images/20251110181534129.png)
 #### 获取windows IP地址
 在cmd中输入`ipconfig`即可查看ipv4地址。
-![](../assets/2025-11-09-24.png)
+![](https://img.makis-life.cn/images/20251110181534130.png)
 记住图中ipv4地址，常见192或172开头。
 
 在虚拟机中，打开浏览器，一般默认安装了Firefox。

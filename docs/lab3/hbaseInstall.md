@@ -31,7 +31,7 @@ export PATH=$PATH:$HBASE_HOME/bin
 > mv是移动文件的命令，当文件被移动到原文件夹并且指定不同的名字，就完成了重命名操作
 
 
-1. 创建配置文件：
+2. 创建配置文件：
     
     ```bash
     cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg
@@ -48,7 +48,7 @@ export PATH=$PATH:$HBASE_HOME/bin
     mkdir -p /home/hadoop/zookeeper/data
     ```
     
-2. 启动 ZooKeeper：
+3. 启动 ZooKeeper：
     
     ```bash
     zkServer.sh start
@@ -113,7 +113,7 @@ vim $HBASE_HOME/conf/hbase-env.sh
 找到JAVA_HOME(vim使用'/'进入搜索模式),添加为自己的java。
 可以使用`update-alternatives --query java`查看jala路径
 
-![](../assets/2025-11-10-1.png)
+![](https://img.makis-life.cn/images/20251110181408593.png)
 >e.g:此处JAVA_HOME=/usr/lib/jvm/jdk1.8.0_202
 ---
 
@@ -147,7 +147,7 @@ vim $HBASE_HOME/conf/hbase-env.sh
     若显示 `Master is running` 和 `RegionServers` 列表，则启动成功。
     
 查看jps
-![](../assets/2025-11-10-2.png)
+![](https://img.makis-life.cn/images/20251110181408594.png)
 
 
 ---
