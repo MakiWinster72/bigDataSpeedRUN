@@ -7,12 +7,10 @@ import './custom.css'
 
 export default {
   extends: DefaultTheme,
-  enhanceApp({ app }: EnhanceAppContext) {
-    
-  },
-  setup() {
-    onMounted(() => {
-      // 自动为所有图片添加点击放大功能
+  enhanceApp({ app, router }: EnhanceAppContext) {
+    // 在应用级别初始化图片缩放功能
+    if (typeof window !== 'undefined') {
+      // 确保在客户端环境中执行
       const initZoom = () => {
         const images = document.querySelectorAll('.vp-doc img:not(.medium-zoom-image)')
         images.forEach((imgElement) => {
@@ -50,18 +48,59 @@ export default {
         })
       }
       
-      // 初始化和路由变化后都重新初始化
-      initZoom()
+      // 页面加载完成后初始化
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initZoom)
+      } else {
+        initZoom()
+      }
       
       // 监听路由变化
-      const observer = new MutationObserver(() => {
+      router.onAfterRouteChange = () => {
         setTimeout(initZoom, 100)
-      })
-      
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      })
+      }
+    }
+  },
+  setup() {
+    onMounted(() => {
+      // 客户端二次初始化，确保在开发环境正常工作
+      if (typeof window !== 'undefined') {
+        const initZoom = () => {
+          const images = document.querySelectorAll('.vp-doc img:not(.medium-zoom-image)')
+          images.forEach((imgElement) => {
+            const img = imgElement as HTMLImageElement
+            
+            // 跳过已经处理过的图片
+            if (img.classList.contains('medium-zoom-image')) return
+            
+            // 添加点击放大功能
+            mediumZoom(img, {
+              background: 'rgba(0, 0, 0, 0.8)',
+              margin: 24,
+              scrollOffset: 0,
+              container: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
+              }
+            })
+          })
+        }
+        
+        // 初始化和路由变化后都重新初始化
+        initZoom()
+        
+        // 监听路由变化
+        const observer = new MutationObserver(() => {
+          setTimeout(initZoom, 100)
+        })
+        
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        })
+      }
     })
   }
 }
