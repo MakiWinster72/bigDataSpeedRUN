@@ -77,7 +77,8 @@ export default defineConfig({
         items: [
           { text: 'HBase 安装', link: '/lab3/hbaseInstall' },
           { text: 'HBase Java', link: '/lab3/java' },
-          { text: 'HBase Python', link: '/lab3/python' }
+          { text: 'HBase Python', link: '/lab3/python' },
+          { text: 'HBase Problem', link: '/lab3/closingHBase'}
         ]
       },
       {

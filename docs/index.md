@@ -54,9 +54,11 @@ features:
 - [x] 实验2 ✅ 2025-11-10
 - [x] 实验3 ✅ 2025-11-10
   - [ ] Java
-	- [ ] 优雅地关闭hbase
+	- [ ] 如何优雅地关闭hbase
 - [x] 实验4 ✅ 2025-11-11
-	- [x] RDS ✅ 2025-11-11
+	- [ ] RDS
+    - [ ] ECS install MySQL
+    - [ ] Windows 连接 RDS
 	- [x] SQLcompare ✅ 2025-11-11
 - [x] 实验5 ✅ 2025-11-10
 	- [ ] Java

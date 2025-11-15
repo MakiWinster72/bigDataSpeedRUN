@@ -42,20 +42,32 @@
 
 ---
 
+### 格式化 NameNode
+
+```bash
+./bin/hdfs namenode -format
+```
+
+① 该命令用于初始化 HDFS 的元数据存储目录（即 `dfs/name`）。
+② **只需第一次运行时执行一次**，否则会导致原有数据被清空。
+
+---
+
 ### 启动 HDFS
 
 ```bash
 ./sbin/start-dfs.sh
 ```
 
-![](https://img.makis-life.cn/images/20251110181522746.png)
-
 > 若报错找不到 `JAVA_HOME`，是因为 Hadoop 启动脚本不读取 `~/.bashrc`。
 > 需在 `$HADOOP_HOME/etc/hadoop/hadoop-env.sh` 中添加：
 >
-> `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64`
+> ```bash
+> export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+> ```
 
 使用 `jps` 可查看 Hadoop 启动的 Java 进程，如：
+
 ![](https://img.makis-life.cn/images/20251110181522747.png)
 
 ---
@@ -73,7 +85,7 @@
 
 在浏览器访问：
 
-```
+```bash
 http://<服务器IP>:9870
 ```
 
@@ -112,3 +124,4 @@ hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.
 ```
 
 ![](https://img.makis-life.cn/images/20251110181522751.png)
+

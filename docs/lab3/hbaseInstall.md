@@ -4,7 +4,9 @@
 
 > [!tip] 🎉
 > 已有sh脚本可一键安装完成 -> [shell](../other/shell.md#hbase)
+
 ## 安装 HBase 教程
+
 ### ① 环境准备
 
 `~/.bashrc`增加
@@ -15,64 +17,58 @@ export HBASE_HOME=/home/hadoop/hbase
 export PATH=$PATH:$HBASE_HOME/bin
 ```
 
-
 ---
 
 ### ② 安装 ZooKeeper
 
 1. 解压 ZooKeeper：
-    
-    ```bash
-    tar -xzf apache-zookeeper-3.8.5-bin.tar.gz -C /home/hadoop/
-    mv /home/hadoop/apache-zookeeper-3.8.5-bin /home/hadoop/zookeeper
-    ```
-    
+
+   ```bash
+   tar -xzf apache-zookeeper-3.8.5-bin.tar.gz -C /home/hadoop/
+   mv /home/hadoop/apache-zookeeper-3.8.5-bin /home/hadoop/zookeeper
+   ```
+
 > [!note]
 > mv是移动文件的命令，当文件被移动到原文件夹并且指定不同的名字，就完成了重命名操作
 
-
 2. 创建配置文件：
-    
-    ```bash
-    cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg
-    ```
-    
-    修改配置：
-    
-    - `dataDir=/home/hadoop/zookeeper/data`
-        
-    - `clientPort=2181`
-        
-    
-    ```bash
-    mkdir -p /home/hadoop/zookeeper/data
-    ```
-    
+
+   ```bash
+   cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg
+   ```
+
+   修改配置：
+   - `dataDir=/home/hadoop/zookeeper/data`
+   - `clientPort=2181`
+
+   ```bash
+   mkdir -p /home/hadoop/zookeeper/data
+   ```
+
 3. 启动 ZooKeeper：
-    
-    ```bash
-    zkServer.sh start
-    zkServer.sh status
-    ```
-    
+
+   ```bash
+   zkServer.sh start
+   zkServer.sh status
+   ```
 
 ---
 
 ### ③ 安装 HBase
 
 1. 解压 HBase：
-    
-    ```bash
-    tar -xzf hbase-2.6.3-bin.tar.gz -C /home/hadoop/
-    mv /home/hadoop/hbase-2.6.3 /home/hadoop/hbase
-    ```
-    
+
+   ```bash
+   tar -xzf hbase-2.6.3-bin.tar.gz -C /home/hadoop/
+   mv /home/hadoop/hbase-2.6.3 /home/hadoop/hbase
+   ```
+
 2. 配置 HBase：
-    
-    编辑 `$HBASE_HOME/conf/hbase-site.xml`，添加最小配置：
-    
+
+   编辑 `$HBASE_HOME/conf/hbase-site.xml`，添加最小配置：
+
 ```xml
-<?xml version="0.0"?>
+<?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
 <!-- true是分布式模式，false是单机模式(HBase和Zk运行在同一个JVM) -->
@@ -86,14 +82,13 @@ export PATH=$PATH:$HBASE_HOME/bin
   </property>
   <property>
     <name>hbase.tmp.dir</name>
-    <value>./tmp</value>
+    <value>hdfs://localhost:9000/hbase/tmp</value>
   </property>
 <!-- HBase的根目录，在HDFS下的/hbase -->
   <property>
     <name>hbase.rootdir</name>
     <value>hdfs://localhost:9000/hbase</value>
   </property>
-<!-- Zk的位置，这里是本机 -->
   <property>
     <name>hbase.zookeeper.quorum</name>
     <value>localhost</value>
@@ -104,74 +99,106 @@ export PATH=$PATH:$HBASE_HOME/bin
   </property>
 </configuration>
 ```
-    
-1. 配置 HBase 环境变量。
+
+## 配置 HBase 环境变量
+
+1. 打开配置文件
+
 ```bash
 vim $HBASE_HOME/conf/hbase-env.sh
 ```
 
-找到JAVA_HOME(vim使用'/'进入搜索模式),添加为自己的java。
-可以使用`update-alternatives --query java`查看jala路径
+2. 查找并设置 `JAVA_HOME`
+   在 `vim` 中输入 `/JAVA_HOME` 进入搜索模式，找到如下行：
+
+```bash
+# export JAVA_HOME=/usr/java/jdk1.6.0/
+```
+
+修改为你的 Java 路径，例如：
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_202
+```
+
+可以使用以下命令查看路径：
+
+```bash
+update-alternatives --query java
+```
 
 ![](https://img.makis-life.cn/images/20251110181408593.png)
->e.g:此处JAVA_HOME=/usr/lib/jvm/jdk1.8.0_202
----
+
+> e.g：此处 `JAVA_HOME=/usr/lib/jvm/jdk1.8.0_202`
+
+3. 找到以下内容并更新：
+
+```bash
+export HBASE_DISABLE_HADOOP_CLASSPATH_LOOKUP="true"
+export HBASE_MANAGES_ZK=false
+export HBASE_CLASSPATH=/usr/local/hadoop/etc/hadoop
+```
+
+4. 保存并退出
+   在 `vim` 中输入
+
+```
+:wq
+```
 
 ### ④ 启动 HBase
 
 1. 初始化 HBase 目录：
-    
-    ```bash
-    hdfs dfs -mkdir -p /hbase
-    hdfs dfs -chown hadoop:hadoop /hbase
-    ```
-    
+
+   ```bash
+   hdfs dfs -mkdir -p /hbase
+   hdfs dfs -chown hadoop:hadoop /hbase
+   ```
+
 2. 启动 HBase：
-    
-    ```bash
-    start-hbase.sh
-    ```
-    
+
+   ```bash
+   start-hbase.sh
+   ```
+
 3. 检查 HBase 状态：
-    
-    ```bash
-    hbase shell
-    ```
-    
-    在 shell 中输入：
-    
-    ```bash
-    status
-    ```
-    
-    若显示 `Master is running` 和 `RegionServers` 列表，则启动成功。
-    
+
+   ```bash
+   hbase shell
+   ```
+
+   在 shell 中输入：
+
+   ```bash
+   status
+   ```
+
+   若显示 `Master is running` 和 `RegionServers` 列表，则启动成功。
+
 查看jps
 ![](https://img.makis-life.cn/images/20251110181408594.png)
-
 
 ---
 
 ### ⑤ 测试 HBase
 
 1. 创建表：
-    
-    ```bash
-    create 'test', 'cf'
-    ```
-    
+
+   ```bash
+   create 'test', 'cf'
+   ```
+
 2. 插入数据：
-    
-    ```bash
-    put 'test', 'row1', 'cf:col1', 'value1'
-    ```
-    
+
+   ```bash
+   put 'test', 'row1', 'cf:col1', 'value1'
+   ```
+
 3. 查询数据：
-    
-    ```bash
-    get 'test', 'row1'
-    ```
-    
+
+   ```bash
+   get 'test', 'row1'
+   ```
 
 ---
 
