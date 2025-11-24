@@ -54,8 +54,7 @@ wget https://mirrors.aliyun.com/apache/zookeeper/zookeeper-3.8.5/apache-zookeepe
 >ECS 经典网络访问地址: http://mirrors.aliyuncs.com/
 
 # JAVA
-[jdk8u202](https://mirrors.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz)
+[jdk11](https://mirrors.huaweicloud.com/java/jdk/11+28/jdk-11_linux-x64_bin.tar.gz)
 ```bash
-wget https://mirrors.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz
+wget https://mirrors.huaweicloud.com/java/jdk/11+28/jdk-11_linux-x64_bin.tar.gz
 ```
-> Hbase目前对java11以上的支持并不太好
