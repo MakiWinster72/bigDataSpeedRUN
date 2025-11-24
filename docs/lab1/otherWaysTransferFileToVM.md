@@ -1,7 +1,7 @@
 本文章是除共享文件夹外，主机与虚拟机沟通传输文件的方法。
 
 ## Python HTTP Server
->此方法比较适用于Ubuntu Desktop，或者server安装了桌面环境，例如xfce,gnome等
+>此方法<u>比较</u>适用于Ubuntu Desktop，或者server安装了桌面环境，例如xfce,gnome等
 #### Windows 启动Python http服务器
 按下`Windows`键，输入cmd，按下`Enter`
 ![](https://img.makis-life.cn/images/20251110181534127.png)
@@ -83,7 +83,7 @@ sudo systemctl start ssh
     
 
 ```powershell
-scp C:\Users\Maki\Documents\file.txt username@192.168.56.101:/home/username/
+scp C:\Users\Maki\Documents\file.txt username@ip地址:/home/username/
 ```
 
 
@@ -101,7 +101,7 @@ scp C:\Users\Maki\Documents\file.txt username@192.168.56.101:/home/username/
 #### 从 Ubuntu 拉文件到 Windows
 
 ```bash
-scp username@192.168.56.101:/home/username/file.txt C:\Users\Maki\Downloads\
+scp username@1ip地址:/home/username/file.txt C:\Users\Maki\Downloads\
 ```
 
 ---

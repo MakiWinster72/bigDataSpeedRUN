@@ -288,8 +288,7 @@ photo-wall
 通过在.env 中明文存放了 RDS 的账号密码连接数据库
 **cat photo-wall/backend/.env**
 ```env
-DATABASE_URL=mysql://用户名:(数据库密码)@rm-cn-fsw4igyvf0002a2o.rwlb.rds.al
-iyuncs.com:3306/photo_wall
+DATABASE_URL=mysql://用户名:(数据库密码)@数据库地址:端口号(默认3306)/模式(photo_wall)
 SERVER_HOST=127.0.0.1
 SERVER_PORT=8080
 UPLOAD_DIR=绝对路径/photo-wall/uploads

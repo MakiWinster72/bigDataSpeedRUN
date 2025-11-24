@@ -6,9 +6,9 @@
 ① 创建 `hadoop` 用户并加入 sudo 组
 
 ```bash
-sudo useradd -m hadoop -s /bin/bash  
-sudo passwd hadoop  
-sudo adduser hadoop sudo  
+sudo useradd -m hadoop -s /bin/bash
+sudo passwd hadoop
+sudo adduser hadoop sudo
 ```
 
 ② 切换到 hadoop 用户
@@ -48,26 +48,31 @@ cat ./id_rsa.pub >> ./authorized_keys
 
 ## 安装 Java
 
-① 安装 OpenJDK 8
+① 安装 OpenJDK 11
 
 ```bash
 sudo apt update
-sudo apt install openjdk-8-jdk
+sudo apt install openjdk-11-jdk
 ```
+
+> 或使用[resources](../resources.md)推荐的版本
 
 ② 设置环境变量
 
-编辑 `~/.bashrc` 或 `~/.zshrc`
+编辑 `~/.profile`
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 export PATH=$PATH:$JAVA_HOME/bin
+
 ```
+
+> JAVA_HOME的路径可以用`sudo update-alternatives --config java`查看
 
 使配置生效
 
 ```bash
-source ~/.bashrc
+source ~/.profile
 ```
 
 ③ 验证
@@ -96,7 +101,7 @@ sudo mv ./hadoop-3.4.2 ./hadoop
 
 ③ 设置环境变量
 
-编辑 `~/.bashrc` 或 `~/.zshrc`
+编辑 `~/.profile`
 
 ```bash
 export HADOOP_HOME=/usr/local/hadoop
@@ -107,7 +112,7 @@ export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 使配置生效
 
 ```bash
-source ~/.bashrc
+source ~/.profile
 ```
 
 ④ 验证 Hadoop 是否安装成功
@@ -160,4 +165,6 @@ cat ./output/*
 `# export JAVA_HOME=`
 
 改成：
-`export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64`
+`export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64`
+
+> 请在`sudo update-alternatives --config java`查看具体路径
