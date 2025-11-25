@@ -68,138 +68,161 @@ export default {
        * 用户点击该按钮时才显示侧边栏。这样不会干扰桌面端行为。
        */
       (function preventSidebarFlashOnSmallScreens() {
+        // 改进：不注入新按钮（避免与主题自带按钮冲突）
+        // - 在小屏上通过给根元素添加类初始隐藏侧边栏（.vp-sidebar-initial-hidden）
+        // - 监听主题已有的切换按钮的首次点击，或监听侧边栏本身的属性/样式变化（更稳健）
+        //   一旦检测到侧边栏被主题显示，则移除该根类并清理监听器。
         const SMALL_BREAKPOINT = 1024;
-        let toggleBtn: HTMLButtonElement | null = null;
-        let initialized = false;
+        const root = document.documentElement;
+        const toggleSelectors = [
+          'button[aria-label="Toggle sidebar"]',
+          ".sidebar-toggle",
+          ".theme-toggle",
+          ".vp-nav__toggle",
+          'button[aria-label="Menu"]',
+          'button[title="Menu"]',
+        ];
+        let domObserver: MutationObserver | null = null;
+        let sidebarObserver: MutationObserver | null = null;
 
-        const createToggleButton = () => {
-          if (document.querySelector("#custom-sidebar-toggle"))
-            return document.querySelector(
-              "#custom-sidebar-toggle",
-            ) as HTMLButtonElement;
-          const btn = document.createElement("button");
-          btn.id = "custom-sidebar-toggle";
-          btn.type = "button";
-          btn.title = "显示侧边栏";
-          btn.innerText = "☰";
-          Object.assign(btn.style, {
-            position: "fixed",
-            left: "12px",
-            top: "12px",
-            zIndex: "9999",
-            width: "40px",
-            height: "40px",
-            borderRadius: "6px",
-            border: "none",
-            background: "#fff",
-            cursor: "pointer",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
-          } as any);
-          document.body.appendChild(btn);
-          return btn;
-        };
-
-        const ensureBehavior = () => {
-          const sidebar = document.querySelector(
-            ".VPSidebar",
-          ) as HTMLElement | null;
-          if (!sidebar) return;
-
+        const addInitClass = () => {
           if (window.innerWidth <= SMALL_BREAKPOINT) {
-            // 在小屏上初始隐藏侧边栏，避免闪烁
-            if (!sidebar.dataset.__customInitialHidden) {
-              sidebar.style.visibility = "hidden";
-              sidebar.dataset.__customInitialHidden = "true";
-            }
-
-            // 注入切换按钮（仅在小屏上）
-            toggleBtn = createToggleButton();
-            if (toggleBtn && !toggleBtn.dataset.__listener) {
-              toggleBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                const hidden =
-                  sidebar.dataset.__customHidden === "true" ||
-                  sidebar.style.visibility === "hidden";
-                if (hidden) {
-                  // 展示侧边栏
-                  sidebar.style.visibility = "visible";
-                  sidebar.dataset.__customHidden = "false";
-                  toggleBtn!.title = "隐藏侧边栏";
-                } else {
-                  // 隐藏侧边栏
-                  sidebar.style.visibility = "hidden";
-                  sidebar.dataset.__customHidden = "true";
-                  toggleBtn!.title = "显示侧边栏";
-                }
-              });
-              toggleBtn.dataset.__listener = "true";
-            }
-
-            // 点击侧边栏外部任意位置时自动收起（移动端友好）
-            if (!document.body.dataset.__customOutsideListener) {
-              document.addEventListener(
-                "click",
-                (ev) => {
-                  const target = ev.target as Node | null;
-                  if (!target) return;
-                  const sidebarEl = document.querySelector(
-                    ".VPSidebar",
-                  ) as HTMLElement | null;
-                  if (!sidebarEl) return;
-                  const btnEl = document.querySelector(
-                    "#custom-sidebar-toggle",
-                  ) as HTMLElement | null;
-
-                  // 如果侧边栏当前是打开的，并且点击目标既不在侧边栏也不在按钮上，则收起
-                  const isOpen =
-                    sidebarEl.style.visibility !== "hidden" &&
-                    sidebarEl.dataset.__customHidden !== "true";
-                  if (isOpen) {
-                    if (
-                      !sidebarEl.contains(target) &&
-                      !(btnEl && btnEl.contains(target))
-                    ) {
-                      sidebarEl.style.visibility = "hidden";
-                      sidebarEl.dataset.__customHidden = "true";
-                      if (btnEl)
-                        (btnEl as HTMLButtonElement).title = "显示侧边栏";
-                    }
-                  }
-                },
-                true,
-              );
-              document.body.dataset.__customOutsideListener = "true";
-            }
+            root.classList.add("vp-sidebar-initial-hidden");
           } else {
-            // 宽屏恢复默认行为：移除我们的覆盖（保持原有 VitePress 行为）
-            sidebar.style.visibility = "";
-            delete sidebar.dataset.__customInitialHidden;
-            delete sidebar.dataset.__customHidden;
-
-            const btn = document.querySelector("#custom-sidebar-toggle");
-            if (btn) btn.remove();
+            root.classList.remove("vp-sidebar-initial-hidden");
           }
         };
 
-        // 初始化与响应窗口大小变化
-        const onResize = () => {
+        const cleanup = () => {
+          // 移除根类并解绑所有监听器/观察器
+          root.classList.remove("vp-sidebar-initial-hidden");
+          toggleSelectors.forEach((sel) => {
+            document.querySelectorAll(sel).forEach((el) => {
+              el.removeEventListener("click", onUserToggle);
+            });
+          });
+          window.removeEventListener("resize", onResize);
+          if (domObserver) {
+            domObserver.disconnect();
+            domObserver = null;
+          }
+          if (sidebarObserver) {
+            sidebarObserver.disconnect();
+            sidebarObserver = null;
+          }
+        };
+
+        const onUserToggle = () => {
+          // 用户点击已有切换按钮：认为用户想查看侧边栏，移除初始化隐藏并清理监听
+          cleanup();
+        };
+
+        const addToggleListeners = () => {
+          toggleSelectors.forEach((sel) => {
+            document.querySelectorAll(sel).forEach((el) => {
+              // 绑定一次性监听（用户第一次交互即可）
+              el.addEventListener("click", onUserToggle, { once: true });
+            });
+          });
+        };
+
+        function observeSidebarForVisibility() {
           try {
-            ensureBehavior();
-          } catch (e) {
-            // 忽略单次错误，确保不会阻塞页面
-            // (不暴露错误细节给最终用户)
+            const sidebar = document.querySelector(
+              ".VPSidebar",
+            ) as HTMLElement | null;
+            if (!sidebar) return;
+
+            // 先立即检测一次
+            const isSidebarVisibleNow = () => {
+              // 主题常用方式：data-visible="true" 或者可见性样式被设置
+              const attrVisible = sidebar.getAttribute("data-visible");
+              if (attrVisible === "true") return true;
+              const cs = window.getComputedStyle(sidebar);
+              if (
+                cs &&
+                cs.visibility !== "hidden" &&
+                cs.display !== "none" &&
+                cs.opacity !== "0"
+              ) {
+                return true;
+              }
+              // 另外检查是否类名中没有被我们期望的隐藏类
+              if (
+                !sidebar.classList.contains("vp-init-hidden") &&
+                !sidebar.classList.contains("vp-sidebar-initial-hidden")
+              ) {
+                return true;
+              }
+              return false;
+            };
+
+            if (isSidebarVisibleNow()) {
+              // 如果已经可见（比如主题已经在 DOMReady 之前设置好了），直接清理
+              cleanup();
+              return;
+            }
+
+            // 观察侧边栏属性与类的变化，一旦被主题显示则清理我们添加的初始隐藏
+            sidebarObserver = new MutationObserver((mutations) => {
+              for (const m of mutations) {
+                if (m.type === "attributes") {
+                  if (isSidebarVisibleNow()) {
+                    cleanup();
+                    return;
+                  }
+                } else if (m.type === "childList") {
+                  if (isSidebarVisibleNow()) {
+                    cleanup();
+                    return;
+                  }
+                }
+              }
+            });
+
+            sidebarObserver.observe(sidebar, {
+              attributes: true,
+              attributeFilter: ["class", "style", "data-visible"],
+              childList: false,
+              subtree: false,
+            });
+          } catch (err) {
+            // 忽略观察错误以免影响主流程
           }
-        };
+        }
+
+        function onResize() {
+          try {
+            addInitClass();
+            if (window.innerWidth > SMALL_BREAKPOINT) {
+              // 宽屏下恢复默认行为并清理所有监听
+              cleanup();
+            }
+          } catch (e) {
+            // 忽略错误
+          }
+        }
+
+        // 观察 DOM 变动，以便在主题稍后插入切换按钮或侧边栏时能绑定
+        domObserver = new MutationObserver(() => {
+          addToggleListeners();
+          // 也尝试开始观察侧边栏可见性变化（如果主题已经插入侧边栏）
+          observeSidebarForVisibility();
+        });
+        domObserver.observe(document.body, { childList: true, subtree: true });
 
         window.addEventListener("resize", onResize);
+
         if (document.readyState === "loading") {
           document.addEventListener("DOMContentLoaded", () => {
-            ensureBehavior();
-            initialized = true;
+            addInitClass();
+            addToggleListeners();
+            observeSidebarForVisibility();
           });
         } else {
-          ensureBehavior();
-          initialized = true;
+          addInitClass();
+          addToggleListeners();
+          observeSidebarForVisibility();
         }
       })();
     }

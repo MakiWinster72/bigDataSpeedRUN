@@ -5,7 +5,7 @@
 ## hadoop伪分布式
 为节省时间可预先下载好安装包与sh脚本放与同一目录下。脚本内也提供了下载连接[resources](../resources.md)，若未检测到安装包会询问是否在线下载。
 ![111](https://img.makis-life.cn/images/20251110181116139.png)
-> 从windows向虚拟机传输文件可参考 [sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
+> 从windows向虚拟机传输文件可参考 [sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](otherWaysTransferFileToVM.md)
 为脚本赋予执行权限：
 ```bash
 sudo chmod +x path/to/sh
@@ -29,7 +29,7 @@ sudo chmod ~/hadoopInstall.sh
 ## hadoop完全分布式
 为节省时间可预先下载好安装包与sh脚本放与同一目录下。脚本内也提供了下载连接，若未检测到安装包会询问是否在线下载[resources](../resources.md)。
 ![](https://img.makis-life.cn/images/20251110181116142.png)
-> 从windows向虚拟机传输文件可参考 [sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
+> 从windows向虚拟机传输文件可参考 [sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](otherWaysTransferFileToVM.md)
 
 ### .env文件
 
@@ -83,7 +83,7 @@ sit back, relax, enjoy the show
 
 ![](https://img.makis-life.cn/images/20251110181116147.png)
 
-> 从windows向虚拟机传输文件可参考 [sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](../lab1/otherWaysTransferFileToVM.md)
+> 从windows向虚拟机传输文件可参考 [sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](otherWaysTransferFileToVM.md)
 
 添加执行权限
 

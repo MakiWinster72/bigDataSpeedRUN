@@ -15,51 +15,136 @@
   - hadoop03 (Slave): 数据节点 + 节点管理器  
 
 ---
+## 第一阶段 环境配置
+### 创建 Hadoop 用户
 
-## 第一阶段：所有节点基础配置
-
-### 创建 hadoop 用户 (在所有 3 台服务器执行)
-
-① **创建 hadoop 用户并添加 sudo 权限**
+① 创建 `hadoop` 用户并加入 sudo 组
 
 ```bash
-sudo adduser hadoop
-sudo usermod -aG sudo hadoop
-````
+sudo useradd -m hadoop -s /bin/bash
+sudo passwd hadoop
+sudo adduser hadoop sudo
+```
 
-① **切换到 hadoop 用户**
+② 切换到 hadoop 用户
 
 ```bash
 su hadoop
 ```
 
+### 网络配置
+
+#### 设置主机名 (分别在对应服务器执行)
+
+**在第一台服务器 (Master) 执行：**
+
+```bash
+sudo hostnamectl set-hostname hadoop01
+```
+
+**在第二台服务器 (Slave1) 执行：**
+
+```bash
+sudo hostnamectl set-hostname hadoop02
+```
+
+**在第三台服务器 (Slave2) 执行：**
+
+```bash
+sudo hostnamectl set-hostname hadoop03
+```
+
 ---
 
-### 安装基础软件 (在所有 3 台服务器执行)
+#### 配置主机名映射
 
-**更新系统**
+**在所有 3 台服务器上修改 hosts 文件：**
 
 ```bash
-sudo apt update
-sudo apt upgrade -y
+sudo vim /etc/hosts
 ```
 
-**安装 Java 环境**
+添加以下内容：
 
-```bash
-sudo apt install openjdk-8-jdk -y
+> 使用 ip addr show 获取 ip 地址
+
+```
+ip   hadoop01
+ip   hadoop02
+ip   hadoop03
 ```
 
-**配置 JAVA_HOME 环境变量**
+> 💡 **提示**: 如果云服务器有公网 IP，可以直接使用公网 IP 地址进行映射，若处于同一vps网络建议使用内网 IP 以提高传输速度和流量费用。
+
+---
+
+#### 测试网络连通性
+
+在每个节点上测试：
 
 ```bash
-echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> ~/.bashrc
-source ~/.bashrc
+ping hadoop01 -c 3
+ping hadoop02 -c 3
+ping hadoop03 -c 3
+```
+
+
+> 确保三台主机互 ping 成功
+
+### SSH 无密码登录配置
+
+#### 在 Master 节点 (hadoop01) 操作
+
+① **生成 SSH 密钥**
+
+```bash
+cd ~/.ssh || mkdir ~/.ssh && cd ~/.ssh
+ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
+```
+
+① **配置本机无密码登录**
+
+```bash
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+① **将公钥复制到 Slave 节点**
+
+```bash
+ssh-copy-id hadoop@hadoop02
+ssh-copy-id hadoop@hadoop03
+```
+
+#### 测试 SSH 无密码登录
+
+```bash
+ssh hadoop02
+ssh hadoop03
 ```
 
 ---
 
-### 下载并安装 Hadoop (在 Master 执行即可)
+### 允许root用户登录
+[allowRootLogin](../other/allowRootLogin.md)
+
+### 安装 Java
+
+在Master安装java
+[installJava](../other/installJava.md)
+
+#### 分发java(hadoop02)
+```bash
+ssh root@hadoop02 "sudo mkdir -p /usr/lib/jvm"
+scp -r /usr/lib/jvm/jdk11 root@hadoop02:/usr/lib/jvm/
+
+scp ~/.profile hadoop@hadoop02:~ # 这会自动替换掉存在的文件
+```
+
+
+---
+
+### 下载并安装 Hadoop
 
 ① **下载 Hadoop 3.4.2**
 
@@ -85,13 +170,12 @@ sudo chown -R hadoop:hadoop /usr/local/hadoop
 ① **配置 Hadoop 环境变量**
 
 ```bash
-vim ~/.bashrc
+vim ~/.profile
 ```
 
 在文件末尾添加：
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 export HADOOP_HOME=/usr/local/hadoop
 export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
@@ -100,106 +184,12 @@ export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 ① **使配置生效**
 
 ```bash
-source ~/.bashrc
+source ~/.profile
 ```
 
 ---
 
-## 第二阶段：网络配置
 
-### 设置主机名 (分别在对应服务器执行)
-
-**在第一台服务器 (Master) 执行：**
-
-```bash
-sudo hostnamectl set-hostname hadoop01
-```
-
-**在第二台服务器 (Slave1) 执行：**
-
-```bash
-sudo hostnamectl set-hostname hadoop02
-```
-
-**在第三台服务器 (Slave2) 执行：**
-
-```bash
-sudo hostnamectl set-hostname hadoop03
-```
-
----
-
-### 配置主机名映射
-
-**在所有 3 台服务器上修改 hosts 文件：**
-
-```bash
-sudo vim /etc/hosts
-```
-
-添加以下内容：
-
-> 使用 ip addr show 获取 ip 地址
-
-```
-ip   hadoop01
-ip   hadoop02
-ip   hadoop03
-```
-
-> 💡 **提示**: 如果云服务器只有公网 IP，可以直接使用公网 IP 地址进行映射，但建议使用内网 IP 以减少网络延迟和流量费用。
-> 云服务器需位于同一地域和专用网络内。
-
----
-
-### 测试网络连通性
-
-在每个节点上测试：
-
-```bash
-ping hadoop01 -c 3
-ping hadoop02 -c 3
-ping hadoop03 -c 3
-```
-
-
-> 确保三台主机互 ping 成功
-
----
-
-## 第三阶段：SSH 无密码登录配置
-
-### 在 Master 节点 (hadoop01) 操作
-
-① **生成 SSH 密钥**
-
-```bash
-cd ~/.ssh || mkdir ~/.ssh && cd ~/.ssh
-ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
-```
-
-① **配置本机无密码登录**
-
-```bash
-cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
-```
-
-① **将公钥复制到 Slave 节点**
-
-```bash
-ssh-copy-id hadoop@hadoop02
-ssh-copy-id hadoop@hadoop03
-```
-
-### 测试 SSH 无密码登录
-
-```bash
-ssh hadoop02
-ssh hadoop03
-```
-
----
 
 ## 第四阶段：云服务器安全组配置
 
@@ -229,7 +219,7 @@ vim /usr/local/hadoop/etc/hadoop/hadoop-env.sh
 添加或修改：
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/jdk11
 ```
 
 ---
@@ -262,21 +252,16 @@ sudo tar -zcf ~/hadoop.master.tar.gz ./hadoop
 # 传输到 slave 节点
 scp ~/hadoop.master.tar.gz hadoop02:/home/hadoop/
 scp ~/hadoop.master.tar.gz hadoop03:/home/hadoop/
-```
 
-在 hadoop02 和 hadoop03 上执行：
-
-```bash
-cd ~
-sudo rm -rf /usr/local/hadoop
-sudo tar -zxf ~/hadoop.master.tar.gz -C /usr/local/
-sudo chown -R hadoop:hadoop /usr/local/hadoop
+# 解压并安装 (hadoop02)
+ssh root@hadoop02 "sudo rm -rf /usr/local/hadoop"
+ssh root@hadoop02 "sudo tar -zxf ~/hadoop.master.tar.gz -C /usr/local"
+ssh root@hadoop02 "sudo chown -R hadoop:hadoop /usr/local/hadoop"
 ```
 
 ## 配置文件
 
 - **core-site.xml**
-    
 
 ```xml
 <configuration>
@@ -293,7 +278,6 @@ sudo chown -R hadoop:hadoop /usr/local/hadoop
 ```
 
 - **yarn-site.xml**
-    
 
 ```xml
 <configuration>
@@ -317,7 +301,6 @@ sudo chown -R hadoop:hadoop /usr/local/hadoop
 ```
 
 - **hdfs-site.xml**
-    
 
 ```xml
 <configuration>
@@ -327,7 +310,7 @@ sudo chown -R hadoop:hadoop /usr/local/hadoop
     </property>
     <property>
         <name>dfs.replication</name>
-        <value>2</value>
+        <value>2</value>  <!--这里对应数据副本的数量-->
     </property>
     <property>
         <name>dfs.namenode.name.dir</name>
@@ -345,7 +328,6 @@ sudo chown -R hadoop:hadoop /usr/local/hadoop
 ```
 
 - **mapred-site.xml**
-    
 
 ```xml
 <configuration>

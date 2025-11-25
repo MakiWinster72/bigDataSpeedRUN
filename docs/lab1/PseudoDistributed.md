@@ -45,7 +45,7 @@
 ### 格式化 NameNode
 
 ```bash
-./bin/hdfs namenode -format
+hdfs namenode -format
 ```
 
 ① 该命令用于初始化 HDFS 的元数据存储目录（即 `dfs/name`）。
@@ -56,14 +56,13 @@
 ### 启动 HDFS
 
 ```bash
-./sbin/start-dfs.sh
+start-dfs.sh
 ```
 
-> 若报错找不到 `JAVA_HOME`，是因为 Hadoop 启动脚本不读取 `~/.bashrc`。
-> 需在 `$HADOOP_HOME/etc/hadoop/hadoop-env.sh` 中添加：
+> 若报错找不到 `JAVA_HOME`，需在 `$HADOOP_HOME/etc/hadoop/hadoop-env.sh` 中添加：
 >
 > ```bash
-> export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+> export JAVA_HOME=/path/to/ur/jdk
 > ```
 
 使用 `jps` 可查看 Hadoop 启动的 Java 进程，如：
@@ -98,19 +97,19 @@ http://<服务器IP>:9870
 ```bash
 # 创建 Hadoop 用户目录
 cd $HADOOP_HOME
-./bin/hdfs dfs -mkdir -p /user/hadoop
+hdfs dfs -mkdir -p /user/hadoop
 
 # 新建 input 目录
-./bin/hdfs dfs -mkdir /user/hadoop/input
+hdfs dfs -mkdir /user/hadoop/input
 
 # 上传配置文件到 HDFS
-./bin/hdfs dfs -put ./etc/hadoop/*.xml /user/hadoop/input
+hdfs dfs -put ./etc/hadoop/*.xml /user/hadoop/input
 
 # 运行示例程序 Grep
 hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar grep /user/hadoop/input output 'dfs[a-z.]+'
 
 # 查看结果
-./bin/hdfs dfs -cat output/*
+hdfs dfs -cat output/*
 ```
 
 ![](https://img.makis-life.cn/images/20251110181522750.png)
@@ -120,7 +119,7 @@ hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.
 ### 停止 HDFS
 
 ```bash
-./sbin/stop-dfs.sh
+stop-dfs.sh
 ```
 
 ![](https://img.makis-life.cn/images/20251110181522751.png)
