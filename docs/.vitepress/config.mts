@@ -43,7 +43,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '资源', link: '/resources' }
     ],
-    
+
     sidebar: [
       {
         text: '快速开始',
@@ -78,7 +78,7 @@ export default defineConfig({
           { text: 'HBase 安装', link: '/lab3/hbaseInstall' },
           { text: 'HBase Java', link: '/lab3/java' },
           { text: 'HBase Python', link: '/lab3/python' },
-          { text: 'HBase Problem', link: '/lab3/closingHBase'}
+          { text: 'HBase Problem', link: '/lab3/closingHBase' }
         ]
       },
       {
@@ -104,7 +104,7 @@ export default defineConfig({
         ]
       }
     ],
-    
+
     socialLinks: [
       { icon: 'github', link: 'https://github.com/MakiWinster72/bigDataSpeedRUN' }
     ]
