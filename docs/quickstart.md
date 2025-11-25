@@ -4,13 +4,13 @@
 
 下为本项目使用的系统/软件/组件版本：
 
-| 名称        | 版本号                       |
-| --------- | ------------------------- |
-| Ubuntu    | 24.04.03 LTS              |
-| Hadoop    | 3.4.2                     |
-| HBase     | 2.6.3                     |
-| ZooKeeper | 3.8.5                     |
-| Java      | OpenLogic-OpenJDK 11.0.29 |
+| 名称      | 版本号       |
+| --------- | ------------ |
+| Ubuntu    | 24.04.03 LTS |
+| Hadoop    | 3.4.2        |
+| HBase     | 2.6.3        |
+| ZooKeeper | 3.8.5        |
+| Java      | jdk11        |
 
 ## 实验流程概览
 
@@ -35,42 +35,16 @@
 ### 4. 数据库实验
 
 - **云数据库**：RDS for MySQL 的使用
-- **SQL 对比**：传统 SQL 与 NoSQL 的差异
+- **SQL 对比**：传统 SQL 与 NoSQL 的使用对比
 
-### 5. MapReduce 编程
+### 5. MapReduce
 
 - **编程模型**：Map 和 Reduce 函数编写
 - **案例实践**：词频统计、数据分析等
 
-## 快速安装脚本
+## 资源
 
 提供了自动化安装脚本，可以快速部署环境：
-
-### Hadoop 伪分布式
-
-```bash
-wget https://res.makis-life.cn/shared/hadoopInstall.sh
-chmod +x hadoopInstall.sh
-./hadoopInstall.sh
-```
-
-### Hadoop 完全分布式
-
-```bash
-wget https://res.makis-life.cn/shared/hadoopCluster.sh
-chmod +x hadoopCluster.sh
-./hadoopCluster.sh
-```
-
-### HBase 安装（需要先安装好HDFS）
-
-```bash
-wget https://res.makis-life.cn/shared/hbaseInstall.sh
-chmod +x hbaseInstall.sh
-./hbaseInstall.sh
-```
-
-## 下载链接
 
 前往[资源页面](./resources)获取所有组件的下载链接，包括：
 
