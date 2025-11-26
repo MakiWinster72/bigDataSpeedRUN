@@ -9,11 +9,12 @@
 
 ### ① 环境准备
 
-`~/.bashrc`增加
+`~/.profile`增加
 
 ```bash
-export ZOOKEEPER_HOME=/home/hadoop/zookeeper
-export HBASE_HOME=/home/hadoop/hbase
+export ZOOKEEPER_HOME=/usr/local/zookeeper
+export PATH=$PATH:$ZOOKEEPER_HOME/bin
+export HBASE_HOME=/usr/local/hbase
 export PATH=$PATH:$HBASE_HOME/bin
 ```
 
@@ -24,8 +25,7 @@ export PATH=$PATH:$HBASE_HOME/bin
 1. 解压 ZooKeeper：
 
    ```bash
-   tar -xzf apache-zookeeper-3.8.5-bin.tar.gz -C /home/hadoop/
-   mv /home/hadoop/apache-zookeeper-3.8.5-bin /home/hadoop/zookeeper
+   sudo tar -xzf apache-zookeeper-3.8.5-bin.tar.gz -C /usr/local/zookeeper
    ```
 
 > [!note]
@@ -37,12 +37,13 @@ export PATH=$PATH:$HBASE_HOME/bin
    cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg
    ```
 
+
    修改配置：
    - `dataDir=/home/hadoop/zookeeper/data`
    - `clientPort=2181`
 
    ```bash
-   mkdir -p /home/hadoop/zookeeper/data
+   sudo mkdir -p /usr/local/zookeeper/data
    ```
 
 3. 启动 ZooKeeper：
@@ -59,8 +60,7 @@ export PATH=$PATH:$HBASE_HOME/bin
 1. 解压 HBase：
 
    ```bash
-   tar -xzf hbase-2.6.3-bin.tar.gz -C /home/hadoop/
-   mv /home/hadoop/hbase-2.6.3 /home/hadoop/hbase
+   tar -xzf hbase-2.6.3-bin.tar.gz -C /usr/local/hbase
    ```
 
 2. 配置 HBase：
@@ -118,7 +118,7 @@ vim $HBASE_HOME/conf/hbase-env.sh
 修改为你的 Java 路径，例如：
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_202
+export JAVA_HOME=/usr/lib/jvm/jdk11
 ```
 
 可以使用以下命令查看路径：
@@ -138,6 +138,8 @@ export HBASE_DISABLE_HADOOP_CLASSPATH_LOOKUP="true"
 export HBASE_MANAGES_ZK=false
 export HBASE_CLASSPATH=/usr/local/hadoop/etc/hadoop
 ```
+> 或直接添加到文件开头
+
 
 4. 保存并退出
    在 `vim` 中输入
@@ -150,10 +152,10 @@ export HBASE_CLASSPATH=/usr/local/hadoop/etc/hadoop
 
 1. 初始化 HBase 目录：
 
-   ```bash
+```bash
    hdfs dfs -mkdir -p /hbase
    hdfs dfs -chown hadoop:hadoop /hbase
-   ```
+```
 
 2. 启动 HBase：
 

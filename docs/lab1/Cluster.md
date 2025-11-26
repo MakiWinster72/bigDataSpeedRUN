@@ -15,7 +15,9 @@
   - hadoop03 (Slave): 数据节点 + 节点管理器  
 
 ---
-## 第一阶段 环境配置
+
+
+# 第一阶段 环境配置
 ### 创建 Hadoop 用户
 
 ① 创建 `hadoop` 用户并加入 sudo 组
@@ -91,7 +93,7 @@ ping hadoop03 -c 3
 
 > 确保三台主机互 ping 成功
 
-### SSH 无密码登录配置
+## 第二阶段：SSH 无密码登录配置
 
 #### 在 Master 节点 (hadoop01) 操作
 
@@ -128,9 +130,9 @@ ssh hadoop03
 ### 允许root用户登录
 [allowRootLogin](../other/allowRootLogin.md)
 
-### 安装 Java
+## 第三阶段：安装 Java 和 hadoop
 
-在Master安装java
+### 在Master安装java
 [installJava](../other/installJava.md)
 
 #### 分发java(hadoop02)
@@ -140,7 +142,6 @@ scp -r /usr/lib/jvm/jdk11 root@hadoop02:/usr/lib/jvm/
 
 scp ~/.profile hadoop@hadoop02:~ # 这会自动替换掉存在的文件
 ```
-
 
 ---
 

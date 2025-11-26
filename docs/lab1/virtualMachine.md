@@ -54,9 +54,9 @@ iso文件请前往resources页面下载: [resources](../resources.md)
 
 4. 设置名字和主机名、密码等
    ![](https://img.makis-life.cn/images/20251110181431337.png)
-> 其实这一步就可以直接叫hadoop了，后续实验基本用不上默认用户。
-> 密码建议非常弱小的密码，因为后续我们将会一遍又一遍地频繁输入，你也不想每次都输入大小写字母数字+特殊符号的密码吧...真机看自己
-> 可选取消勾选`Require my password to log in`，方便。
+   > 其实这一步就可以直接叫hadoop了，后续实验基本用不上默认用户。
+   > 密码建议非常弱小的密码，因为后续我们将会一遍又一遍地频繁输入，你也不想每次都输入大小写字母数字+特殊符号的密码吧...真机看自己
+   > 可选取消勾选`Require my password to log in`，方便。
 
 下一步，选择时区后点击安装即可。
 
@@ -82,22 +82,22 @@ sudo apt install -y wget curl vim zip unzip tar openssh-server htop lsof git net
    ![](https://img.makis-life.cn/images/20251110181431339.png)
 5. 下一步是网络配置，这一步确保之前选择了`桥接`模式，会发现已经自动帮我们配置好了新的IP。
    ![](https://img.makis-life.cn/images/20251110181431340.png)
-> 也可手动分配ip,例如 namenode 是 192.168.1.200/24, dn1 是 201, dn2 是 202
+   > 也可手动分配ip,例如 namenode 是 192.168.1.200/24, dn1 是 201, dn2 是 202
 6. 一直下一步，会到选择镜像(mirror)配置，会自动选择镜像站，正常测试到清华源即可
    ![](https://img.makis-life.cn/images/20251110181431341.png)
 7. 存储配置也是默认即可
    ![](https://img.makis-life.cn/images/20251110181431342.png)
-> 真机这一步必须谨慎配置，尤其是和Windows共存一块硬盘的情况。
+   > 真机这一步必须谨慎配置，尤其是和Windows共存一块硬盘的情况。
 
 一直下一步，在最后选择`Continue`继续即可。8. 配置用户名、主机名以及密码
 ![](https://img.makis-life.cn/images/20251110181431343.png)
 
 > 其实这一步就可以直接叫hadoop了，后续实验基本用不上默认用户。
 > 密码建议非常弱小的密码，因为后续我们将会<u>一遍又一遍地频繁输入</u>，你也不想每次都输入*大小写字母数字+特殊符号*的密码吧...真机看自己
-> 
 
 9. 一直下一步，选择安装openssh-server ![](https://img.makis-life.cn/images/20251110181431344.png)
-> 忘记勾选也没事，后续sudo apt install openssh-server就可以了
+
+   > 忘记勾选也没事，后续sudo apt install openssh-server就可以了
 
 10. 这一步是问你是否要预装一些服务器应用，我们用不上，后续需要使用也可以手动安装，这一步选择`Done`就开始安装系统了
     ![](https://img.makis-life.cn/images/20251110181431345.png)
@@ -131,7 +131,7 @@ sudo apt update
 ```
 
 ```bash
-sudo apt install -y wget curl vim nano zip unzip tar openssh-server htop lsof git net-tool sshpass
+sudo apt install -y wget curl vim nano zip unzip tar openssh-server htop lsof git build-essential sshpass
 ```
 
 ### (可选)Server配置无密码登录
@@ -155,4 +155,3 @@ sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl restart getty@tty1.service
 ```
-

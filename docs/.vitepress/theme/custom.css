@@ -1,142 +1,180 @@
 @font-face {
-    font-family: "HurmitNerdMono";
-    src: url("../public/assets/HurmitNerdFontMono-Bold.otf") format("opentype");
-    /* src: url('../public/assets/HurmitNerdFontMono-Regular.otf') format('opentype'); */
-    font-weight: bold;
-    font-style: normal;
+  font-family: "HurmitR";
+  /* Prefer locally installed font if available, then fall back to packaged woff2 */
+  src:
+    local("Hurmit Nerd Font Mono Regular"),
+    local("HurmitNerdFontMono-Regular"),
+    url("https://res.makis-life.cn/fonts/HurmitRegular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "HurmitB";
+  src:
+    local("Hurmit Nerd Font Mono Bold"),
+    local("HurmitNerdFontMono-Bold"),
+    url("https://res.makis-life.cn/fonts/HurmitBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Small, hidden pseudo-element that uses the custom font so the browser
+   begins loading it as soon as this stylesheet is parsed. This is a CSS-only
+   approach to "preload" fonts when you cannot add link rel=preload in the head.
+   It is non-intrusive and visually invisible. */
+:root::before {
+  content: "";
+  /* Use the regular family to trigger the main font file early */
+  font-family: "HurmitR", sans-serif;
+  font-size: 0;
+  width: 0;
+  height: 0;
+  line-height: 0;
+  overflow: hidden;
+  position: absolute;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 :root {
-    /* 设置默认字体 */
-    --vp-font-family-base: "HurmitNerdMono", monospace;
-    --vp-font-family-mono: "HurmitNerdMono", monospace;
+  /* 设置默认字体，使用 Hurmit 字体并提供系统回退 */
+  --vp-font-family-base:
+    "HurmitR", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --vp-font-family-mono:
+    "HurmitR", ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
+    "Courier New", monospace;
 }
 
 /* 自定义容器样式 */
 .custom-container {
-    border: 1px solid transparent;
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin: 16px 0;
-    position: relative;
-    transition: all 0.3s ease;
-    animation: fadeInUp 0.6s ease-out;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  position: relative;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .custom-container:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .custom-container.tip {
-    border-color: #10b981;
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
 }
 
 .custom-container.warning {
-    border-color: #f59e0b;
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
 }
 
 .custom-container.danger {
-    border-color: #ef4444;
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-color: #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
 }
 
 .custom-container.info {
-    border-color: #3b82f6;
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
 }
 
 .custom-container.note {
-    border-color: #8b5cf6;
-    background: linear-gradient(135deg, #faf5ff 0%, #e9d5ff 100%);
+  border-color: #8b5cf6;
+  background: linear-gradient(135deg, #faf5ff 0%, #e9d5ff 100%);
 }
 
 .custom-container.todo {
-    border-color: #f97316;
-    background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);
+  border-color: #f97316;
+  background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);
 }
 
 .custom-container-title {
-    font-weight: 600;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .custom-container.tip .custom-container-title {
-    color: #059669;
+  color: #059669;
 }
 
 .custom-container.warning .custom-container-title {
-    color: #d97706;
+  color: #d97706;
 }
 
 .custom-container.danger .custom-container-title {
-    color: #dc2626;
+  color: #dc2626;
 }
 
 .custom-container.info .custom-container-title {
-    color: #2563eb;
+  color: #2563eb;
 }
 
 .custom-container.note .custom-container-title {
-    color: #7c3aed;
+  color: #7c3aed;
 }
 
 .custom-container.todo .custom-container-title {
-    color: #ea580c;
+  color: #ea580c;
 }
 
 /* 动画效果 */
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes pulse {
-    0%,
-    100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 /* 页面内容动画 */
 .VPDoc {
-    animation: fadeInUp 0.8s ease-out;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 /* 侧边栏动画 */
 /* 在较大屏幕上保留侧边栏入场动画（避免在桌面端丢失效果） */
 @media (min-width: 1025px) {
-    .VPSidebar {
-        animation: slideInLeft 0.6s ease-out;
-    }
+  .VPSidebar {
+    animation: slideInLeft 0.6s ease-out;
+  }
 }
 
 /* 在小屏上：统一使用根级类 .vp-sidebar-initial-hidden 来初始隐藏侧边栏（避免注入额外按钮或使用不同的类名）*/
@@ -145,414 +183,371 @@
    - 当主题的已有切换按钮被用户触发时，客户端脚本应移除 .vp-sidebar-initial-hidden，交还给主题自身的控制逻辑。
 */
 @media (max-width: 1024px) {
-    /* 禁用自动入场动画（避免闪烁） */
-    .VPSidebar {
-        animation: none !important;
-    }
+  /* 禁用自动入场动画（避免闪烁） */
+  .VPSidebar {
+    animation: none !important;
+  }
 
-    /* 当根元素包含 .vp-sidebar-initial-hidden 时隐藏侧边栏（仅通过样式隐藏，不移除 DOM） */
-    .vp-sidebar-initial-hidden .VPSidebar {
-        visibility: hidden !important;
-        pointer-events: none !important;
-        opacity: 0 !important;
-        transform: translateX(-6px) !important;
-        transition: none !important;
-    }
+  /* 当根元素包含 .vp-sidebar-initial-hidden 时隐藏侧边栏（仅通过样式隐藏，不移除 DOM） */
+  .vp-sidebar-initial-hidden .VPSidebar {
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    transform: translateX(-6px) !important;
+    transition: none !important;
+  }
 
-    /* 兼顾主题在短时间内可能把 data-visible 设置为 true 的情况（允许主题显式显示侧边栏） */
-    .vp-sidebar-initial-hidden .VPSidebar[data-visible="true"] {
-        visibility: visible !important;
-        pointer-events: auto !important;
-        opacity: 1 !important;
-        transform: none !important;
-        transition: initial !important;
-    }
+  /* 兼顾主题在短时间内可能把 data-visible 设置为 true 的情况（允许主题显式显示侧边栏） */
+  .vp-sidebar-initial-hidden .VPSidebar[data-visible="true"] {
+    visibility: visible !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: initial !important;
+  }
 
-    /* 当根元素没有 .vp-sidebar-initial-hidden 时，恢复主题默认可见性（不需额外选择器） */
+  /* 当根元素没有 .vp-sidebar-initial-hidden 时，恢复主题默认可见性（不需额外选择器） */
 }
 
 /* 导航栏动画 */
 .VPNav {
-    animation: fadeInUp 0.5s ease-out;
+  animation: fadeInUp 0.5s ease-out;
 }
 
 /* 按钮动画 */
 .VPButton {
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .VPButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .VPButton:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 .VPButton::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-    );
-    transition: left 0.5s;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
 }
 
 .VPButton:hover::before {
-    left: 100%;
+  left: 100%;
 }
 
 /* 链接动画 */
 a {
-    transition: all 0.3s ease;
-    position: relative;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 a:hover {
-    color: var(--vp-c-brand);
+  color: var(--vp-c-brand);
 }
 
 a::after {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -2px;
-    left: 0;
-    background-color: var(--vp-c-brand);
-    transition: width 0.3s ease;
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--vp-c-brand);
+  transition: width 0.3s ease;
 }
 
 a:hover::after {
-    width: 100%;
+  width: 100%;
 }
 
 /* 代码块动画 */
 .vp-doc div[class*="language-"] {
-    transition: all 0.3s ease;
-    animation: fadeInUp 0.6s ease-out;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .vp-doc div[class*="language-"]:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* 表格动画 */
 .vp-doc table {
-    animation: fadeInUp 0.7s ease-out;
+  animation: fadeInUp 0.7s ease-out;
 }
 
 .vp-doc table tr {
-    transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .vp-doc table tr:hover {
-    background-color: var(--vp-c-bg-soft);
-    transform: scale(1.01);
+  background-color: var(--vp-c-bg-soft);
+  transform: scale(1.01);
 }
 
 /* 图片动画 */
 .vp-doc img {
-    transition: all 0.4s ease;
-    border-radius: 8px;
+  transition: all 0.4s ease;
+  border-radius: 8px;
 }
 
 .vp-doc img:hover {
-    transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 /* 列表动画 */
 .vp-doc ul,
 .vp-doc ol {
-    animation: fadeInUp 0.6s ease-out;
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .vp-doc li {
-    transition: all 0.3s ease;
-    padding: 4px 0;
+  transition: all 0.3s ease;
+  padding: 4px 0;
 }
 
 /* 滚动条美化 */
 ::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--vp-c-bg-soft);
-    border-radius: 4px;
+  background: var(--vp-c-bg-soft);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--vp-c-brand);
-    border-radius: 4px;
-    transition: all 0.3s ease;
+  background: var(--vp-c-brand);
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--vp-c-brand-dark);
+  background: var(--vp-c-brand-dark);
 }
 
 /* 加载动画 */
 .VPLoading {
-    animation: pulse 1.5s ease-in-out infinite;
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 /* 页面切换动画 */
 .page-enter-active,
 .page-leave-active {
-    transition: all 0.4s ease;
+  transition: all 0.4s ease;
 }
 
 .page-enter-from {
-    opacity: 0;
-    transform: translateY(20px);
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .page-leave-to {
-    opacity: 0;
-    transform: translateY(-20px);
+  opacity: 0;
+  transform: translateY(-20px);
 }
 
 /* 移动端优化 - 禁用触摸触发动画 */
 @media (hover: none) and (pointer: coarse) {
-    /* 禁用自定义容器的悬停效果 */
-    .custom-container:hover {
-        transform: none;
-        box-shadow: none;
-    }
+  /* 禁用自定义容器的悬停效果 */
+  .custom-container:hover {
+    transform: none;
+    box-shadow: none;
+  }
 
-    /* 禁用按钮悬停效果 */
-    .VPButton:hover {
-        transform: none;
-        box-shadow: none;
-    }
+  /* 禁用按钮悬停效果 */
+  .VPButton:hover {
+    transform: none;
+    box-shadow: none;
+  }
 
-    .VPButton:hover::before {
-        left: -100%;
-    }
+  .VPButton:hover::before {
+    left: -100%;
+  }
 
-    /* 禁用链接悬停效果 */
-    a:hover {
-        color: inherit;
-    }
+  /* 禁用链接悬停效果 */
+  a:hover {
+    color: inherit;
+  }
 
-    a:hover::after {
-        width: 0;
-    }
+  a:hover::after {
+    width: 0;
+  }
 
-    /* 禁用代码块悬停效果 */
-    .vp-doc div[class*="language-"]:hover {
-        transform: none;
-        box-shadow: none;
-    }
+  /* 禁用代码块悬停效果 */
+  .vp-doc div[class*="language-"]:hover {
+    transform: none;
+    box-shadow: none;
+  }
 
-    /* 禁用表格行悬停效果 */
-    .vp-doc table tr:hover {
-        background-color: transparent;
-        transform: none;
-    }
+  /* 禁用表格行悬停效果 */
+  .vp-doc table tr:hover {
+    background-color: transparent;
+    transform: none;
+  }
 
-    /* 禁用图片悬停效果 */
-    .vp-doc img:hover {
-        transform: none;
-        box-shadow: none;
-    }
+  /* 禁用图片悬停效果 */
+  .vp-doc img:hover {
+    transform: none;
+    box-shadow: none;
+  }
 
-    /* 禁用列表项悬停效果 */
-    .vp-doc li:hover {
-        background-color: transparent;
-        padding-left: 0;
-        border-radius: 0;
-    }
+  /* 禁用列表项悬停效果 */
+  .vp-doc li:hover {
+    background-color: transparent;
+    padding-left: 0;
+    border-radius: 0;
+  }
 
-    /* 禁用滚动条悬停效果 */
-    ::-webkit-scrollbar-thumb:hover {
-        background: var(--vp-c-brand);
-    }
+  /* 禁用滚动条悬停效果 */
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--vp-c-brand);
+  }
 }
 
 /* 触摸设备优化 - 减少过渡动画 */
 @media (hover: none) and (pointer: coarse) {
-    /* 减少或移除触摸设备的过渡动画 */
-    .custom-container,
-    .VPButton,
-    a,
-    .vp-doc div[class*="language-"],
-    .vp-doc table tr,
-    .vp-doc img,
-    .vp-doc li {
-        transition: none !important;
-    }
+  /* 减少或移除触摸设备的过渡动画 */
+  .custom-container,
+  .VPButton,
+  a,
+  .vp-doc div[class*="language-"],
+  .vp-doc table tr,
+  .vp-doc img,
+  .vp-doc li {
+    transition: none !important;
+  }
 
-    /* 移除触摸设备的点击反馈动画 */
-    .VPButton:active {
-        transform: none;
-    }
+  /* 移除触摸设备的点击反馈动画 */
+  .VPButton:active {
+    transform: none;
+  }
 }
 
 /* 图片查看器样式 */
 .vp-doc img {
-    cursor: zoom-in;
-    transition: all 0.3s ease;
-    border-radius: 8px;
-    max-width: 100%;
-    height: auto;
+  cursor: zoom-in;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
 }
 
 .vp-doc img:hover {
-    transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 /* Medium Zoom 样式覆盖 */
 .medium-zoom-overlay {
-    background: rgba(0, 0, 0, 0.9) !important;
-    z-index: 1000;
+  background: rgba(0, 0, 0, 0.9) !important;
+  z-index: 1000;
 }
 
 .medium-zoom-image {
-    border-radius: 8px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-    z-index: 1001;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
 }
 
 .medium-zoom-image--opened {
-    cursor: zoom-out;
+  cursor: zoom-out;
 }
 
 /* 图片查看器控件样式 */
 .medium-zoom-image--opened {
-    position: relative;
+  position: relative;
 }
 
 .medium-zoom-image--opened::after {
-    content: "点击图片或按 ESC 键关闭";
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 14px;
-    z-index: 1002;
-    pointer-events: none;
-    animation: fadeInUp 0.3s ease-out;
+  content: "点击图片或按 ESC 键关闭";
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  z-index: 1002;
+  pointer-events: none;
+  animation: fadeInUp 0.3s ease-out;
 }
 
 /* 移动端图片查看器优化 */
 @media (max-width: 768px) {
-    .medium-zoom-image {
-        max-width: 95vw;
-        max-height: 80vh;
-    }
+  .medium-zoom-image {
+    max-width: 95vw;
+    max-height: 80vh;
+  }
 
-    .medium-zoom-image--opened::after {
-        font-size: 12px;
-        bottom: 10px;
-        padding: 6px 12px;
-    }
+  .medium-zoom-image--opened::after {
+    font-size: 12px;
+    bottom: 10px;
+    padding: 6px 12px;
+  }
 }
 
 /* 禁用移动端图片悬停效果 */
 @media (hover: none) and (pointer: coarse) {
-    .vp-doc img:hover {
-        transform: none;
-        box-shadow: none;
-    }
+  .vp-doc img:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 /* === 列表基础行距与间距 === */
 .vp-doc ul,
 .vp-doc ol {
-    line-height: 1.9; /* 全局列表行距 */
-    margin-top: 0.8em; /* 列表块上间距 */
-    margin-bottom: 0.8em; /* 列表块下间距 */
-    padding-left: 1.3em; /* 左缩进 */
+  line-height: 1; /* 全局列表行距 */
 }
 
 .vp-doc li {
-    line-height: 1.9; /* 单行行距 */
-    margin: 0.2em 0; /* 每个条目上下间距 */
-    padding: 0.1em 0; /* 内部留白 */
-}
-
-/* 列表项之间的间距 */
-.vp-doc li + li {
-    margin-top: 0.8em; /* 列表项之间的间距 */
-    margin-bottom: 0.4em;
-}
-
-/* === 嵌套列表 === */
-.vp-doc ul ul,
-.vp-doc ul ol,
-.vp-doc ol ul,
-.vp-doc ol ol {
-    margin-top: 0.5em; /* 增加子列表顶部间距 */
-    margin-bottom: 0.5em; /* 增加子列表底部间距 */
-    padding-left: 1.2em; /* 次级缩进 */
-    line-height: 1.8; /* 略微收紧行距 */
-}
-
-.vp-doc ul ul li,
-.vp-doc ul ol li,
-.vp-doc ol ul li,
-.vp-doc ol ol li {
-    margin: 0.1em 0; /* 子项更紧凑 */
-    padding: 0.05em 0;
-}
-
-/* === 列表之间的间距 === */
-.vp-doc ul + ul,
-.vp-doc ul + ol,
-.vp-doc ol + ul,
-.vp-doc ol + ol {
-    margin-top: 0.8em; /* 列表之间的间距 */
+  line-height: 1.9;
+  margin: 0.2em 0;
+  padding: 0.1em 0;
 }
 
 /* === 任务列表（task list） === */
 .vp-doc .contains-task-list {
-    line-height: 1.6;
-    margin-top: 0.6em;
-    margin-bottom: 0.6em;
+  margin: 0.2em 0.2em;
 }
 
 .vp-doc .contains-task-list li {
-    line-height: 1.5;
-    margin: 0.1em 0;
-    padding: 0.1em 0;
+  margin-top: 0.2em;
 }
 
 .vp-doc .contains-task-list .contains-task-list {
-    margin-top: 0.3em;
-    margin-bottom: 0.3em;
-    line-height: 1.4;
+  line-height: 1;
 }
 
 .vp-doc .contains-task-list .contains-task-list li {
-    line-height: 1.3;
-    margin: 0.05em 0;
-    padding: 0.05em 0;
+  line-height: 1;
+  margin-top: 0em;
 }
 
 /* === 额外优化：列表和段落之间的呼吸感 === */
 .vp-doc p + ul,
 .vp-doc p + ol {
-    margin-top: 0.6em; /* 段落后接列表时稍留空 */
+  margin-top: 0.2em; /* 段落后接列表时稍留空 */
 }
 
 .vp-doc ul + p,
 .vp-doc ol + p {
-    margin-top: 0.6em; /* 列表后接段落同理 */
+  margin-top: 0.2em; /* 列表后接段落同理 */
 }
