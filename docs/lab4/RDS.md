@@ -42,7 +42,7 @@
 
 > 实验要求创建 mysql，但 DATABASE mysql 是预装就有的，用于存放用户数据，所以我们换一个名字。
 
-![](../assets/2025-12-03-7.png)
+![](https://img.makis-life.cn/images/20251205082703131.png)
 
 > 默认环境中已有 mysql database
 
@@ -264,7 +264,7 @@ mariadb-dump -u 用户名 -p密码 --databases mydb --routines --triggers --sing
 
 
 
-![](../assets/2025-12-03-9.png)
+![](https://img.makis-life.cn/images/20251205082703132.png)
 
 - 导入到 RDS
 

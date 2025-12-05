@@ -47,13 +47,13 @@ sudo mysql_secure_installation
 ![image.png](https://img.makis-life.cn/images/20251203071012946.png)
 
 刷新 privileges
-![](../assets/2025-12-03-1.png) 2. 进入 mariadb
+![](https://img.makis-life.cn/images/20251205082636201.png) 2. 进入 mariadb
 
 ```bash
 sudo mariadb
 ```
 
-![](../assets/2025-12-03-2.png) 3. **创建用户并允许远程访问：**  
+![](https://img.makis-life.cn/images/20251205082636202.png) 3. **创建用户并允许远程访问：**  
  假设密码是 `your_password`，远程 IP 可以用 `%` 表示任意 IP：
 
 ```mysql
@@ -61,7 +61,7 @@ CREATE USER 'user'@'%' IDENTIFIED BY 'your_password';
 ```
 
 > %指任意 ip 地址，或填写本机所在 ip 地址
-> ![](../assets/2025-12-03-3.png)
+> ![](https://img.makis-life.cn/images/20251205082636203.png)
 
 4. 授予权限（例如授予所有数据库的所有权限）：
 
@@ -69,12 +69,12 @@ CREATE USER 'user'@'%' IDENTIFIED BY 'your_password';
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' WITH GRANT OPTION;
 ```
 
-![](../assets/2025-12-03-4.png)
+![](https://img.makis-life.cn/images/20251205082636204.png)
 
 > 若只赋予某个 database，将" \*.\* "改为 " DATABASE.TABLE " ，对应你要赋予的数据库和表即可。
 
 5. 刷新 PRIVILEGES
-   ![](../assets/2025-12-03-5.png)
+   ![](https://img.makis-life.cn/images/20251205082636205.png)
 6. 退出 mysql
 
 ```mysql
@@ -90,7 +90,7 @@ exit
 bind-address = 0.0.0.0
 ```
 
-![](../assets/2025-12-03-6.png)
+![](https://img.makis-life.cn/images/20251205082636206.png)
 
 > 或使用`sudo mariadb --verbose --help | grep -A 1 "Default options"`查看正在使用哪个配置文件
 

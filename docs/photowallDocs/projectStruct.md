@@ -2,7 +2,7 @@
 
 ## 架构概述
 
-![](../assets/2025-12-03-11.png)
+![](https://img.makis-life.cn/images/20251205082656471.png)
 
 ## 目录结构
 
@@ -82,7 +82,7 @@ frontend/
 
 ## 数据流架构
 
-![](../assets/2025-12-03-12.png)
+![](https://img.makis-life.cn/images/20251205082656472.png)
 
 ## 配置文件
 

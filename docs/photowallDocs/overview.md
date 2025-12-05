@@ -5,7 +5,7 @@ photowall使用 Rust 和 React 构建照片墙应用。
 
 应用程序采用清晰的客户端-服务器架构，各层职责分明：
 
-![](../assets/2025-12-03-10.png)
+![](https://img.makis-life.cn/images/20251205082649473.png)
 ## 核心技术
 
 | 层级       | 技术               | 用途                              |
