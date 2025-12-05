@@ -15,32 +15,7 @@ export default defineConfig({
   title: "Big Data SpeedRUN",
   description: "A site that helps bigdata lab course.",
   base: "/bigdata/",
-
-  // ✅ 新增：构建时自动预加载远程 Hurmit 字体（不再引用本地文件）
-  transformHead() {
-    return [
-      [
-        "link",
-        {
-          rel: "preload",
-          href: "https://res.makis-life.cn/fonts/HurmitRegular.otf",
-          as: "font",
-          type: "font/otf",
-          crossorigin: "",
-        },
-      ],
-      [
-        "link",
-        {
-          rel: "preload",
-          href: "https://res.makis-life.cn/fonts/HurmitBold.otf",
-          as: "font",
-          type: "font/otf",
-          crossorigin: "",
-        },
-      ],
-    ];
-  },
+  ignoreDeadLinks: true,
 
   themeConfig: {
     nav: [

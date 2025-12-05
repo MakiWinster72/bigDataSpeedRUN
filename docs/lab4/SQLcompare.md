@@ -1,22 +1,24 @@
 # 实验目的
+
 1. 理解四种数据库(MySQL,HBase,Redis,MongoDB)的概念以及不同点;
-2. 熟练使用四种数据库操作常用的Shell命令；
-3. 熟悉四种数据库操作常用的Java API。
+2. 熟练使用四种数据库操作常用的 Shell 命令；
+3. 熟悉四种数据库操作常用的 Java API。
 
 ---
 
-# 1️⃣ MySQL 
+# 1️⃣ MySQL
 
 > [!note]
 > Ubuntu 20.04 起默认用 MariaDB, 因为它开源社区主导、维护活跃且与 MySQL 兼容。MySQL 和 MariaDB 功能、命令和配置基本兼容，本质相似。
+
 ### 实验要求
 
 #### 学生表 `student`
 
-|Name|English|Math|Computer|
-|---|---|---|---|
-|zhangsan|69|86|77|
-|lisi|55|100|88|
+| Name     | English | Math | Computer |
+| -------- | ------- | ---- | -------- |
+| zhangsan | 69      | 86   | 77       |
+| lisi     | 55      | 100  | 88       |
 
 #### 操作要求
 
@@ -28,14 +30,13 @@
 
 ① 添加学生数据：
 
-|Name|English|Math|Computer|
-|---|---|---|---|
-|scofield|45|89|100|
+| Name     | English | Math | Computer |
+| -------- | ------- | ---- | -------- |
+| scofield | 45      | 89   | 100      |
 
 ② 获取 `scofield` 的 `English` 成绩。
 
 ---
-
 
 ### ① 安装 MySQL / MariaDB
 
@@ -47,10 +48,12 @@ sudo systemctl enable mariadb // 开机自启
 sudo mysql_secure_installation
 ```
 
+> 或参考[InstallMysqlInUbuntu(mariadb)](<InstallMysqlInUbuntu(mariadb).md>)获得更完整安装过程
+
 ### ② 登录 MySQL
 
 ```bash
-sudo mariadb -u root -p #若没有设置密码请直接Enter
+sudo mariadb
 ```
 
 ### ③ 创建数据库和表格
@@ -126,6 +129,7 @@ public class MysqlStudent {
     }
 }
 ```
+
 ① **导入 JDBC**：`import java.sql.*;` 导入了 JDBC 所需的所有类，包括 `Connection`、`Statement`、`ResultSet`。
 
 ② **加载驱动**：`Class.forName("org.mariadb.jdbc.Driver");` 用于动态加载 MariaDB JDBC 驱动。
@@ -149,18 +153,18 @@ java -cp .:/usr/share/java/mariadb-java-client.jar MysqlStudent
 
 ---
 
-# 2️⃣ HBase 
+# 2️⃣ HBase
 
-请前往此处安装好HBase -> [hbaseInstall](../lab3/hbaseInstall.md)
+请前往此处安装好 HBase -> [hbaseInstall](../lab3/hbaseInstall.md)
 
 ### 实验要求
 
 #### 学生表 `student`
 
-|name|score|English|Math|Computer|
-|---|---|---|---|---|
-|zhangsan|69|86|77||
-|lisi|55|100|88||
+| name     | English | Math | Computer |
+| -------- | ------- | ---- | -------- |
+| zhangsan | 69      | 86   | 77       |
+| lisi     | 55      | 100  | 88       |
 
 #### 操作要求
 
@@ -203,6 +207,7 @@ put 'student', 'lisi', 'score:Math', '95'
 
 1. 下载 HBase 依赖 jar（示例使用 Maven 或自行下载 hbase-client、hadoop-common 等 jar）
 2. 编写 Java 源文件 `HBaseStudent.java`
+
 ```java
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
@@ -233,6 +238,7 @@ public class HBaseStudent {
     }
 }
 ```
+
 ① **导入 HBase API**：包括 `Connection`、`Table`、`Put`、`Get`、`Result` 等。
 
 ② **创建连接**：通过 `HBaseConfiguration.create()` 获取默认配置，然后 `ConnectionFactory.createConnection(config)` 建立连接。
@@ -242,33 +248,28 @@ public class HBaseStudent {
 ④ **添加数据**：
 
 - `Put put = new Put("rowKey".getBytes());` 定义行键
-    
 - `addColumn(family, qualifier, value)` 指定列族、列名和数据
-    
 - `table.put(put)` 写入表中
-    
 
 ⑤ **读取数据**：
 
 - `Get get = new Get(rowKey)` 定义要读取的行
-    
 - `addColumn(family, qualifier)` 指定列
-    
 - `table.get(get)` 返回 `Result` 对象
-    
 - `result.getValue(family, qualifier)` 获取列值
-    
 
 ⑥ **关闭资源**：HBase 连接和表对象需要手动关闭，否则可能导致资源泄漏。
 
 3. 编译运行
+
 ```bash
 javac -cp $(hbase classpath):. HBaseStudent.java
 java -cp $(hbase classpath):. HBaseStudent
 ```
+
 ---
 
-# 3️⃣ Redis 
+# 3️⃣ Redis
 
 ### 实验要求
 
@@ -277,7 +278,6 @@ java -cp $(hbase classpath):. HBaseStudent
 #### 学生键值对（哈希结构）
 
 - student.zhangsan:
-    
 
 ```text
 English: 69
@@ -286,7 +286,6 @@ Computer: 77
 ```
 
 - student.lisi:
-    
 
 ```text
 English: 55
@@ -312,13 +311,12 @@ Computer: 100
 
 ② 获取 `scofield` 的 `English` 成绩。
 
-
 ### ① 安装 Redis
 
 ```bash
 sudo apt install redis-server -y
 sudo systemctl start redis-server
-sudo systemctl enable redis-server
+sudo systemctl enable redis-server  # 开机自启
 ```
 
 ### ② Redis CLI 操作
@@ -369,6 +367,7 @@ public class RedisStudent {
     }
 }
 ```
+
 ① **导入 Jedis**：Jedis 是 Redis 的 Java 客户端。
 
 ② **建立连接**：`new Jedis("localhost")` 连接本地 Redis 服务器，默认端口 6379。
@@ -379,7 +378,6 @@ public class RedisStudent {
 
 ⑤ **关闭连接**：`jedis.close()` 释放 Redis 连接。
 
-
 3. 编译运行：
 
 ```bash
@@ -389,7 +387,8 @@ java -cp .:jedis-5.1.0.jar RedisStudent
 
 ---
 
-# 4️⃣ MongoDB 
+# 4️⃣ MongoDB
+
 ### 实验要求
 
 #### 学生文档 `student` 集合
@@ -423,12 +422,19 @@ java -cp .:jedis-5.1.0.jar RedisStudent
 ```
 
 ② 获取 `scofield` 的所有成绩信息（只显示 `score` 列）。
+
 ### ① 安装 MongoDB
 
 ```bash
-sudo apt install mongodb -y
-sudo systemctl start mongodb
-sudo systemctl enable mongodb
+sudo apt-get update
+sudo apt-get install -y gnupg curl    # 如果还没安装 gnupg 和 curl
+curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+  sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg --dearmor
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse" \
+  | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+
 ```
 
 ### ② Mongo Shell 操作
@@ -488,6 +494,7 @@ public class MongoStudent {
     }
 }
 ```
+
 ① **导入 MongoDB Java 驱动**：`com.mongodb.client.*` 和 `org.bson.Document`。
 
 ② **连接 MongoDB**：`MongoClients.create("mongodb://localhost:27017")` 返回客户端对象。
@@ -497,23 +504,16 @@ public class MongoStudent {
 ④ **插入文档**：
 
 - `Document` 类表示 MongoDB 的 JSON 文档
-    
 - `append` 方法用于嵌套字段
-    
 - `insertOne` 写入集合
-    
 
 ⑤ **查询文档**：
 
 - `find` 查询指定条件
-    
 - `projection` 排除 `_id` 字段，只返回 `score`
-    
 - `first()` 获取第一个匹配文档
-    
 
 ⑥ **关闭客户端**：`client.close()` 释放资源。
-
 
 3. 编译运行：
 
