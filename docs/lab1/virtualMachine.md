@@ -4,9 +4,25 @@ iso文件请前往resources页面下载: [resources](../resources.md)
 
 ## VMWare
 
-> [!todo]
-> TODO
+1. 下载好ISO文件后，点击左上角的`文件`，新建一个虚拟机
+![Pasted image 20251209230644](https://img.makis-life.cn//images/20251210071449582.png)
+2. 选择典型安装
+![Pasted image 20251209230721](https://img.makis-life.cn//images/20251210071449583.png)
+3. 点击`浏览`，选中下载好的ISO文件
+![Pasted image 20251209230803](https://img.makis-life.cn//images/20251210071449584.png)
+4. 填写信息
+![Pasted image 20251209230845](https://img.makis-life.cn//images/20251210071449585.png)
+5. 一直下一步到这，选择`自定义硬件`
+![Pasted image 20251209230920](https://img.makis-life.cn//images/20251210071449586.png)
+6. 网络改为桥接模式
+![Pasted image 20251209231010](https://img.makis-life.cn//images/20251210071449587.png)
+7. 点击关闭，然后完成
 
+> [!info]
+>
+> 请选择:
+> [Install UbuntuDesktop](<#Ubuntu Desktop>)
+> [Install UbuntuServer(推荐)](<#Ubuntu Server>)
 ## VirtualBox
 
 1. 下载好ISO文件后，点击左上角的“新建”
