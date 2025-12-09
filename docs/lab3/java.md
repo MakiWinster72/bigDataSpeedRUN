@@ -1,8 +1,7 @@
 > [!note]  
-> 本教程演示如何使用 **Java 程序**和 **HBase Shell** 对 HBase 进行常用操作，包括列出表、扫描数据、修改列族、清空表以及统计行数。  
->   
+> 本教程演示如何使用 **Java 程序**和 **HBase Shell** 对 HBase 进行常用操作，包括列出表、扫描数据、修改列族、清空表以及统计行数。
+>
 > 请先完成 [伪分布式](../lab1/PseudoDistributed.md) 安装。
-
 
 ## 一、列出所有表信息
 
@@ -236,11 +235,11 @@ count 'mytable'
 
 ## 六、总结对照表
 
-| 功能      | Java 类名                    | HBase Shell 命令       |
-| ------- | -------------------------- | -------------------- |
-| 列出表     | ListTables                 | `list`               |
-| 扫描表     | ScanTable                  | `scan 'mytable'`     |
+| 功能          | Java 类名                  | HBase Shell 命令     |
+| ------------- | -------------------------- | -------------------- |
+| 列出表        | ListTables                 | `list`               |
+| 扫描表        | ScanTable                  | `scan 'mytable'`     |
 | 添加/删除列族 | ModifyColumnFamily         | `alter`              |
-| 添加/删除列  | ModifyColumnFamily / shell | `put/delete`         |
-| 清空表     | TruncateTable              | `truncate 'mytable'` |
-| 统计行数    | CountRows                  | `count 'mytable'`    |
+| 添加/删除列   | ModifyColumnFamily / shell | `put/delete`         |
+| 清空表        | TruncateTable              | `truncate 'mytable'` |
+| 统计行数      | CountRows                  | `count 'mytable'`    |

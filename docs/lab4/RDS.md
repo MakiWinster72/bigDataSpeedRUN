@@ -55,6 +55,7 @@
 通过申请公网地址连接数据库
 
 连接命令
+
 ```
 mariadb -h 数据库地址 -P 3306 -u 用户名 -p --ssl=0
 ```
@@ -78,10 +79,10 @@ CREATE DATABASE mydb;
 
 ```sql
 CREATE TABLE user (
-	id INT PRIMARY KEY,
-	name VARCHAR(50),
-	age INT,
-	sex ENUM('M','F')
+ id INT PRIMARY KEY,
+ name VARCHAR(50),
+ age INT,
+ sex ENUM('M','F')
 );
 ```
 
@@ -177,7 +178,7 @@ CREATE USER '用户名'@'localhost' IDENTIFIED BY '密码';
 - 授权迁移账号
 
 ```sql
-GRANT ALL PRIVILEGES ON mydb.* TO '用户名'@'%';
+GRANT ALL PRIVILEGES ON mydb.* TO '用户名'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
@@ -195,36 +196,37 @@ server-id = 1
 ![](https://img.makis-life.cn/images/20251110181229421.png)
 
 > [!note] Why ROW?
+>
 > 1. ROW 模式是什么
-> 
+>
 > MySQL 的二进制日志（binlog）有三种格式：
-> 
+>
 > STATEMENT（语句模式）：记录执行的 SQL 语句
-> 
+>
 > ROW（行模式）：记录数据变更的具体行信息
-> 
+>
 > MIXED（混合模式）：默认模式，语句模式与行模式结合
-> 
+>
 > 当你设置为 ROW：
-> 
+>
 > 日志中记录的是每一行数据的变化，而不是执行的 SQL 语句。
-> 
+>
 > 在主从复制或数据迁移时，更加精确，不会因为 SQL 语句执行结果不同而导致数据不一致。
-> 
+>
 > 2. 为什么迁移需要 ROW
-> 
+>
 > 保证数据一致性
-> 
+>
 > 语句模式（STATEMENT）在一些 SQL 函数（如 NOW()、UUID()）或 UPDATE ... LIMIT 语句下，主从执行结果可能不同。
-> 
+>
 > ROW 模式记录每一行的具体变更，RDS 接收到后能精确重放，避免数据差异。
-> 
+>
 > 兼容 RDS 复制要求
-> 
+>
 > Amazon RDS 复制或者使用 mysqldump --master-data 时，推荐 binlog_format 为 ROW，否则可能在某些场景下无法使用 GTID 或导致复制失败。
-> 
+>
 > 避免丢失或错误迁移数据
-> 
+>
 > ROW 模式记录了完整的行变更信息，即使表中有触发器（trigger）、默认值等复杂逻辑，也能正确迁移。
 
 - 重新启动 MariaDB 服务
@@ -249,20 +251,18 @@ mariadb-dump -u 用户名 -p密码 --databases mydb --routines --triggers --sing
 
 > [!note] 参数解析
 > -u 用户名：登录 MariaDB 的用户名
-> 
-> -p密码：密码  (紧贴着会直接写入密码，若不紧贴则要求输入密码)
-> 
+>
+> -p 密码：密码 (紧贴着会直接写入密码，若不紧贴则要求输入密码)
+>
 > --databases mydb：导出指定数据库
-> 
+>
 > --routines：导出存储过程/函数
-> 
+>
 > --triggers：导出触发器
-> 
+>
 > --single-transaction：使用事务一致性快照导出 InnoDB 表
-> 
+>
 > --master-data=2：记录二进制日志位点（注释形式）
-
-
 
 ![](https://img.makis-life.cn/images/20251205082703132.png)
 
@@ -300,8 +300,8 @@ SELECT * FROM user;
 
 ```
 photo-wall
-├── backend/  
-│   ├── src/                  
+├── backend/
+│   ├── src/
 │   │   ├── main.rs            # 服务器入口点和配置
 │   │   ├── handlers.rs        # HTTP 请求处理器
 │   │   ├── models.rs          # 数据模型和结构
@@ -432,14 +432,13 @@ pub async fn delete_photo(pool: &MySqlPool, id: i32) -> Result<String, sqlx::Err
 - 如果记录不存在，`fetch_one` 会报错
 - 返回被删除照片的 `filename`
 
-| 层级      | 技术                 | 用途                     |
-| ------- | ------------------ | ---------------------- |
-| **前端**  | React 18.2.0       | 基于 hooks 状态管理的现代 UI 框架 |
-| **前端**  | Vite 5.4.1         | 快速开发服务器和构建工具           |
-| **前端**  | Axios 1.6.0        | 用于 API 通信的 HTTP 客户端    |
-| **后端**  | Rust Actix Web 4.0 | 高性能异步 Web 框架           |
-| **后端**  | SQLx 0.7           | 与 MySQL 配合的类型安全数据库操作   |
-| **数据库** | MySQL              | 存储照片元数据的关系型数据库         |
+| 层级       | 技术               | 用途                              |
+| ---------- | ------------------ | --------------------------------- |
+| **前端**   | React 18.2.0       | 基于 hooks 状态管理的现代 UI 框架 |
+| **前端**   | Vite 5.4.1         | 快速开发服务器和构建工具          |
+| **前端**   | Axios 1.6.0        | 用于 API 通信的 HTTP 客户端       |
+| **后端**   | Rust Actix Web 4.0 | 高性能异步 Web 框架               |
+| **后端**   | SQLx 0.7           | 与 MySQL 配合的类型安全数据库操作 |
+| **数据库** | MySQL              | 存储照片元数据的关系型数据库      |
 
-
-详细文档 => [PhotoWall概览](../photowallDocs/overview.md)
+详细文档 => [PhotoWall 概览](../photowallDocs/overview.md)

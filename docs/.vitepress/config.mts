@@ -66,7 +66,10 @@ export default defineConfig({
       },
       {
         text: "实验五：MapReduce",
-        items: [{ text: "MapReduce Python", link: "/lab5/python" }],
+        items: [
+          { text: "MapReduce Python", link: "/lab5/python" },
+          { text: "MapReduce Java", link: "/lab5/java" },
+        ],
       },
       {
         text: "其他资料",

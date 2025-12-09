@@ -45,7 +45,7 @@ sudo apt update
 sudo apt install mariadb-server libmariadb-java -y
 sudo systemctl start mariadb
 sudo systemctl enable mariadb // 开机自启
-sudo mysql_secure_installation
+# sudo mysql_secure_installation 或直接sudo mariadb以root登录
 ```
 
 > 或参考[InstallMysqlInUbuntu(mariadb)](<InstallMysqlInUbuntu(mariadb).md>)获得更完整安装过程
@@ -92,7 +92,7 @@ UPDATE student SET Math=95 WHERE name='lisi';
 1. 下载 Java JDK：
 
 ```bash
-sudo apt install openjdk-17-jdk -y
+sudo apt install openjdk-21-jdk -y
 ```
 
 2. 创建源文件：
@@ -110,7 +110,7 @@ public class MysqlStudent {
     public static void main(String[] args) throws Exception {
         Class.forName("org.mariadb.jdbc.Driver");
         Connection conn = DriverManager.getConnection(
-            "jdbc:mariadb://localhost:3306/school?useSSL=false&serverTimezone=UTC",
+            "jdbc:mariadb://localhost:3306/(DATABASE 名字)?useSSL=false&serverTimezone=UTC",
             "root", "StrongPassword"); // 用户以及密码
         Statement stmt = conn.createStatement();
 
@@ -354,7 +354,7 @@ import redis.clients.jedis.Jedis;
 
 public class RedisStudent {
     public static void main(String[] args) {
-        Jedis jedis = new Jedis("localhost");
+        Jedis jedis = new Jedis("redis://localhost:6379");
 
         jedis.hset("student:scofield", "English", "45");
         jedis.hset("student:scofield", "Math", "89");
@@ -378,7 +378,10 @@ public class RedisStudent {
 
 ⑤ **关闭连接**：`jedis.close()` 释放 Redis 连接。
 
-3. 编译运行：
+3.下载 Jedis 库
+<https://repo1.maven.org/maven2/redis/clients/jedis/5.1.0/jedis-5.1.0.jar>
+
+4. 编译运行：
 
 ```bash
 javac -cp jedis-5.1.0.jar RedisStudent.java

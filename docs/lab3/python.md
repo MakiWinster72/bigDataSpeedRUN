@@ -1,9 +1,10 @@
 > [!note]  
-> 本教程演示如何使用 **Python** 和 **HBase Shell** 对 HBase 进行常用操作，包括列出表、扫描数据、修改列族、清空表以及统计行数。  
-> 
+> 本教程演示如何使用 **Python** 和 **HBase Shell** 对 HBase 进行常用操作，包括列出表、扫描数据、修改列族、清空表以及统计行数。
+>
 > 请先完成 [伪分布式](../lab1/PseudoDistributed.md) 安装。
 
-### python环境前置
+### python 环境前置
+
 ```bash
 # 安装 Python 虚拟环境与 pip（Ubuntu 22.04 及以上必需）
 sudo apt install python3-pip python3.12-venv
@@ -27,7 +28,6 @@ hbase thrift start
 ```bash
 python3 your_script.py
 ```
-
 
 ---
 
@@ -103,7 +103,7 @@ connection.close()
 > 获取名为 `mytable` 的表对象。
 >
 > **`for key, data in table.scan():`**
-> 扫描整张表，逐行返回行键（*row key*）和对应的数据字典。
+> 扫描整张表，逐行返回行键（_row key_）和对应的数据字典。
 >
 > **`print("Row:", key.decode())`**
 > 输出当前行的行键（字节类型需解码为字符串）。
@@ -137,7 +137,7 @@ table_name = 'mytable'
 admin.create_table(table_name, {'newcf': dict()})
 
 # 删除列族
-admin.delete_table(table_name, disable=True) 
+admin.delete_table(table_name, disable=True)
 
 connection.close()
 ```
@@ -155,11 +155,11 @@ connection.close()
 > 指定目标表名为 `mytable`。
 >
 > **`admin.create_table(table_name, {'newcf': dict()})`**
-> 创建一张名为 `mytable` 的新表，并定义一个列族（*column family*）`newcf`。
+> 创建一张名为 `mytable` 的新表，并定义一个列族（_column family_）`newcf`。
 >
 > **`admin.delete_table(table_name, disable=True)`**
 > 删除表 `mytable`。
-> 参数 `disable=True` 表示在删除前会先禁用（*disable*）该表。
+> 参数 `disable=True` 表示在删除前会先禁用（_disable_）该表。
 > ⚠️ 注意：`happybase` 不支持单独删除列族，只能通过删除整张表来实现。
 
 **Shell 对应命令**：
@@ -239,7 +239,6 @@ connection.close()
 >
 > **`print("Total rows:", count)`**
 > 输出表中的总行数。
->
 
 **Shell 对应命令**：
 
@@ -251,12 +250,12 @@ count 'mytable'
 
 ### 🔹 总结
 
-| 功能      | Python 实现                      | HBase Shell       |
-| ------- | ------------------------------ | ----------------- |
-| 列出表     | `connection.tables()`          | `list`            |
-| 扫描表     | `table.scan()`                 | `scan 'mytable'`  |
+| 功能          | Python 实现                    | HBase Shell       |
+| ------------- | ------------------------------ | ----------------- |
+| 列出表        | `connection.tables()`          | `list`            |
+| 扫描表        | `table.scan()`                 | `scan 'mytable'`  |
 | 添加/删除列族 | `create_table/delete_table`    | `alter`           |
-| 清空表     | `table.delete()`               | `truncate`        |
-| 统计行数    | `sum(1 for _ in table.scan())` | `count 'mytable'` |
+| 清空表        | `table.delete()`               | `truncate`        |
+| 统计行数      | `sum(1 for _ in table.scan())` | `count 'mytable'` |
 
 Python 版本通过 `happybase` 可以快速实现大部分 HBase 操作，但对列族的单独增删需要依赖 Java API 或 HBase Shell。

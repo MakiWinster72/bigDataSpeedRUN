@@ -1,37 +1,47 @@
 # MapReduce
-## 实验目的
-1.通过实验掌握基本的MapReduce编程方法； 
 
-2.掌握用MapReduce解决一些常见的数据处理问题，包括数据去重、数据排序和数据挖掘等。
+## 实验目的
+
+1.通过实验掌握基本的 MapReduce 编程方法；
+
+2.掌握用 MapReduce 解决一些常见的数据处理问题，包括数据去重、数据排序和数据挖掘等。
 
 ## ① 两文件合并并去重
 
-对于两个输入文件，即文件A和文件B，请编写MapReduce程序，对两个文件进行合并，并剔除其中重复的内容，得到一个新的输出文件C。下面是输入文件和输出文件的一个样例供参考。
+对于两个输入文件，即文件 A 和文件 B，请编写 MapReduce 程序，对两个文件进行合并，并剔除其中重复的内容，得到一个新的输出文件 C。下面是输入文件和输出文件的一个样例供参考。
+
+> 思路：Mapper 逐行读取任一输入文件，把整行作为 key 输出；Reducer 对相同 key 只输出一次，达到去重合并效果。
+
 ### fileA
 
-| 日期       | 值 |
-| -------- | - |
-| 20150101 | x |
-| 20150102 | y |
-| 20150103 | x |
-| 20150104 | y |
-| 20150105 | z |
-| 20150106 | x |
+```
+20150101 x
+20150102 y
+20150103 x
+20150104 y
+20150105 z
+20150106 x
+```
 
 ---
 
 ### fileB
 
-| 日期       | 值 |
-| -------- | - |
-| 20150101 | y |
-| 20150102 | y |
-| 20150103 | x |
-| 20150104 | z |
-| 20150105 | y |
+```
+20150101 y
+20150102 y
+20150103 x
+20150104 z
+20150105 y
+```
 
+### 上传文件
 
-思路：Mapper 逐行读取任一输入文件，把整行作为 key 输出；Reducer 对相同 key 只输出一次，达到去重合并效果。
+```bash
+hdfs dfs -mkdir -p /user/hadoop/merge_input
+hdfs dfs -put fileA fileB /user/hadoop/merge_input/
+hdfs dfs -ls /user/hadoop/merge_input
+```
 
 ### mapper (`merge_mapper.py`)：
 
@@ -43,16 +53,17 @@ for line in sys.stdin:
     if line:
         print(f"{line}\t1")
 ```
+
 从标准输入读取文本，每行输出 `<内容>\t1`，用于统计每个元素出现次数。
 
 > **`for line in sys.stdin:`**  
 > 从标准输入（_standard input_）逐行读取数据。  
 > 常用于管道处理或重定向文件输入，例如：
-> 
+>
 > ```bash
 > cat file.txt | python3 script.py
 > ```
-> 
+>
 > **`line = line.strip()`**  
 > 去掉每行字符串开头和结尾的空白字符（包括空格、换行符等）。  
 > **`if line:`**  
@@ -73,6 +84,7 @@ for line in sys.stdin:
         print(key)
         prev_key = key
 ```
+
 从标准输入读取文本，每行输出 `<内容>`，达到去重效果。
 
 > **`prev_key = None`**  
@@ -92,7 +104,7 @@ for line in sys.stdin:
 ```bash
 # 上传文件到hdfs
 hdfs dfs -mkdir -p /user/hadoop/merge_input
-hdfs dfs -put fileA.txt fileB.txt /user/hadoop/merge_input/ 
+hdfs dfs -put fileA.txt fileB.txt /user/hadoop/merge_input/
 
 # 计算
 hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
@@ -105,46 +117,64 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
   -file merge_reducer.py
 ```
 
-* 结果查看：`hdfs dfs -cat /user/hadoop/output/merge_dedup/part-*`
+- 结果查看：`hdfs dfs -cat /user/hadoop/output/merge_dedup/part-*`
+  ![](https://img.makis-life.cn/images/20251210050727832.png)
 
 ---
 
 ## ② 多文件整数排序并输出序号（rank）
+
 现在有多个输入文件，每个文件中的每行内容均为一个整数。要求读取所有文件中的整数，进行升序排序后，输出到一个新的文件中，输出的数据格式为每行两个整数，第一个数字为第二个整数的排序位次，第二个整数为原待排列的整数。下面是输入文件和输出文件的一个样例供参考。
-### 文件 one
 
-| 数值 |
-| -- |
-| 33 |
-| 37 |
-| 12 |
-| 40 |
+> - 需求：合并多个文件中的整数（每行一个整数），升序排序后输出 `rank value`（rank 从 1 开始）。
+>
+> - 实现思路：使用 **单个 reducer**（`-D mapreduce.job.reduces=1`），mapper 将每个整数作为 key 输出，Hadoop 在 reducer 处会按 key 排序（lexicographic->需确保数值排序：把 key 转为定长或使用数值排序）。
 
----
+### 准备数据文件
 
-### 文件 two
+#### 文件 one
 
-| 数值 |
-| -- |
-| 4  |
-| 16 |
-| 39 |
-| 5  |
+```
+33
+37
+12
+40
+```
 
 ---
 
-### 文件 three
+#### 文件 two
 
-| 数值 |
-| -- |
-| 1  |
-| 45 |
-| 25 |
+```
+4
+16
+39
+5
+```
 
+---
 
-* 需求：合并多个文件中的整数（每行一个整数），升序排序后输出 `rank value`（rank 从 1 开始）。
+#### 文件 three
 
-* 实现思路：使用 **单个 reducer**（`-D mapreduce.job.reduces=1`），mapper 将每个整数作为 key 输出，Hadoop 在 reducer 处会按 key 排序（lexicographic->需确保数值排序：把 key 转为定长或使用数值排序）。
+```
+1
+45
+25
+```
+
+### 上传文件
+
+#### 创建 HDFS 输入目录
+
+```bash
+hdfs dfs -mkdir -p /user/hadoop/sort_input
+```
+
+#### 上传三个文件
+
+```bash
+hdfs dfs -put one two three /user/hadoop/sort_input/
+```
 
 ### mapper (`sort_mapper.py`)：
 
@@ -161,7 +191,6 @@ for line in sys.stdin:
             continue
 ```
 
-
 > **`for line in sys.stdin:`**  
 > 从标准输入（_standard input_）逐行读取数据。  
 > **`s = line.strip()`**  
@@ -172,6 +201,7 @@ for line in sys.stdin:
 > 将字符串 `s` 转换为整数，如果无法转换会抛出异常。
 
 ### reducer (`sort_reducer.py`)
+
 在单 reducer 中收集所有整数、排序、再输出带 rank 的行
 
 ```python
@@ -192,7 +222,6 @@ for n in nums:
     rank += 1
 ```
 
-
 > **`nums = []`**  
 > 用于存储从标准输入读取的整数。  
 > **`for line in sys.stdin:`**  
@@ -210,11 +239,13 @@ for n in nums:
 > **`rank += 1`**  
 > 每打印一个数字，排名加 1。
 
-
 ### 运行命令
+
 注意 `-D mapreduce.job.reduces=1` 强制单 reducer：
->Hadoop 会自动将不同 key 分配给多个 reducer 并行处理。
->每个 reducer 内的排序是局部排序，不保证全局顺序。
+
+> Hadoop 会自动将不同 key 分配给多个 reducer 并行处理。
+> 每个 reducer 内的排序是局部排序，不保证全局顺序。
+
 ```bash
 # 上传文件到hdfs
 hdfs dfs -mkdir -p /user/hadoop/sort_input
@@ -231,34 +262,55 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
   -file sort_mapper.py \
   -file sort_reducer.py
 ```
-* 结果查看：`hdfs dfs -cat /user/hadoop/output/sort_rank/part-*`
 
+- 结果查看：`hdfs dfs -cat /user/hadoop/output/sort_rank/part-*`
+  ![](https://img.makis-life.cn/images/20251210050637608.png)
 
 ---
 
 ## ③ 从 child-parent 表挖掘祖孙（grandchild-grandparent）
-下面给出一个child-parent的表格，要求挖掘其中的父子辈关系，给出祖孙辈关系的表格。
 
-|child|parent|
-|---|---|
-|Steven|Lucy|
-|Steven|Jack|
-|Jone|Lucy|
-|Jone|Jack|
-|Lucy|Mary|
-|Lucy|Frank|
-|Jack|Alice|
-|Jack|Jesse|
-|David|Alice|
-|David|Jesse|
-|Philip|David|
-|Philip|Alma|
-|Mark|David|
-|Mark|Alma|
-* 思路：针对每条 (child, parent) 记录，mapper 为可能的“中间人” M 发两个标记：
+下面给出一个 child-parent 的表格，要求挖掘其中的父子辈关系，给出祖孙辈关系的表格。
 
-  * emit key = parent, value = `CHILD:<child>`（表示 M 的子）
-  * emit key = child,  value = `PARENT:<parent>`（表示 M 的父）
+```
+Steven Lucy
+Steven Jack
+Jone Lucy
+Jone Jack
+Lucy Mary
+Lucy Frank
+Jack Alice
+Jack Jesse
+David Alice
+David Jesse
+Philip David
+Philip Alma
+Mark David
+Mark Alma
+```
+
+> 思路：针对每条 (child, parent) 记录，mapper 为可能的“中间人” M 发两个标记：
+> emit key = parent, value = `CHILD:<child>`（表示 M 的子）
+> emit key = child, value = `PARENT:<parent>`（表示 M 的父）
+> 在 reducer 中，针对中间人 M，将所有 CHILD 列表与 PARENT 列表笛卡尔组合，输出 (grandchild, grandparent)。
+
+### 上传文件
+
+```bash
+# 创建 HDFS 输入目录
+hdfs dfs -mkdir -p /user/hadoop/gp_input
+
+# 上传文件
+hdfs dfs -put table /user/hadoop/gp_input/
+
+# 检查是否上传成功
+hdfs dfs -ls /user/hadoop/gp_input/
+```
+
+- 思路：针对每条 (child, parent) 记录，mapper 为可能的“中间人” M 发两个标记：
+
+  - emit key = parent, value = `CHILD:<child>`（表示 M 的子）
+  - emit key = child, value = `PARENT:<parent>`（表示 M 的父）
     在 reducer 中，针对中间人 M，将所有 CHILD 列表与 PARENT 列表笛卡尔组合，输出 (grandchild, grandparent)。
 
 #### mapper (`gp_mapper.py`)：
@@ -338,6 +390,7 @@ for line in sys.stdin:
 if current is not None:
     emit_pairs()
 ```
+
 说明：输入文件 `child_parent.txt` 应只包含实际 pairs（若包含表头 `child parent` 请先删除或在 mapper 中跳过）。
 
 > **`current = None`**  
@@ -362,14 +415,14 @@ if current is not None:
 > 循环结束后，处理最后一个 key 的数据，确保所有组合都被输出。  
 > **输出逻辑**  
 > 对于每个 key，打印所有子节点和父节点的笛卡尔积：
-> 
+>
 > ```text
 > child1\tparent1
 > child1\tparent2
 > child2\tparent1
 > ...
 > ```
-> 
+>
 > 适用于 MapReduce 或关系映射分析。
 
 #### 运行命令：
@@ -388,4 +441,5 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
   -file gp_reducer.py
 ```
 
-* 结果查看：`hdfs dfs -cat /user/maki/output/grandparent/part-*`（HDFS）
+- 结果查看：`hdfs dfs -cat /user/maki/output/grandparent/part-*`
+  ![](https://img.makis-life.cn/images/20251210050637609.png)

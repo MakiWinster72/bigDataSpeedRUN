@@ -10,7 +10,7 @@
 | Hadoop    | 3.4.2        |
 | HBase     | 2.6.3        |
 | ZooKeeper | 3.8.5        |
-| Java      | jdk11        |
+| Java      | jdk21        |
 
 ## 实验流程概览
 
@@ -59,4 +59,4 @@
 - [实验二：Hadoop 集群安装与HDFS的常见命令](./lab1/hadoopInstall)
 - [实验三：HBase与HBase Shell](./lab3/hbaseInstall).
 - [实验四：云数据库与 NoSQL](./lab4/RDS)
-- [实验五：MapReduce](./lab5/python)
+- [实验五：MapReduce](./lab5/java)

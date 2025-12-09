@@ -1,290 +1,438 @@
 > [!tip] 🎉
 > 已有sh脚本可一键安装完成 -> [shell](../other/shell.md#hadoop完全分布式)
 
-
 本文是Hadoop完全分布式安装教程
-## 环境说明
 
-- **系统**: Ubuntu 24.04  
-- **服务器配置**: 3 台主机  
-- **Hadoop 版本**: 3.4.2  
-- **集群架构**: 1 个 Master 节点 + 2 个 Slave 节点  
-- **节点配置**:  
-  - hadoop01 (Master): 名称节点 + 资源管理器  
-  - hadoop02 (Slave): 数据节点 + 节点管理器  
-  - hadoop03 (Slave): 数据节点 + 节点管理器  
+# Hadoop 完全分布式集群安装指南
 
----
+## 环境准备
 
+### 允许 hadoop 免密码 sudo
 
-# 第一阶段 环境配置
-### 创建 Hadoop 用户
+> 主要为了后续 master 可直接远程 ssh Slaves 主机，这样无需登录终端输入密码。
+> 也可选择配置允许远程 root 登录
 
-① 创建 `hadoop` 用户并加入 sudo 组
+在 master 和 slave1 ～ 3 都执行
 
 ```bash
-sudo useradd -m hadoop -s /bin/bash
-sudo passwd hadoop
-sudo adduser hadoop sudo
+sudo visudo
 ```
 
-② 切换到 hadoop 用户
+会用 nano 编辑 sudoers
+新增一行
 
-```bash
-su hadoop
+```
+hadoop ALL=(ALL) NOPASSWD: ALL
 ```
 
-### 网络配置
+![](https://img.makis-life.cn/images/20251210022335976.png)
 
-#### 设置主机名 (分别在对应服务器执行)
+### 通信
 
-**在第一台服务器 (Master) 执行：**
+四台主机全部接入同一路由器，即均处于同一局域网中，从而实现主机间通信。
+
+令虚拟机处于桥接模式，在 Ubuntu 中使用 `ip addr show` 查看 ip 地址
+
+例如：
+
+![](https://img.makis-life.cn/images/20251210022335977.png)
+
+<center>检查 Master 的 IP 地址</center>
+
+其中 enp0s3 是当前所使用的网卡，可知目前 ipv4 地址为 192.168.1.101。
+
+获取到四台虚拟机的 IP 地址如下
+
+| 主机   | IPv4          |
+| ------ | ------------- |
+| Master | 192.168.1.104 |
+| Slave1 | 192.168.1.102 |
+| Slave2 | 192.168.1.101 |
+| Slave3 | 192.168.1.105 |
+
+#### 检查连通性
+
+虚拟机间互 ping，检验不同主机间虚拟机是否可以正常通信
+
+1. 登录 master
 
 ```bash
-sudo hostnamectl set-hostname hadoop01
+ssh hadoop@192.168.1.104
+ping 192.168.1.102 -c 3
+ping 192.168.1.101 -c 3
+ping 192.168.1.105 -c 3
 ```
 
-**在第二台服务器 (Slave1) 执行：**
+![](https://img.makis-life.cn/images/20251210022335978.png)
+
+### 编辑 hosts 文件
 
 ```bash
-sudo hostnamectl set-hostname hadoop02
-```
-
-**在第三台服务器 (Slave2) 执行：**
-
-```bash
-sudo hostnamectl set-hostname hadoop03
-```
-
----
-
-#### 配置主机名映射
-
-**在所有 3 台服务器上修改 hosts 文件：**
-
-```bash
-sudo vim /etc/hosts
+sudo nvim /etc/hosts
 ```
 
 添加以下内容：
 
-> 使用 ip addr show 获取 ip 地址
-
 ```
-ip   hadoop01
-ip   hadoop02
-ip   hadoop03
+192.168.1.104 master
+192.168.1.102 slave1
+192.168.1.101 slave2
+192.168.1.105 slave3
 ```
 
-> 💡 **提示**: 如果云服务器有公网 IP，可以直接使用公网 IP 地址进行映射，若处于同一vps网络建议使用内网 IP 以提高传输速度和流量费用。
+![](https://img.makis-life.cn/images/20251210022335979.png)
 
----
-
-#### 测试网络连通性
-
-在每个节点上测试：
+将 hosts 文件传递给各主机
 
 ```bash
-ping hadoop01 -c 3
-ping hadoop02 -c 3
-ping hadoop03 -c 3
+scp /etc/hosts hadoop@slave1:~
+scp /etc/hosts hadoop@slave2:~
+scp /etc/hosts hadoop@slave3:~
 ```
 
-
-> 确保三台主机互 ping 成功
-
-## 第二阶段：SSH 无密码登录配置
-
-#### 在 Master 节点 (hadoop01) 操作
-
-① **生成 SSH 密钥**
+在各 slave 节点执行：
 
 ```bash
-cd ~/.ssh || mkdir ~/.ssh && cd ~/.ssh
-ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
+sudo mv ~/hosts /etc/hosts
 ```
 
-① **配置本机无密码登录**
+![](https://img.makis-life.cn/images/20251210022335980.png)
+
+### 设置主机名
+
+在 master 执行：
 
 ```bash
-cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
+sudo hostnamectl set-hostname master
 ```
 
-① **将公钥复制到 Slave 节点**
+![](https://img.makis-life.cn/images/20251210022335981.png)
+
+<center>Master 设置主机名</center>
+
+可见，再次输入`bash`，即刷新当前 SHELL，可以看见前面已经变为 hadoop@master，方便辨认 master 和 slaves
+
+在各 slave 节点分别执行：
 
 ```bash
-ssh-copy-id hadoop@hadoop02
-ssh-copy-id hadoop@hadoop03
+# 在 slave1 上
+sudo hostnamectl set-hostname slave1
+
+# 在 slave2 上
+sudo hostnamectl set-hostname slave2
+
+# 在 slave3 上
+sudo hostnamectl set-hostname slave3
 ```
 
-#### 测试 SSH 无密码登录
+![](https://img.makis-life.cn/images/20251210022335982.png)
+
+### 配置 ssh 免密码登录
+
+hadoop 集群需要 ssh 免密码登录才可正常运行
+
+> 并且上述可见，即使已经配置了 hadoop 免密 sudo 权限，但是远程登录依然需要密码，Slaves 多了非常麻烦。配置 ssh 免密码登录可减少输入密码的步骤。
+
+#### 在 master 节点执行
 
 ```bash
-ssh hadoop02
-ssh hadoop03
+# 生成密钥对
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 ```
 
----
+![](https://img.makis-life.cn/images/20251210022335983.png)
 
-### 允许root用户登录
-[allowRootLogin](../other/allowRootLogin.md)
-
-## 第三阶段：安装 Java 和 hadoop
-
-### 在Master安装java
-[installJava](../other/installJava.md)
-
-#### 分发java(hadoop02)
-```bash
-ssh root@hadoop02 "sudo mkdir -p /usr/lib/jvm"
-scp -r /usr/lib/jvm/jdk11 root@hadoop02:/usr/lib/jvm/
-
-scp ~/.profile hadoop@hadoop02:~ # 这会自动替换掉存在的文件
-```
-
----
-
-### 下载并安装 Hadoop
-
-① **下载 Hadoop 3.4.2**
+#### 分发密钥
 
 ```bash
-cd ~
-wget https://mirrors.aliyun.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
+# 复制公钥到所有节点（包括自己）
+ssh-copy-id -i ~/.ssh/id_rsa.pub master
+ssh-copy-id -i ~/.ssh/id_rsa.pub slave1
+ssh-copy-id -i ~/.ssh/id_rsa.pub slave2
+ssh-copy-id -i ~/.ssh/id_rsa.pub slave3
 ```
 
-> 阿里云服务器可以使用以下内网传输
-> wget [http://mirrors.cloud.aliyuncs.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz](http://mirrors.cloud.aliyuncs.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz)
+会依次询问是否添加主机以及对应主机的密码。
 
-![](https://img.makis-life.cn/images/20251110181548090.png)
+![](https://img.makis-life.cn/images/20251210022335984.png)
 
-① **解压并安装**
+#### 测试免密登录
 
 ```bash
-sudo tar -zxf hadoop-3.4.2.tar.gz -C /usr/local/
-sudo mv /usr/local/hadoop-3.4.2 /usr/local/hadoop
-sudo chown -R hadoop:hadoop /usr/local/hadoop
+ssh master
+ssh slave1
+ssh slave2
+ssh slave3
 ```
-![](https://img.makis-life.cn/images/20251110181548091.png)
 
-① **配置 Hadoop 环境变量**
+可见现在 ssh slave1 已经不再需要输入密码，免登录设置成功。
+
+![](https://img.makis-life.cn/images/20251210022335985.png)
+
+## 安装 Java
+
+### 下载
+
+前往[华为 Openjdk](https://mirrors.huaweicloud.com/openjdk/)
+或 wget 下载
+
+```bash
+wget https://mirrors.huaweicloud.com/openjdk/21/openjdk-21_linux-x64_bin.tar.gz
+```
+
+### 安装
+
+```bash
+tar -xzf openjdk-21_linux-x64_bin.tar.gz
+sudo mkdir -p /usr/lib/jvm
+sudo mv jdk-21 /usr/lib/jvm/jdk21
+```
+
+编辑`~/.profile`文件，写入 JAVA_HOME
 
 ```bash
 vim ~/.profile
 ```
 
-在文件末尾添加：
+添加以下内容：
 
 ```bash
-export HADOOP_HOME=/usr/local/hadoop
-export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
-export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+# JAVA
+export JAVA_HOME=/usr/lib/jvm/jdk21
+export PATH=$JAVA_HOME/bin:$PATH
 ```
 
-① **使配置生效**
+![](https://img.makis-life.cn/images/20251210022335986.png)
+
+应用环境变量：
 
 ```bash
 source ~/.profile
 ```
 
----
+检验 java 是否安装成功
 
+```bash
+java -version
+```
 
+![](https://img.makis-life.cn/images/20251210022335987.png)
 
-## 第四阶段：云服务器安全组配置
+### 分发 java 并安装
 
-如果使用阿里云、腾讯云等云服务器，需要在云控制台安全组中开放以下端口：
+将 jdk 分发到各 slave 节点：
 
-| 服务               | 默认端口         |
-| ---------------- | ------------ |
-| NameNode RPC     | 9000         |
-| NameNode WebUI   | 9870         |
-| DataNode Data    | 9866         |
-| DataNode WebUI   | 9864         |
-| Secondary NN     | 9868         |
-| ResourceManager  | 8032, 8088   |
-| NodeManager      | 8042         |
-| JobHistoryServer | 10020, 19888 |
+```bash
+scp -r /usr/lib/jvm/jdk21 hadoop@slave1:~
+scp -r /usr/lib/jvm/jdk21 hadoop@slave2:~
+scp -r /usr/lib/jvm/jdk21 hadoop@slave3:~
+```
 
----
+在各 slave 节点执行：
 
-## 第五阶段：Hadoop 集群配置
+```bash
+sudo mkdir -p /usr/lib/jvm
+sudo mv ~/jdk21 /usr/lib/jvm/jdk21
+```
+
+分发 .profile 文件：
+
+```bash
+scp ~/.profile hadoop@slave1:~
+scp ~/.profile hadoop@slave2:~
+scp ~/.profile hadoop@slave3:~
+```
+
+在各 slave 节点执行：
+
+```bash
+source ~/.profile
+```
+
+检查各个主机是否成功安装 java：
+
+```bash
+# 在各节点执行
+java -version
+```
+
+![](https://img.makis-life.cn/images/20251210022335988.png)
+
+## 安装 Hadoop 集群
+
+### 下载 Hadoop
+
+前往 [Apache Hadoop 下载页](https://hadoop.apache.org/releases.html) 或使用 wget：
+
+```bash
+wget https://mirrors.aliyun.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
+```
+
+### 在 master 上安装 hadoop
+
+将 hadoop 安装包上传到 master 节点后执行：
+
+```bash
+tar -xzf hadoop-3.4.2.tar.gz
+sudo mv hadoop-3.4.2 /usr/local/hadoop
+sudo chown -R hadoop:hadoop /usr/local/hadoop
+```
+
+![](https://img.makis-life.cn/images/20251210022335989.png)
+
+### 创建工作环境
+
+```bash
+sudo mkdir -p /usr/local/hadoop/tmp
+sudo mkdir -p /usr/local/hadoop/hdfs/name
+sudo mkdir -p /usr/local/hadoop/hdfs/data
+sudo chown -R hadoop:hadoop /usr/local/hadoop
+```
 
 ### 配置 Hadoop 环境变量
 
-```bash
-vim /usr/local/hadoop/etc/hadoop/hadoop-env.sh
-```
-
-添加或修改：
+编辑`~/.profile`，新增：
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/jdk11
+vim ~/.profile
 ```
 
----
-
-### 配置集群文件 (仅在 hadoop01 执行)
-
-① **workers 文件**
+添加以下内容：
 
 ```bash
-vim /usr/local/hadoop/etc/hadoop/workers
+# HADOOP
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export HADOOP_YARN_HOME=$HADOOP_HOME
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export CLASSPATH=$CLASSPATH:$HADOOP_HOME/lib
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
 ```
 
-内容：
+目前 `~/.profile` 状态：
 
-```
-hadoop02
-hadoop03
-```
+![](https://img.makis-life.cn/images/20251210022335990.png)
 
----
-
-### 同步配置到所有节点
-
-在 hadoop01 上执行：
+应用环境变量：
 
 ```bash
-cd /usr/local
-sudo tar -zcf ~/hadoop.master.tar.gz ./hadoop
-
-# 传输到 slave 节点
-scp ~/hadoop.master.tar.gz hadoop02:/home/hadoop/
-scp ~/hadoop.master.tar.gz hadoop03:/home/hadoop/
-
-# 解压并安装 (hadoop02)
-ssh root@hadoop02 "sudo rm -rf /usr/local/hadoop"
-ssh root@hadoop02 "sudo tar -zxf ~/hadoop.master.tar.gz -C /usr/local"
-ssh root@hadoop02 "sudo chown -R hadoop:hadoop /usr/local/hadoop"
+source ~/.profile
 ```
 
-## 配置文件
+### 配置 Hadoop 各组件
 
-- **core-site.xml**
+进入 Hadoop 配置目录：
+
+```bash
+cd $HADOOP_HOME/etc/hadoop
+```
+
+#### 配置 hadoop-env.sh
+
+```bash
+vim hadoop-env.sh
+```
+
+找到`export JAVA_HOME=`行，修改或添加：
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/jdk21
+```
+
+![](https://img.makis-life.cn/images/20251210022335991.png)
+
+#### 配置 yarn-env.sh
+
+```bash
+vim yarn-env.sh
+```
+
+同样添加 JAVA_HOME：
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/jdk21
+```
+
+#### 配置 core-site.xml
+
+```bash
+vim core-site.xml
+```
+
+在 `<configuration>` 标签内添加：
 
 ```xml
 <configuration>
     <property>
         <name>fs.defaultFS</name>
-        <value>hdfs://hadoop01:9000</value>
+        <value>hdfs://master:9000</value>
     </property>
     <property>
         <name>hadoop.tmp.dir</name>
-        <value>file:/usr/local/hadoop/tmp</value>
+        <value>/usr/local/hadoop/tmp</value>
+    </property>
+    <property>
+        <name>hadoop.http.staticuser.user</name>
+        <value>root</value>
+    </property>
+    <property>
+        <name>hadoop.proxyuser.hadoop.hosts</name>
+        <value>*</value>
+    </property>
+    <property>
+        <name>hadoop.proxyuser.hadoop.groups</name>
+        <value>*</value>
     </property>
 </configuration>
-
 ```
 
-- **yarn-site.xml**
+#### 配置 hdfs-site.xml
+
+```bash
+vim hdfs-site.xml
+```
+
+在 `<configuration>` 标签内添加：
+
+```xml
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>3</value>
+    </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>/usr/local/hadoop/hdfs/name</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>/usr/local/hadoop/hdfs/data</value>
+    </property>
+    <property>
+        <name>dfs.namenode.http-address</name>
+        <value>master:9870</value>
+    </property>
+    <property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>master:9868</value>
+    </property>
+</configuration>
+```
+
+#### 配置 yarn-site.xml
+
+```bash
+vim yarn-site.xml
+```
+
+在 `<configuration>` 标签内添加：
 
 ```xml
 <configuration>
     <property>
         <name>yarn.resourcemanager.hostname</name>
-        <value>hadoop01</value>
+        <value>master</value>
     </property>
     <property>
         <name>yarn.nodemanager.aux-services</name>
@@ -292,211 +440,220 @@ ssh root@hadoop02 "sudo chown -R hadoop:hadoop /usr/local/hadoop"
     </property>
     <property>
         <name>yarn.nodemanager.env-whitelist</name>
-        <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.webapp.address</name>
-        <value>hadoop01:8088</value>
+        <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,HADOOP_YARN_HOME,HADOOP_HOME,PATH</value>
     </property>
 </configuration>
 ```
 
-- **hdfs-site.xml**
+#### 配置 mapred-site.xml
 
-```xml
-<configuration>
-    <property>
-        <name>dfs.namenode.secondary.http-address</name>
-        <value>hadoop01:50090</value>
-    </property>
-    <property>
-        <name>dfs.replication</name>
-        <value>2</value>  <!--这里对应数据副本的数量-->
-    </property>
-    <property>
-        <name>dfs.namenode.name.dir</name>
-        <value>file:/usr/local/hadoop/tmp/dfs/name</value>
-    </property>
-    <property>
-        <name>dfs.datanode.data.dir</name>
-        <value>file:/usr/local/hadoop/tmp/dfs/data</value>
-    </property>
-    <property>
-        <name>dfs.namenode.http-address</name>
-        <value>hadoop01:9870</value>
-    </property>
-</configuration>
+```bash
+vim mapred-site.xml
 ```
 
-- **mapred-site.xml**
+在 `<configuration>` 标签内添加：
 
 ```xml
 <configuration>
     <property>
+        <!--指定Mapreduce运行在yarn上-->
         <name>mapreduce.framework.name</name>
         <value>yarn</value>
     </property>
     <property>
-        <name>mapreduce.jobhistory.address</name>
-        <value>hadoop01:10020</value>
-    </property>
-    <property>
-        <name>mapreduce.jobhistory.webapp.address</name>
-        <value>hadoop01:19888</value>
+        <name>mapreduce.application.classpath</name>
+        <value>$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_HOME/share/hadoop/mapreduce/lib/*</value>
     </property>
     <property>
         <name>yarn.app.mapreduce.am.env</name>
-        <value>HADOOP_MAPRED_HOME=/usr/local/hadoop</value>
+        <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
     </property>
     <property>
         <name>mapreduce.map.env</name>
-        <value>HADOOP_MAPRED_HOME=/usr/local/hadoop</value>
+        <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
     </property>
     <property>
         <name>mapreduce.reduce.env</name>
-        <value>HADOOP_MAPRED_HOME=/usr/local/hadoop</value>
+        <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
     </property>
 </configuration>
 ```
 
-## 第六阶段：启动集群
-
-### 格式化 NameNode (仅第一次，在 hadoop01 执行)
+#### 配置 workers 文件
 
 ```bash
-hdfs namenode -format
+vim $HADOOP_HOME/etc/hadoop/workers
 ```
 
-### 启动集群服务 (在 hadoop01 执行)
+删除默认的 localhost，添加所有 slave 节点：
+
+```
+slave1
+slave2
+slave3
+```
+
+### 分发 Hadoop 到 Slave 节点
+
+#### 分发 profile 文件
+
+```bash
+scp ~/.profile hadoop@slave1:~
+scp ~/.profile hadoop@slave2:~
+scp ~/.profile hadoop@slave3:~
+```
+
+在各 slave 节点执行：
+
+```bash
+source ~/.profile
+```
+
+检查是否分发成功：
+
+```bash
+echo $HADOOP_HOME
+```
+
+![](https://img.makis-life.cn/images/20251210022335992.png)
+
+#### 分发 hadoop 目录
+
+```bash
+scp -r /usr/local/hadoop hadoop@slave1:~
+scp -r /usr/local/hadoop hadoop@slave2:~
+scp -r /usr/local/hadoop hadoop@slave3:~
+```
+
+![](https://img.makis-life.cn/images/20251210022335994.png)
+
+在各 slave 节点执行：
+
+```bash
+sudo mv ~/hadoop /usr/local/hadoop
+sudo chown -R hadoop:hadoop /usr/local/hadoop
+```
+
+### 格式化 NameNode
+
+在 master 节点执行：
+
+```bash
+hadoop namenode -format
+```
+
+![](https://img.makis-life.cn/images/20251210022335995.png)
+
+看到 "Storage directory /usr/local/hadoop/hdfs/name has been successfully formatted" 表示格式化成功。
+
+![](https://img.makis-life.cn/images/20251210022335996.png)
+
+### 启动 Hadoop 集群
+
+在 master 节点执行：
 
 ```bash
 start-dfs.sh
 start-yarn.sh
-mapred --daemon start historyserver
 ```
 
-### 验证集群状态
+![](https://img.makis-life.cn/images/20251210022335997.png)
 
-①**检查进程**
+### 检查各节点进程
+
+#### Master 节点
 
 ```bash
-# 在hadoop01上执行
 jps
-
-## NameNode, SecondaryNameNode, ResourceManager, JobHistoryServer
-
-# 在hadoop02和hadoop03上执行
-jps
-## DataNode, NodeManager
-
-# 以上少一个都是报错
 ```
 
-①**检查 HDFS 状态**
+应该看到以下进程：
+
+- NameNode
+- SecondaryNameNode
+- ResourceManager
+
+![](https://img.makis-life.cn/images/20251210022335998.png)
+
+#### Slave 节点
+
+在各 slave 节点执行：
 
 ```bash
+jps
+```
+
+应该看到以下进程：
+
+- DataNode
+- NodeManager
+
+![](https://img.makis-life.cn/images/20251210022335999.png)
+
+### 访问 Hadoop Web UI
+
+在浏览器访问：
+
+- HDFS Web UI: `http://master:9870`
+- YARN Web UI: `http://master:8088`
+
+![](https://img.makis-life.cn/images/20251210022336000.png)
+
+可以看见所有 DataNode 的信息，表示 Hadoop 集群搭建成功！
+
+## 启动/停止集群
+
+```bash
+# 启动 HDFS
+start-dfs.sh
+
+# 启动 YARN
+start-yarn.sh
+
+# 停止 HDFS
+stop-dfs.sh
+
+# 停止 YARN
+stop-yarn.sh
+```
+
+### HDFS 常用命令
+
+```bash
+# 查看 HDFS 目录
+hdfs dfs -ls /
+
+# 创建目录
+hdfs dfs -mkdir /test
+
+# 上传文件
+hdfs dfs -put localfile.txt /test/
+
+# 下载文件
+hdfs dfs -get /test/file.txt .
+
+# 删除文件
+hdfs dfs -rm /test/file.txt
+
+# 删除目录
+hdfs dfs -rm -r /test
+
+# 查看文件内容
+hdfs dfs -cat /test/file.txt
+
+# 查看 HDFS 报告
 hdfs dfsadmin -report
 ```
 
-输出（只要LiveNode不等于0就是成功了）
-
-```
-Configured Capacity: 83765886976 (78.01 GB)
-Present Capacity: 61911212032 (57.66 GB)
-DFS Remaining: 61911162880 (57.66 GB)
-DFS Used: 49152 (48 KB)
-DFS Used%: 0.00%
-Replicated Blocks:
-        Under replicated blocks: 0
-        Blocks with corrupt replicas: 0
-        Missing blocks: 0
-        Missing blocks (with replication factor 1): 0
-        Low redundancy blocks with highest priority to recover: 0
-        Pending deletion blocks: 0
-Erasure Coded Block Groups:
-        Low redundancy block groups: 0
-        Block groups with corrupt internal blocks: 0
-        Missing block groups: 0
-        Low redundancy blocks with highest priority to recover: 0
-        Pending deletion blocks: 0
-
--------------------------------------------------
-Live datanodes (2):
-
-Name: 120.2xx.1x.1xx:9866 (hadoop02)
-Hostname: hadoop02
-Decommission Status : Normal
-Configured Capacity: 41882943488 (39.01 GB)
-DFS Used: 24576 (24 KB)
-Non DFS Used: 11279278080 (10.50 GB)
-DFS Remaining: 28667904000 (26.70 GB)
-DFS Used%: 0.00%
-DFS Remaining%: 68.45%
-Configured Cache Capacity: 0 (0 B)
-Cache Used: 0 (0 B)
-Cache Remaining: 0 (0 B)
-Cache Used%: 100.00%
-Cache Remaining%: 0.00%
-Xceivers: 0
-Last contact: Sun Sep 21 03:07:57 CST 2025
-Last Block Report: Sun Sep 21 03:00:42 CST 2025
-Num of Blocks: 0
-
-
-Name: 47.11x.xx8.xxx:9866 (hadoop03)
-Hostname: hadoop03
-Decommission Status : Normal
-Configured Capacity: 41882943488 (39.01 GB)
-DFS Used: 24576 (24 KB)
-Non DFS Used: 6703923200 (6.24 GB)
-DFS Remaining: 33243258880 (30.96 GB)
-DFS Used%: 0.00%
-DFS Remaining%: 79.37%
-Configured Cache Capacity: 0 (0 B)
-Cache Used: 0 (0 B)
-Cache Remaining: 0 (0 B)
-Cache Used%: 100.00%
-Cache Remaining%: 0.00%
-Xceivers: 0
-Last contact: Sun Sep 21 03:07:55 CST 2025
-Last Block Report: Sun Sep 21 03:00:37 CST 2025
-Num of Blocks: 0
-```
-
-①**Web 界面访问**
-
-- NameNode: `http://IP:9870`
-- ResourceManager: `http://IP:8088`
-- JobHistory: `http://IP:19888`
-
-## 第七阶段：测试 MapReduce
-
-### 创建测试目录和文件
+### YARN 常用命令
 
 ```bash
-hdfs dfs -mkdir /user
-hdfs dfs -mkdir /user/hadoop
-hdfs dfs -mkdir input
-hdfs dfs -put $HADOOP_HOME/etc/hadoop/*.xml input
-```
+# 查看所有应用
+yarn application -list
 
-### 运行词频统计示例
+# 查看节点状态
+yarn node -list
 
-```bash
-hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar wordcount input output
-```
-![](https://img.makis-life.cn/images/20251110181548092.png)
-
-### 查看结果
-
-scat output/part-r-00000
-
-## 关闭集群
-
-在 hadoop01 执行：
-
-```bash
-mapred --daemon stop historyserver
-stop-yarn.sh
-stop-dfs.sh
+# 终止应用
+yarn application -kill <application_id>
 ```

@@ -37,7 +37,7 @@ features:
 | Hadoop    | 3.4.2        |
 | HBase     | 2.6.3        |
 | ZooKeeper | 2.8.5        |
-| Java      | jdk11        |
+| Java      | jdk21        |
 
 ## TODO
 

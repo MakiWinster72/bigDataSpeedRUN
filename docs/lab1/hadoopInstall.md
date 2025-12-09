@@ -48,11 +48,11 @@ cat ./id_rsa.pub >> ./authorized_keys
 
 ## 安装 Java
 
-① 安装 OpenJDK 11
+① 安装 OpenJDK 21
 
 ```bash
 sudo apt update
-sudo apt install openjdk-11-jdk
+sudo apt install openjdk-21-jdk
 ```
 
 > 或使用[resources](../resources.md)推荐的版本
@@ -62,7 +62,7 @@ sudo apt install openjdk-11-jdk
 编辑 `~/.profile`
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 export PATH=$PATH:$JAVA_HOME/bin
 
 ```
@@ -165,6 +165,6 @@ cat ./output/*
 `# export JAVA_HOME=`
 
 改成：
-`export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64`
+`export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64`
 
 > 请在`sudo update-alternatives --config java`查看具体路径

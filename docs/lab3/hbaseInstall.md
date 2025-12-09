@@ -1,9 +1,9 @@
 > [!note]
-> 本教程在 Ubuntu 24.04.03 lts 上演示安装Hbase。
-> 请先安装好hadoop:[伪分布式](../lab1/PseudoDistributed.md)
+> 本教程在 Ubuntu 24.04.03 lts 上演示安装 Hbase。
+> 请先安装好 hadoop:[伪分布式](../lab1/PseudoDistributed.md)
 
 > [!tip] 🎉
-> 已有sh脚本可一键安装完成 -> [shell](../other/shell.md#hbase)
+> 已有 sh 脚本可一键安装完成 -> [shell](../other/shell.md#hbase)
 
 ## 安装 HBase 教程
 
@@ -29,7 +29,7 @@ export PATH=$PATH:$HBASE_HOME/bin
    ```
 
 > [!note]
-> mv是移动文件的命令，当文件被移动到原文件夹并且指定不同的名字，就完成了重命名操作
+> mv 是移动文件的命令，当文件被移动到原文件夹并且指定不同的名字，就完成了重命名操作
 
 2. 创建配置文件：
 
@@ -37,8 +37,8 @@ export PATH=$PATH:$HBASE_HOME/bin
    cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg
    ```
 
-
    修改配置：
+
    - `dataDir=/home/hadoop/zookeeper/data`
    - `clientPort=2181`
 
@@ -76,14 +76,6 @@ export PATH=$PATH:$HBASE_HOME/bin
     <name>hbase.cluster.distributed</name>
     <value>true</value>
   </property>
-  <property>
-    <name>hbase.wal.provider</name>
-    <value>filesystem</value>
-  </property>
-  <property>
-    <name>hbase.tmp.dir</name>
-    <value>hdfs://localhost:9000/hbase/tmp</value>
-  </property>
 <!-- HBase的根目录，在HDFS下的/hbase -->
   <property>
     <name>hbase.rootdir</name>
@@ -92,6 +84,14 @@ export PATH=$PATH:$HBASE_HOME/bin
   <property>
     <name>hbase.zookeeper.quorum</name>
     <value>localhost</value>
+  </property>
+  <property>
+      <name>hbase.zookeeper.property.dataDir</name>
+      <value>/usr/local/zookeeper/data</value>
+  </property>
+  <property>
+      <name>hbase.zookeeper.property.clientPort</name>
+      <value>2181</value>
   </property>
   <property>
     <name>hbase.unsafe.stream.capability.enforce</name>
@@ -108,40 +108,16 @@ export PATH=$PATH:$HBASE_HOME/bin
 vim $HBASE_HOME/conf/hbase-env.sh
 ```
 
-2. 查找并设置 `JAVA_HOME`
-   在 `vim` 中输入 `/JAVA_HOME` 进入搜索模式，找到如下行：
+2. 查找并设置以下内容
 
 ```bash
-# export JAVA_HOME=/usr/java/jdk1.6.0/
-```
-
-修改为你的 Java 路径，例如：
-
-```bash
-export JAVA_HOME=/usr/lib/jvm/jdk11
-```
-
-可以使用以下命令查看路径：
-
-```bash
-update-alternatives --query java
-```
-
-![](https://img.makis-life.cn/images/20251110181408593.png)
-
-> e.g：此处 `JAVA_HOME=/usr/lib/jvm/jdk1.8.0_202`
-
-3. 找到以下内容并更新：
-
-```bash
-export HBASE_DISABLE_HADOOP_CLASSPATH_LOOKUP="true"
 export HBASE_MANAGES_ZK=false
+export JAVA_HOME=/usr/lib/jvm/jdk21
 export HBASE_CLASSPATH=/usr/local/hadoop/etc/hadoop
+export HBASE_DISABLE_HADOOP_CLASSPATH_LOOKUP="true"
 ```
-> 或直接添加到文件开头
 
-
-4. 保存并退出
+3. 保存并退出
    在 `vim` 中输入
 
 ```
@@ -177,7 +153,7 @@ export HBASE_CLASSPATH=/usr/local/hadoop/etc/hadoop
 
    若显示 `Master is running` 和 `RegionServers` 列表，则启动成功。
 
-查看jps
+查看 jps
 ![](https://img.makis-life.cn/images/20251110181408594.png)
 
 ---
