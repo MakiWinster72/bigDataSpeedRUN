@@ -18,6 +18,9 @@ export default defineConfig({
   ignoreDeadLinks: true,
 
   themeConfig: {
+    outline: {
+      level: [2, 3],
+    },
     nav: [
       { text: "首页", link: "/" },
       { text: "资源", link: "/resources" },
@@ -70,6 +73,10 @@ export default defineConfig({
           { text: "MapReduce Python", link: "/lab5/python" },
           { text: "MapReduce Java", link: "/lab5/java" },
         ],
+      },
+      {
+        text: "集群搭建实验报告",
+        link: "/ClusterNote",
       },
       {
         text: "其他资料",

@@ -37,51 +37,21 @@ sudo chmod ~/hadoopInstall.sh
 然后直接选步骤 10 即可。
 
 ## hadoop 完全分布式
+> 与集群搭建共用同一个shell脚本
 
 为节省时间可预先下载好安装包与 sh 脚本放与同一目录下。脚本内也提供了下载连接，若未检测到安装包会询问是否在线下载[resources](../resources.md)。
 ![](https://img.makis-life.cn/images/20251110181116142.png)
 
 > 从 windows 向虚拟机传输文件可参考 [sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](otherWaysTransferFileToVM.md)
 
-### .env 文件
-
-在脚本同目录下，创建一`.env`文件
-
 ```bash
-vim .env
+chmod +x hadoopCluster.sh
+bash hadoopCluster.sh
 ```
+![](https://img.makis-life.cn/images/20251210060725963.png)
+选择1235即可
 
-内容入下：
-
-```bash
-CURRENT_USER_PASSWORD="123456" #当前用户密码（注意所有节点应当使用相同的用户名和密码）
-MASTER_IP="192.168.1.100" # Master下用 ip addr show查看
-SLAVE_COUNT=2 # 指定具体整数，与下方ip个数一致
-SLAVE_IPS_STR="IPv4,IPv4"
-HADOOP_PASSWORD="123456" # hadoop用户的密码
-```
-
-### 执行文件
-
-```bash
-bash ~/hadoopCluster.sh  # 记得chmod +x hadoopCluster.sh添加权限
-```
-
-会提示你检查信息是否有问题
-
-![](https://img.makis-life.cn/images/20251110181116143.png)
-
-输入 1 后
-
-sit back, relax, enjoy the show
-
-![](https://img.makis-life.cn/images/20251110181116144.png)
-
-完成后将提示
-
-![](https://img.makis-life.cn/images/20251110181116145.png)
-
-点击链接即可自动在浏览器中打开
+在浏览器中打开http://localhost:9870
 
 ![](https://img.makis-life.cn/images/20251110181116146.png)
 
@@ -126,3 +96,39 @@ source ~/.bashrc
 ![](https://img.makis-life.cn/images/20251110181116150.png)
 
 执行完后请手`source ~/.bashrc`或重新打开一个终端
+
+## 集群搭建
+
+提前完成好
+1. 获取各主机IP地址
+2. 完成hadoop用户免密码执行sudo权限指令
+
+修改相应数据
+```bash
+vim hadoopCluster.sh
+```
+
+![](https://img.makis-life.cn/images/20251210060725965.png)
+按下i进入插入模式，修改为对应的数据即可。下方mysql无需提前设置
+输入:wq保存并退出
+
+准备好各安装包和脚本同一目录，若版本号不同记得在sh文件中修改后保存
+```
+packages
+├── apache-hive-4.2.0-bin.tar.gz
+├── apache-zookeeper-3.8.5-bin.tar.gz
+├── hadoop-3.4.2.tar.gz
+├── hadoopCluster.sh  # sh脚本
+├── hbase-2.6.3-bin.tar.gz
+├── openjdk-21_linux-x64_bin.tar.gz
+├── scala-2.13.16.tgz
+└── spark-4.0.1-bin-hadoop3.tgz
+```
+
+### 运行
+
+```bash
+chmod +x hadoopCluster.sh
+bash hadoopCluster.sh
+```
+![](https://img.makis-life.cn/images/20251210060725966.png)
