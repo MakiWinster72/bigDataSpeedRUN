@@ -42,6 +42,8 @@
 - **编程模型**：Map 和 Reduce 函数编写
 - **案例实践**：词频统计、数据分析等
 
+### 6. 集群搭建
+
 ## 资源
 
 提供了自动化安装脚本，可以快速部署环境：
@@ -57,6 +59,7 @@
 
 - [实验一：虚拟机安装](./lab1/virtualMachine)
 - [实验二：Hadoop 集群安装与HDFS的常见命令](./lab1/hadoopInstall)
-- [实验三：HBase与HBase Shell](./lab3/hbaseInstall).
+- [实验三：HBase与HBase Shell](./lab3/hbaseInstall)
 - [实验四：云数据库与 NoSQL](./lab4/RDS)
 - [实验五：MapReduce](./lab5/java)
+- [集群搭建](./ClusterNote)
