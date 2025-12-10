@@ -8,28 +8,28 @@
 
 ## 一、编译与运行环境举例
 
-① 创建 Java 源文件
+1. 创建 Java 源文件
 
 ```bash
 vim UploadFileHDFS.java
 ```
 
-② 使用 Hadoop 提供的编译器编译
+2. 使用 `javac` 并显式加入 Hadoop 依赖
 
 ```bash
-hadoop com.sun.tools.javac.Main name.java
+javac -cp $(hadoop classpath) *.java
 ```
 
-③ 或使用 `javac` 并显式加入 Hadoop 依赖
-
+3. 打包为jar文件
 ```bash
-javac -cp $HADOOP_HOME/share/hadoop/common/hadoop-common-*.jar:$HADOOP_HOME/share/hadoop/hdfs/hadoop-hdfs-*.jar *.java
+jar -cvf jar文件名 class文件
 ```
+> 或直接运行 `java -cp .:$(hadoop classpath) 类 参数1 参数2...`
 
-④ 运行示例
+4. 运行示例
 
 ```bash
-java -cp .:$HADOOP_HOME/share/hadoop/common/hadoop-common-*.jar:$HADOOP_HOME/share/hadoop/hdfs/hadoop-hdfs-*.jar UploadFileHDFS 本地文件 HDFS路径 true
+hadoop jar jar文件 函数 参数1 参数2
 ```
 
 ---
@@ -74,6 +74,14 @@ public class UploadFileHDFS {
 }
 ```
 
+#### 运行
+```bash
+javac -cp $(hadoop classpath) UploadFileHDFS.java
+
+jar -cvf UploadFileHDFS.jar UploadFileHDFS.class
+
+hadoop jar UploadFileHDFS.jar UploadFileHDFS test /input/test false
+```
 **对应命令：**
 
 ```bash
@@ -116,6 +124,29 @@ public class DownloadFileHDFS {
 }
 ```
 
+#### 运行
+
+编译 Java 文件：
+
+```bash
+javac -cp $(hadoop classpath) DownloadFileHDFS.java
+```
+
+生成 JAR 包：
+
+```bash
+jar -cvf DownloadFileHDFS.jar DownloadFileHDFS.class
+```
+
+执行下载（如果本地文件已存在，将自动重命名为 xxx_new）：
+
+```bash
+hadoop jar DownloadFileHDFS.jar DownloadFileHDFS /input/test /home/hadoop/test
+```
+
+说明：  
+当 `/home/hadoop/test` 已存在时，程序会自动将目标路径改为 `/home/hadoop/test_new`，避免覆盖本地已有文件。
+
 **对应命令：**
 
 ```bash
@@ -147,6 +178,29 @@ public class CatFileHDFS {
     }
 }
 ```
+
+#### 运行
+
+编译 Java 文件：
+
+```bash
+javac -cp $(hadoop classpath) CatFileHDFS.java
+```
+
+打包生成 JAR：
+
+```bash
+jar -cvf CatFileHDFS.jar CatFileHDFS.class
+```
+
+执行并在终端输出文件内容：
+
+```bash
+hadoop jar CatFileHDFS.jar CatFileHDFS /input/test
+```
+
+说明：  
+程序会直接将 `/input/test` 的 HDFS 文件内容打印到当前终端，与 `hdfs dfs -cat` 效果一致。
 
 **对应命令：**
 
@@ -181,6 +235,28 @@ public class FileInfoHDFS {
     }
 }
 ```
+
+#### 运行
+
+编译 Java 文件：
+
+```bash
+javac -cp $(hadoop classpath) FileInfoHDFS.java
+```
+
+生成 JAR 包：
+
+```bash
+jar -cvf FileInfoHDFS.jar FileInfoHDFS.class
+```
+
+执行查看属性：
+
+```bash
+hadoop jar FileInfoHDFS.jar FileInfoHDFS /input/test
+```
+
+程序将输出 HDFS 文件 `/input/test` 的权限、大小、修改时间和完整路径，与 `hdfs dfs -ls -d` 的效果一致。
 
 **对应命令：**
 
@@ -219,6 +295,28 @@ public class ListDirHDFS {
 }
 ```
 
+#### 运行
+
+编译 Java 文件：
+
+```bash
+javac -cp $(hadoop classpath) ListDirHDFS.java
+```
+
+打包生成 JAR：
+
+```bash
+jar -cvf ListDirHDFS.jar ListDirHDFS.class
+```
+
+执行递归列出目录：
+
+```bash
+hadoop jar ListDirHDFS.jar ListDirHDFS /user/hadoop
+```
+
+程序会从 `/user/hadoop` 开始，递归打印每个文件与子目录的路径、权限、大小，与 `hdfs dfs -ls -R` 的效果一致。
+
 **对应命令：**
 
 ```bash
@@ -255,6 +353,34 @@ public class CreateDeleteFileHDFS {
     }
 }
 ```
+
+#### 运行
+
+编译 Java 文件：
+
+```bash
+javac -cp $(hadoop classpath) CreateDeleteFileHDFS.java
+```
+
+打包生成 JAR：
+
+```bash
+jar -cvf CreateDeleteFileHDFS.jar CreateDeleteFileHDFS.class
+```
+
+创建文件（若上级目录不存在将自动创建）：
+
+```bash
+hadoop jar CreateDeleteFileHDFS.jar CreateDeleteFileHDFS /dir1/dir2/file.txt true
+```
+
+删除文件：
+
+```bash
+hadoop jar CreateDeleteFileHDFS.jar CreateDeleteFileHDFS /dir1/dir2/file.txt false
+```
+
+程序行为等价于使用 `hdfs dfs -mkdir -p`、`hdfs dfs -touchz` 和 `hdfs dfs -rm`。
 
 **对应命令：**
 
@@ -346,6 +472,36 @@ public class AppendFileHDFS {
 }
 ```
 
+#### 运行
+
+编译 Java 文件：
+
+```bash
+javac -cp $(hadoop classpath) AppendFileHDFS.java
+```
+
+生成 JAR 包：
+
+```bash
+jar -cvf AppendFileHDFS.jar AppendFileHDFS.class
+```
+
+在 HDFS 文件**结尾追加内容**：
+
+```bash
+hadoop jar AppendFileHDFS.jar AppendFileHDFS /input/test append.txt true
+```
+
+在 HDFS 文件**开头追加内容**（即把新内容写在最前面，再写入旧内容）：
+
+```bash
+hadoop jar AppendFileHDFS.jar AppendFileHDFS /input/test append.txt false
+```
+
+说明：  
+Hadoop 原生命令 `hdfs dfs -appendToFile` 只能在结尾追加。  
+此 Java 程序可以选择追加到文件开头或结尾。
+
 **对应命令（仅支持结尾追加）：**
 
 ```bash
@@ -373,6 +529,28 @@ public class DeleteFileHDFS {
     }
 }
 ```
+
+#### 运行
+
+编译 Java 文件：
+
+```bash
+javac -cp $(hadoop classpath) DeleteFileHDFS.java
+```
+
+打包生成 JAR：
+
+```bash
+jar -cvf DeleteFileHDFS.jar DeleteFileHDFS.class
+```
+
+执行删除操作：
+
+```bash
+hadoop jar DeleteFileHDFS.jar DeleteFileHDFS /input/test
+```
+
+程序会删除 HDFS 中的 `/input/test` 文件，效果与 `hdfs dfs -rm` 等同。
 
 **对应命令：**
 
@@ -403,26 +581,30 @@ public class MoveFileHDFS {
     }
 }
 ```
+#### 运行
+
+编译 Java 文件：
+
+```bash
+javac -cp $(hadoop classpath) MoveFileHDFS.java
+```
+
+打包生成 JAR：
+
+```bash
+jar -cvf MoveFileHDFS.jar MoveFileHDFS.class
+```
+
+执行移动操作：
+
+```bash
+hadoop jar MoveFileHDFS.jar MoveFileHDFS /input/test /input/test2
+```
+
+程序会将 `/input/test` 移动到 `/input/test2`。
 
 **对应命令：**
 
 ```bash
 hdfs dfs -mv /源路径 /目标路径
 ```
-
----
-
-## 三、总结
-
-| 功能      | Java 类名              | Hadoop Shell 等价命令               |
-| ------- | -------------------- | ------------------------------- |
-| 上传文件    | UploadFileHDFS       | `hdfs dfs -put / -appendToFile` |
-| 下载文件    | DownloadFileHDFS     | `hdfs dfs -get`                 |
-| 查看内容    | CatFileHDFS          | `hdfs dfs -cat`                 |
-| 查看属性    | FileInfoHDFS         | `hdfs dfs -ls -d`               |
-| 递归列出    | ListDirHDFS          | `hdfs dfs -ls -R`               |
-| 创建/删除文件 | CreateDeleteFileHDFS | `hdfs dfs -touchz / -rm`        |
-| 创建/删除目录 | CreateDeleteDirHDFS  | `hdfs dfs -mkdir / -rm -r`      |
-| 追加内容    | AppendFileHDFS       | `hdfs dfs -appendToFile`        |
-| 删除文件    | DeleteFileHDFS       | `hdfs dfs -rm`                  |
-| 移动文件    | MoveFileHDFS         | `hdfs dfs -mv`                  |

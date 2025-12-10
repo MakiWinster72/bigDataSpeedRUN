@@ -9,7 +9,7 @@
 使用python操控hdfs需要预安装hdfs依赖
 ```bash
 sudo apt install pip python3.12-venv
-# 使用虚拟环境(ubuntu22.04以上必须)
+# 使用虚拟环境
 python3 -m venv venv
 source venv/bin/activate
 # 安装hdfs依赖
