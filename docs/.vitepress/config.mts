@@ -16,6 +16,44 @@ export default defineConfig({
   description: "A site that helps bigdata lab course.",
   base: "/bigdata/",
   ignoreDeadLinks: true,
+  // Preload built font assets: during build VitePress will emit the fonts with hashed filenames.
+  // transformHead finds those emitted assets and injects preload <link>s for better performance.
+  transformHead({ assets }) {
+    if (!assets || !Array.isArray(assets)) return [];
+    // 找到构建产物中匹配 HurmitNerdFontMono-Regular 和 Recursive 的 woff2 文件（带 hash）
+    const hurmit = assets.find((file: string) =>
+      /HurmitNerdFontMono-Regular\.[\w-]+\.woff2$/.test(file),
+    );
+    const recursive = assets.find((file: string) =>
+      /Recursive\.[\w-]+\.woff2$/.test(file),
+    );
+    const links: any[] = [];
+    if (recursive) {
+      links.push([
+        "link",
+        {
+          rel: "preload",
+          href: recursive,
+          as: "font",
+          type: "font/woff2",
+          crossorigin: "",
+        },
+      ]);
+    }
+    if (hurmit) {
+      links.push([
+        "link",
+        {
+          rel: "preload",
+          href: hurmit,
+          as: "font",
+          type: "font/woff2",
+          crossorigin: "",
+        },
+      ]);
+    }
+    return links;
+  },
 
   themeConfig: {
     outline: {

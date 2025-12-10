@@ -4,6 +4,13 @@ import mediumZoom from "medium-zoom";
 
 import type { EnhanceAppContext } from "vitepress";
 import "./custom.css";
+import "./use-fonts";
+
+/* Import font assets so Vite processes them during build and emits hashed filenames.
+   These imports ensure the fonts are included in the build assets and can be
+   preloaded via transformHead. */
+import HurmitRegular from "./fonts/HurmitNerdFontMono-Regular.woff2";
+import HurmitBold from "./fonts/HurmitNerdFontMono-Bold.woff2";
 
 export default {
   extends: DefaultTheme,
