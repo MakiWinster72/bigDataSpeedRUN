@@ -31,13 +31,16 @@ features:
 
 本教程使用以下组件/软件版本：
 
-| 名称        | 版本号          |
-| --------- | ------------ |
-| Ubuntu    | 24.04.03 LTS |
-| Hadoop    | 3.4.2        |
-| HBase     | 2.6.3        |
-| ZooKeeper | 2.8.5        |
-| Java      | jdk21        |
+| 软件名称      | 版本        |
+| ------------- | ----------- |
+| Ubuntu 虚拟机 | 24.04.4 LTS |
+| Hadoop        | 3.4.2       |
+| HBase         | 2.6.3       |
+| Hive          | 4.2.0       |
+| Zookeeper     | 3.8.5       |
+| Spark         | 4.0.1       |
+| Scala         | 2.13.16     |
+| OpenJDK       | 21          |
 
 ## TODO
 
