@@ -57,16 +57,103 @@ export default {
         });
       };
 
+      // 图片懒加载：使用 IntersectionObserver 在图片进入视口时才设置真实 src
+      const initLazyLoad = (() => {
+        let observer: IntersectionObserver | null = null;
+
+        function ensureObserver() {
+          if (observer) return observer;
+          observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const img = entry.target as HTMLImageElement;
+              const dataSrc = img.getAttribute("data-src");
+              const dataSrcset = img.getAttribute("data-srcset");
+              if (dataSrc) {
+                img.src = dataSrc;
+                img.removeAttribute("data-src");
+              }
+              if (dataSrcset) {
+                img.srcset = dataSrcset;
+                img.removeAttribute("data-srcset");
+              }
+              observer?.unobserve(img);
+            });
+          }, { rootMargin: "200px 0px" });
+          return observer;
+        }
+
+        return () => {
+          try {
+            const obs = ensureObserver();
+            // 首次将文档中的图片转换为延迟加载：把 src/srcset => data-src/data-srcset，并加上 vp-lazy 类
+            const placeholder =
+              "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+            document.querySelectorAll(".vp-doc img:not(.vp-lazy)").forEach((el) => {
+              const img = el as HTMLImageElement;
+              const src = img.getAttribute("src") || "";
+              const srcset = img.getAttribute("srcset") || "";
+
+              // 跳过内联资源或占位符
+              if (!src || src.startsWith("data:") || src === placeholder) return;
+
+              // 如果图片位于 <picture> 中，也把其 <source> 的 srcset 转为 data-srcset
+              const picture = img.parentElement;
+              if (picture && picture.tagName.toLowerCase() === "picture") {
+                picture.querySelectorAll("source").forEach((s) => {
+                  const ssrc = s.getAttribute("srcset");
+                  if (ssrc) {
+                    s.setAttribute("data-srcset", ssrc);
+                    s.removeAttribute("srcset");
+                  }
+                });
+              }
+
+              // 移动真实地址到 data-* 并设置轻量占位符
+              img.setAttribute("data-src", src);
+              if (srcset) img.setAttribute("data-srcset", srcset);
+              img.setAttribute("src", placeholder);
+              img.removeAttribute("srcset");
+              img.classList.add("vp-lazy");
+            });
+
+            // 观察所有标记为 vp-lazy 的图片
+            document.querySelectorAll("img.vp-lazy").forEach((el) => {
+              const img = el as HTMLImageElement;
+              if (!img.getAttribute("data-src") && !img.getAttribute("data-srcset")) return;
+              obs.observe(img);
+            });
+          } catch (e) {
+            // 不支持 IntersectionObserver：降级到立即加载
+            document.querySelectorAll("img.vp-lazy").forEach((el) => {
+              const img = el as HTMLImageElement;
+              const ds = img.getAttribute("data-src");
+              const dss = img.getAttribute("data-srcset");
+              if (ds) img.src = ds;
+              if (dss) img.srcset = dss;
+            });
+          }
+        };
+      })();
+
       // 页面加载完成后初始化
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initZoom);
+        document.addEventListener("DOMContentLoaded", () => {
+          // 先初始化懒加载（把真实 src 移到 data-src），再初始化缩放，避免缩放库触发真实图片的加载
+          initLazyLoad();
+          initZoom();
+        });
       } else {
+        initLazyLoad();
         initZoom();
       }
 
       // 监听路由变化
       router.onAfterRouteChange = () => {
-        setTimeout(initZoom, 100);
+        setTimeout(() => {
+          initLazyLoad();
+          initZoom();
+        }, 100);
       };
 
       /**

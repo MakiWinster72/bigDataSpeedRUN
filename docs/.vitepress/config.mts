@@ -8,6 +8,41 @@ export default defineConfig({
     config: (md) => {
       // 启用任务列表插件
       md.use(taskLists);
+
+      // =======lazyLoading========
+      // 将生成的 <img src="..."> 转为延迟加载形式：
+      // - 把真实地址移动到 data-src / data-srcset
+      // - 把 src / srcset 设置为小占位符
+      // - 给图片添加 vp-lazy 类，供客户端 IntersectionObserver 使用
+      const imageRule = md.renderer.rules.image;
+      md.renderer.rules.image = (tokens, idx, options, env, self) => {
+        const token = tokens[idx];
+        const src = token.attrGet("src");
+        const srcset = token.attrGet("srcset");
+        const placeholder =
+          "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+
+        if (src && !/^data:/.test(src)) {
+          token.attrSet("data-src", src);
+          token.attrSet("src", placeholder);
+        }
+        if (srcset) {
+          token.attrSet("data-srcset", srcset);
+          token.attrSet("srcset", "");
+        }
+
+        // 保留任何已有的类，但确保包含 vp-lazy
+        const cls = token.attrGet("class") || "";
+        if (!/\bvp-lazy\b/.test(cls)) {
+          token.attrSet("class", (cls + " vp-lazy").trim());
+        }
+
+        // 仍然调用原渲染器以输出 html
+        return imageRule(tokens, idx, options, env, self);
+      };
+    },
+    image: {
+      lazyLoading: true,
     },
   },
 
