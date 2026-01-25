@@ -1,26 +1,5 @@
-/* Recursive variable font (used for body text) */
-@font-face {
-  font-family: "Recursive";
-  src:
-    local("Recursive"),
-    local("Recursive VF"),
-    /* Theme-local file (processed by Vite during build) */
-      url("./fonts/Recursive.woff2") format("woff2"),
-    /* Public fallback (copied to /assets/) */ url("/assets/Recursive.woff2")
-      format("woff2"),
-    /* CDN fallback */ url("https://res.makis-life.cn/fonts/Recursive.woff2")
-      format("woff2");
-  /* Recursive is a variable font; allow full weight range */
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-  /* optional: allow width/variation ranges for VF-aware browsers */
-  font-stretch: 75% 125%;
-}
-
 :root::before {
   content: "";
-  /* Use the regular family to trigger the main font file early */
   font-family: "HM-M", sans-serif;
   font-size: 0;
   width: 0;
@@ -41,6 +20,27 @@
   --vp-font-family-mono:
     "Recursive", ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
     "Courier New", monospace;
+}
+
+.logo {
+  width: 100%;
+  height: auto;
+  margin-right: 18px !important;
+  transform: scale(1.8);
+  transform-origin: left center;
+}
+
+.title {
+  padding: 1px;
+  font-family: "Recursive";
+}
+
+.tagline {
+  font-family: "Recursive";
+}
+
+.name {
+  font-weight: bold;
 }
 
 /* 自定义容器样式 */
@@ -441,8 +441,11 @@ a:hover::after {
 
 /* Medium Zoom 样式覆盖 */
 .medium-zoom-overlay {
-  background: rgba(0, 0, 0, 0.9) !important;
   z-index: 1000;
+  background: rgba(0, 0, 0, 0) !important;
+  backdrop-filter: blur(8px);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .medium-zoom-image {

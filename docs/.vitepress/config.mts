@@ -3,6 +3,7 @@ import taskLists from "markdown-it-task-lists";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  outDir: "./bigdata/",
   markdown: {
     breaks: true,
     config: (md) => {
@@ -46,18 +47,20 @@ export default defineConfig({
     },
   },
 
-  // 网站基础信息
-  title: "Big Data SpeedRUN",
-  description: "A site that helps bigdata lab course.",
+  lang: "zh-CN",
+  title: "大数据技术原理",
+  description: "Hadoop · HDFS · HBase · DataBase · MapReduce",
   base: "/bigdata/",
   ignoreDeadLinks: true,
-  // Preload built font assets: during build VitePress will emit the fonts with hashed filenames.
-  // transformHead finds those emitted assets and injects preload <link>s for better performance.
+
   transformHead({ assets }) {
     if (!assets || !Array.isArray(assets)) return [];
-    // 找到构建产物中匹配 hm-m 和 Recursive 的 woff2 文件（带 hash）
-    const hm = assets.find((file: string) => /hm-m\.[\w-]+\.woff2$/i.test(file));
-    const recursive = assets.find((file: string) => /Recursive\.[\w-]+\.woff2$/i.test(file));
+    const hm = assets.find((file: string) =>
+      /hm-m\.[\w-]+\.woff2$/i.test(file),
+    );
+    const recursive = assets.find((file: string) =>
+      /Recursive\.[\w-]+\.woff2$/i.test(file),
+    );
     const links: any[] = [];
     if (recursive) {
       links.push([
@@ -87,6 +90,8 @@ export default defineConfig({
   },
 
   themeConfig: {
+    logo: "/favicons.svg",
+    siteTitle: "Big Data",
     outline: {
       level: [2, 3],
     },

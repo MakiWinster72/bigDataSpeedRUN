@@ -6,17 +6,11 @@ import type { EnhanceAppContext } from "vitepress";
 import "./custom.css";
 import "./use-fonts";
 
-/* Import font assets so Vite processes them during build and emits hashed filenames.
-   These imports ensure the fonts are included in the build assets and can be
-   preloaded via transformHead. */
-// Font assets are imported in use-fonts.ts so Vite will process them during build
-
 export default {
   extends: DefaultTheme,
   enhanceApp({ app, router }: EnhanceAppContext) {
     // 在应用级别初始化图片缩放功能
     if (typeof window !== "undefined") {
-      // 确保在客户端环境中执行
       const initZoom = () => {
         const images = document.querySelectorAll(
           ".vp-doc img:not(.medium-zoom-image)",
@@ -24,7 +18,6 @@ export default {
         images.forEach((imgElement) => {
           const img = imgElement as HTMLImageElement;
 
-          // 跳过已经处理过的图片
           if (img.classList.contains("medium-zoom-image")) return;
 
           // 添加点击放大功能
@@ -62,64 +55,72 @@ export default {
 
         function ensureObserver() {
           if (observer) return observer;
-          observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
-              const img = entry.target as HTMLImageElement;
-              const dataSrc = img.getAttribute("data-src");
-              const dataSrcset = img.getAttribute("data-srcset");
-              if (dataSrc) {
-                img.src = dataSrc;
-                img.removeAttribute("data-src");
-              }
-              if (dataSrcset) {
-                img.srcset = dataSrcset;
-                img.removeAttribute("data-srcset");
-              }
-              observer?.unobserve(img);
-            });
-          }, { rootMargin: "200px 0px" });
+          observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                const img = entry.target as HTMLImageElement;
+                const dataSrc = img.getAttribute("data-src");
+                const dataSrcset = img.getAttribute("data-srcset");
+                if (dataSrc) {
+                  img.src = dataSrc;
+                  img.removeAttribute("data-src");
+                }
+                if (dataSrcset) {
+                  img.srcset = dataSrcset;
+                  img.removeAttribute("data-srcset");
+                }
+                observer?.unobserve(img);
+              });
+            },
+            { rootMargin: "200px 0px" },
+          );
           return observer;
         }
 
         return () => {
           try {
             const obs = ensureObserver();
-            // 首次将文档中的图片转换为延迟加载：把 src/srcset => data-src/data-srcset，并加上 vp-lazy 类
             const placeholder =
               "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
-            document.querySelectorAll(".vp-doc img:not(.vp-lazy)").forEach((el) => {
-              const img = el as HTMLImageElement;
-              const src = img.getAttribute("src") || "";
-              const srcset = img.getAttribute("srcset") || "";
+            document
+              .querySelectorAll(".vp-doc img:not(.vp-lazy)")
+              .forEach((el) => {
+                const img = el as HTMLImageElement;
+                const src = img.getAttribute("src") || "";
+                const srcset = img.getAttribute("srcset") || "";
 
-              // 跳过内联资源或占位符
-              if (!src || src.startsWith("data:") || src === placeholder) return;
+                if (!src || src.startsWith("data:") || src === placeholder)
+                  return;
 
-              // 如果图片位于 <picture> 中，也把其 <source> 的 srcset 转为 data-srcset
-              const picture = img.parentElement;
-              if (picture && picture.tagName.toLowerCase() === "picture") {
-                picture.querySelectorAll("source").forEach((s) => {
-                  const ssrc = s.getAttribute("srcset");
-                  if (ssrc) {
-                    s.setAttribute("data-srcset", ssrc);
-                    s.removeAttribute("srcset");
-                  }
-                });
-              }
+                // 如果图片位于 <picture> 中，也把其 <source> 的 srcset 转为 data-srcset
+                const picture = img.parentElement;
+                if (picture && picture.tagName.toLowerCase() === "picture") {
+                  picture.querySelectorAll("source").forEach((s) => {
+                    const ssrc = s.getAttribute("srcset");
+                    if (ssrc) {
+                      s.setAttribute("data-srcset", ssrc);
+                      s.removeAttribute("srcset");
+                    }
+                  });
+                }
 
-              // 移动真实地址到 data-* 并设置轻量占位符
-              img.setAttribute("data-src", src);
-              if (srcset) img.setAttribute("data-srcset", srcset);
-              img.setAttribute("src", placeholder);
-              img.removeAttribute("srcset");
-              img.classList.add("vp-lazy");
-            });
+                // 移动真实地址到 data-* 并设置轻量占位符
+                img.setAttribute("data-src", src);
+                if (srcset) img.setAttribute("data-srcset", srcset);
+                img.setAttribute("src", placeholder);
+                img.removeAttribute("srcset");
+                img.classList.add("vp-lazy");
+              });
 
             // 观察所有标记为 vp-lazy 的图片
             document.querySelectorAll("img.vp-lazy").forEach((el) => {
               const img = el as HTMLImageElement;
-              if (!img.getAttribute("data-src") && !img.getAttribute("data-srcset")) return;
+              if (
+                !img.getAttribute("data-src") &&
+                !img.getAttribute("data-srcset")
+              )
+                return;
               obs.observe(img);
             });
           } catch (e) {
@@ -155,16 +156,7 @@ export default {
         }, 100);
       };
 
-      /**
-       * 新增：在小屏幕上初始隐藏侧边栏，避免页面刚加载时短暂展开然后收起的闪烁。
-       * 我们通过：1) 将侧边栏在小屏幕上初始设为不可见；2) 注入一个轻量级的切换按钮（右上角或左上角可见）
-       * 用户点击该按钮时才显示侧边栏。这样不会干扰桌面端行为。
-       */
       (function preventSidebarFlashOnSmallScreens() {
-        // 改进：不注入新按钮（避免与主题自带按钮冲突）
-        // - 在小屏上通过给根元素添加类初始隐藏侧边栏（.vp-sidebar-initial-hidden）
-        // - 监听主题已有的切换按钮的首次点击，或监听侧边栏本身的属性/样式变化（更稳健）
-        //   一旦检测到侧边栏被主题显示，则移除该根类并清理监听器。
         const SMALL_BREAKPOINT = 1024;
         const root = document.documentElement;
         const toggleSelectors = [
@@ -213,7 +205,7 @@ export default {
         const addToggleListeners = () => {
           toggleSelectors.forEach((sel) => {
             document.querySelectorAll(sel).forEach((el) => {
-              // 绑定一次性监听（用户第一次交互即可）
+              // 绑定一次性监听
               el.addEventListener("click", onUserToggle, { once: true });
             });
           });
@@ -228,7 +220,6 @@ export default {
 
             // 先立即检测一次
             const isSidebarVisibleNow = () => {
-              // 主题常用方式：data-visible="true" 或者可见性样式被设置
               const attrVisible = sidebar.getAttribute("data-visible");
               if (attrVisible === "true") return true;
               const cs = window.getComputedStyle(sidebar);
@@ -251,7 +242,6 @@ export default {
             };
 
             if (isSidebarVisibleNow()) {
-              // 如果已经可见（比如主题已经在 DOMReady 之前设置好了），直接清理
               cleanup();
               return;
             }
