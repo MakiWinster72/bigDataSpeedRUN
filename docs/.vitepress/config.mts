@@ -55,13 +55,9 @@ export default defineConfig({
   // transformHead finds those emitted assets and injects preload <link>s for better performance.
   transformHead({ assets }) {
     if (!assets || !Array.isArray(assets)) return [];
-    // 找到构建产物中匹配 HurmitNerdFontMono-Regular 和 Recursive 的 woff2 文件（带 hash）
-    const hurmit = assets.find((file: string) =>
-      /HurmitNerdFontMono-Regular\.[\w-]+\.woff2$/.test(file),
-    );
-    const recursive = assets.find((file: string) =>
-      /Recursive\.[\w-]+\.woff2$/.test(file),
-    );
+    // 找到构建产物中匹配 hm-m 和 Recursive 的 woff2 文件（带 hash）
+    const hm = assets.find((file: string) => /hm-m\.[\w-]+\.woff2$/i.test(file));
+    const recursive = assets.find((file: string) => /Recursive\.[\w-]+\.woff2$/i.test(file));
     const links: any[] = [];
     if (recursive) {
       links.push([
@@ -75,12 +71,12 @@ export default defineConfig({
         },
       ]);
     }
-    if (hurmit) {
+    if (hm) {
       links.push([
         "link",
         {
           rel: "preload",
-          href: hurmit,
+          href: hm,
           as: "font",
           type: "font/woff2",
           crossorigin: "",

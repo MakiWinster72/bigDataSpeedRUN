@@ -8,15 +8,13 @@
 // Note: importing the .woff2 files requires your bundler config to allow asset imports (Vite does by default).
 // If TypeScript complains about importing .woff2, you may need a `declare module '*.woff2';` in your typings.
 
-// Hurmit (code font)
-import regularUrl from "./fonts/HurmitNerdFontMono-Regular.woff2";
-import boldUrl from "./fonts/HurmitNerdFontMono-Bold.woff2";
-// Recursive (variable font) for body text
+// HM-M (body text) and Recursive (used for code blocks per request)
+import hmUrl from "./fonts/hm-m.woff2";
 import recursiveUrl from "./fonts/Recursive.woff2";
 
 function createStyle(css: string) {
   const style = document.createElement("style");
-  style.setAttribute("data-hurmit-fonts", "true");
+  style.setAttribute("data-site-fonts", "true");
   style.textContent = css;
   document.head.appendChild(style);
   return style;
@@ -25,10 +23,10 @@ function createStyle(css: string) {
 function addPreload(url: string) {
   // Avoid adding multiple identical preloads
   if (!url) return;
-  if (document.querySelector(`link[data-hurmit-preload][href="${url}"]`))
+  if (document.querySelector(`link[data-site-preload][href="${url}"]`))
     return;
   const link = document.createElement("link");
-  link.setAttribute("data-hurmit-preload", "true");
+  link.setAttribute("data-site-preload", "true");
   link.rel = "preload";
   link.href = url;
   link.as = "font";
@@ -42,52 +40,43 @@ function addPreload(url: string) {
 let injected = false;
 
 /**
- * Inject @font-face definitions and CSS variables to use the Recursive body font
- * and Hurmit for code. Uses imported asset URLs so build emits hashed filenames.
+ * Inject @font-face definitions and CSS variables to use site fonts.
+ * Uses imported asset URLs so build emits hashed filenames.
  */
-export function injectHurmitFonts() {
+export function injectSiteFonts() {
   if (typeof document === "undefined") return;
   if (injected) return;
   injected = true;
 
   // Ensure URLs are present
-  const reg = String(regularUrl || "");
-  const bold = String(boldUrl || "");
+  const hm = String(hmUrl || "");
   const rec = String(recursiveUrl || "");
 
   // Build font-face CSS using the resolved URLs.
   // Keep local() first to prefer system-installed fonts, then our bundled asset URL.
   const css = `
-/* Recursive variable font for body text */
+/* HM-M for body text */
+@font-face {
+  font-family: "HM-M";
+  src: local("HM-M"), url("${hm}") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Recursive for code blocks (as requested) */
 @font-face {
   font-family: "Recursive";
   src: local("Recursive"), local("Recursive Variable"), url("${rec}") format("woff2");
-  /* allow variable weights */
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
-/* Hurmit Nerd (monospace) for code */
-@font-face {
-  font-family: "HurmitR";
-  src: local("HurmitNerdFontMono-Regular"), local("HurmitR"), url("${reg}") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "HurmitB";
-  src: local("HurmitNerdFontMono-Bold"), local("HurmitB"), url("${bold}") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Override VitePress font variables: body uses Recursive, monospace uses Hurmit */
+/* Override VitePress font variables: body uses HM-M, monospace (code) uses Recursive */
 :root {
-  --vp-font-family-base: "Recursive", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --vp-font-family-mono: "HurmitR", ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  --vp-font-family-base: "HM-M", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --vp-font-family-mono: "Recursive", ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
 }
 `;
 
@@ -95,21 +84,20 @@ export function injectHurmitFonts() {
 
   // Add preload links to help the browser fetch fonts earlier (useful in dev and prod)
   if (rec) addPreload(rec);
-  if (reg) addPreload(reg);
-  if (bold) addPreload(bold);
+  if (hm) addPreload(hm);
 }
 
 // Default: run on import in client environments.
-// If you prefer manual control, import and call `injectHurmitFonts()` instead of importing this file.
+// If you prefer manual control, import and call `injectSiteFonts()` instead of importing this file.
 if (typeof window !== "undefined") {
   try {
-    injectHurmitFonts();
+    injectSiteFonts();
   } catch (e) {
     // avoid breaking the theme if injection fails
-    // keep silent; developer can call injectHurmitFonts() manually for debugging
+    // keep silent; developer can call injectSiteFonts() manually for debugging
     // eslint-disable-next-line no-console
-    console.warn("[use-fonts] failed to inject Hurmit fonts:", e);
+    console.warn("[use-fonts] failed to inject site fonts:", e);
   }
 }
 
-export default injectHurmitFonts;
+export default injectSiteFonts;
