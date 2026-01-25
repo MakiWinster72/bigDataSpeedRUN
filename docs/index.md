@@ -2,11 +2,11 @@
 layout: home
 
 hero:
-  name: "大数据实验指导"
-  tagline: "Hadoop · Spark · HBase · Hive · NoSQL · 云数据库"
+  name: "大数据技术原理"
+  tagline: "Hadoop · HDFS · HBase · DataBase · MapReduce"
   actions:
     - theme: brand
-      text: "🚀 快速开始"
+      text: "🚀 开始"
       link: /quickstart
     - theme: alt
       text: "实验资源"
@@ -16,14 +16,14 @@ features:
   - title: "Hadoop 集群搭建"
     details: "学习如何配置与管理 Hadoop 分布式计算框架，掌握 NameNode、DataNode、YARN 的运行机制，完成多节点实验环境部署。"
   - title: "HDFS 分布式文件系统"
-    details: "理解 HDFS 的数据存储与副本机制，掌握文件上传、下载与命令操作，为后续 MapReduce 提供基础。"
-  - title: "HBase 非关系型数据库"
+    details: "理解 HDFS 的数据存储与副本机制，掌握文件上传、下载与命令操作。"
+  - title: "HBase"
     details: "探索 HBase 的列式存储模型，掌握表设计、CRUD 操作与 Shell 命令使用，理解其在大规模数据管理中的优势。"
-  - title: "NoSQL 数据管理"
+  - title: "数据库"
     details: "对比常见 NoSQL 系统，理解键值存储、文档数据库与列族数据库的应用场景。"
   - title: "云数据库实验"
     details: "学习如何在云环境中部署与使用关系型与非关系型数据库，如 MySQL、RDS、以及分布式云存储方案。"
-  - title: "MapReduce 编程与执行"
+  - title: "MapReduce"
     details: "掌握 Map 与 Reduce 编程模型，实现词频统计、日志分析等实验任务，理解并行计算思想与任务调度原理。"
 ---
 

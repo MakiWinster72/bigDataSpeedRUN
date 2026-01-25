@@ -66,13 +66,8 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: "快速开始",
+        text: "开始",
         link: "/quickstart",
-        items: [
-          { text: "系统要求", link: "/quickstart#系统要求" },
-          { text: "实验流程", link: "/quickstart#实验流程概览" },
-          { text: "安装脚本", link: "/quickstart#快速安装脚本" },
-        ],
       },
       {
         text: "实验一：虚拟机环境",
