@@ -42,7 +42,7 @@
 
 > 实验要求创建 mysql，但 DATABASE mysql 是预装就有的，用于存放用户数据，所以我们换一个名字。
 
-![](https://img.makis-life.cn/images/20251205082703131.png)
+![](https://img.makis-life.cn/images/20251205082703131.png?x-oss-process=style/yasuo)
 
 > 默认环境中已有 mysql database
 
@@ -60,7 +60,7 @@
 mariadb -h 数据库地址 -P 3306 -u 用户名 -p --ssl=0
 ```
 
-![](https://img.makis-life.cn/images/20251110181229410.png)
+![](https://img.makis-life.cn/images/20251110181229410.png?x-oss-process=style/yasuo)
 
 查看 mydb 数据库是否存在
 
@@ -71,7 +71,7 @@ SHOW DATABASES;
 CREATE DATABASE mydb;
 ```
 
-![](https://img.makis-life.cn/images/20251110181229411.png)
+![](https://img.makis-life.cn/images/20251110181229411.png?x-oss-process=style/yasuo)
 
 > 实验要求创建 mysql，但 DATABASE mysql 是预装就有的，用于存放用户数据，所以我们换一个名字。
 
@@ -86,7 +86,7 @@ CREATE TABLE user (
 );
 ```
 
-![](https://img.makis-life.cn/images/20251110181229412.png)
+![](https://img.makis-life.cn/images/20251110181229412.png?x-oss-process=style/yasuo)
 
 - 插入数据
 
@@ -98,7 +98,7 @@ INSERT INTO user (id, name, age, sex)
 VALUES (2, 'Box', 25, 'M');
 ```
 
-![](https://img.makis-life.cn/images/20251110181229413.png)
+![](https://img.makis-life.cn/images/20251110181229413.png?x-oss-process=style/yasuo)
 
 - 查询数据
 
@@ -106,7 +106,7 @@ VALUES (2, 'Box', 25, 'M');
 SELECT * FROM user;
 ```
 
-![](https://img.makis-life.cn/images/20251110181229414.png)
+![](https://img.makis-life.cn/images/20251110181229414.png?x-oss-process=style/yasuo)
 
 - 更新数据
 
@@ -118,7 +118,7 @@ WHERE id=2;
 SELECT * FROM user;
 ```
 
-![](https://img.makis-life.cn/images/20251110181229415.png)
+![](https://img.makis-life.cn/images/20251110181229415.png?x-oss-process=style/yasuo)
 
 - 删除数据
 
@@ -130,7 +130,7 @@ WHERE id=1;
 SELECT * FROM user;
 ```
 
-![](https://img.makis-life.cn/images/20251110181229416.png)
+![](https://img.makis-life.cn/images/20251110181229416.png?x-oss-process=style/yasuo)
 
 ## 任务三
 
@@ -153,7 +153,7 @@ Ubuntu 20.04 或更早
 mysql -u root -p
 ```
 
-![](https://img.makis-life.cn/images/20251110181229417.png)
+![](https://img.makis-life.cn/images/20251110181229417.png?x-oss-process=style/yasuo)
 
 - 创建 mydb 数据库并新建 user 表，插入示例数据
 
@@ -165,7 +165,7 @@ INSERT INTO user (id, name, age, sex) VALUES (4, 'Dia', 21, 'F');
 INSERT INTO user (id, name, age, sex) VALUES (5, 'Eve', 23, 'F');
 ```
 
-![](https://img.makis-life.cn/images/20251110181229418.png)
+![](https://img.makis-life.cn/images/20251110181229418.png?x-oss-process=style/yasuo)
 
 - 创建迁移账号
 
@@ -173,7 +173,7 @@ INSERT INTO user (id, name, age, sex) VALUES (5, 'Eve', 23, 'F');
 CREATE USER '用户名'@'localhost' IDENTIFIED BY '密码';
 ```
 
-![](https://img.makis-life.cn/images/20251110181229419.png)
+![](https://img.makis-life.cn/images/20251110181229419.png?x-oss-process=style/yasuo)
 
 - 授权迁移账号
 
@@ -182,7 +182,7 @@ GRANT ALL PRIVILEGES ON mydb.* TO '用户名'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-![](https://img.makis-life.cn/images/20251110181229420.png)
+![](https://img.makis-life.cn/images/20251110181229420.png?x-oss-process=style/yasuo)
 
 - 编辑 /etc/my.cnf.d/server.cnf
 
@@ -193,7 +193,7 @@ binlog_format = ROW
 server-id = 1
 ```
 
-![](https://img.makis-life.cn/images/20251110181229421.png)
+![](https://img.makis-life.cn/images/20251110181229421.png?x-oss-process=style/yasuo)
 
 > [!note] Why ROW?
 >
@@ -213,7 +213,7 @@ server-id = 1
 >
 > 在主从复制或数据迁移时，更加精确，不会因为 SQL 语句执行结果不同而导致数据不一致。
 >
-> 2. 为什么迁移需要 ROW
+> 1. 为什么迁移需要 ROW
 >
 > 保证数据一致性
 >
@@ -241,7 +241,7 @@ sudo systemctl restart mariadb.service
 mariadb -u 用户名 -p密码 -e "SHOW VARIABLES LIKE 'binlog_format';"
 ```
 
-![](https://img.makis-life.cn/images/20251110181229422.png)
+![](https://img.makis-life.cn/images/20251110181229422.png?x-oss-process=style/yasuo)
 
 - 导出本地数据库
 
@@ -264,7 +264,7 @@ mariadb-dump -u 用户名 -p密码 --databases mydb --routines --triggers --sing
 >
 > --master-data=2：记录二进制日志位点（注释形式）
 
-![](https://img.makis-life.cn/images/20251205082703132.png)
+![](https://img.makis-life.cn/images/20251205082703132.png?x-oss-process=style/yasuo)
 
 - 导入到 RDS
 
@@ -272,7 +272,7 @@ mariadb-dump -u 用户名 -p密码 --databases mydb --routines --triggers --sing
 mariadb -h RDS地址 -u 用户名 -p --ssl=0 < 备份的sql文件
 ```
 
-![](https://img.makis-life.cn/images/20251110181229425.png)
+![](https://img.makis-life.cn/images/20251110181229425.png?x-oss-process=style/yasuo)
 
 - 连接 RDS 并查询
 
@@ -285,7 +285,7 @@ USE mydb;
 SELECT * FROM user;
 ```
 
-![](https://img.makis-life.cn/images/20251110181229426.png)
+![](https://img.makis-life.cn/images/20251110181229426.png?x-oss-process=style/yasuo)
 
 > 数据与本地 user 表相符，导入成功 🥳
 
@@ -327,11 +327,11 @@ UPLOAD_DIR=绝对路径/photo-wall/uploads
 ```
 
 效果：
-![](https://img.makis-life.cn/images/20251110181229427.png)
-![](https://img.makis-life.cn/images/20251110181229428.png)
+![](https://img.makis-life.cn/images/20251110181229427.png?x-oss-process=style/yasuo)
+![](https://img.makis-life.cn/images/20251110181229428.png?x-oss-process=style/yasuo)
 
 添加/删除照片时，RDS 会同步更新：
-![](https://img.makis-life.cn/images/20251110181229429.png)
+![](https://img.makis-life.cn/images/20251110181229429.png?x-oss-process=style/yasuo)
 
 ### 关键代码
 

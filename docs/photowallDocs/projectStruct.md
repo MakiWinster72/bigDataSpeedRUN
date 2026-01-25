@@ -1,8 +1,8 @@
-本页面全面概述了 rustPac\_photowall 项目的架构。
+本页面全面概述了 rustPac_photowall 项目的架构。
 
 ## 架构概述
 
-![](https://img.makis-life.cn/images/20251205082656471.png)
+![](https://img.makis-life.cn/images/20251205082656471.png?x-oss-process=style/yasuo)
 
 ## 目录结构
 
@@ -10,7 +10,7 @@
 
 ```
 rustPac_photowall/
-├── backend/           ├── frontend/          # React 应用  
+├── backend/           ├── frontend/          # React 应用
 ├── package.json       # 根依赖
 └── package-lock.json  # 根锁定文件
 ```
@@ -32,11 +32,11 @@ backend/
 
 **核心依赖**：
 
--   **actix-web**: 构建 HTTP 服务器的 Web 框架
--   **sqlx**: 数据库操作的异步 SQL 工具包
--   **actix-cors**: 处理跨域请求的 CORS 中间件
--   **actix-multipart**: 文件上传处理
--   **tokio**: 异步运行时
+- **actix-web**: 构建 HTTP 服务器的 Web 框架
+- **sqlx**: 数据库操作的异步 SQL 工具包
+- **actix-cors**: 处理跨域请求的 CORS 中间件
+- **actix-multipart**: 文件上传处理
+- **tokio**: 异步运行时
 
 ### 前端结构
 
@@ -58,31 +58,31 @@ frontend/
 
 **核心依赖**：
 
--   **react**: 构建组件的 UI 库
--   **axios**: API 通信的 HTTP 客户端
--   **vite**: 构建工具和开发服务器
+- **react**: 构建组件的 UI 库
+- **axios**: API 通信的 HTTP 客户端
+- **vite**: 构建工具和开发服务器
 
 ## 组件职责
 
 ### 后端组件
 
-| 组件 | 用途 | 核心功能 |
-| --- | --- | --- |
-| **main.rs** | 服务器初始化 | HTTP 服务器搭建、CORS 配置、中间件 |
-| **handlers.rs** | API 端点逻辑 | 照片上传、获取、文件处理 |
-| **db.rs** | 数据库操作 | 连接池管理、查询执行 |
-| **models.rs** | 数据结构 | 照片元数据、数据库模式 |
+| 组件            | 用途         | 核心功能                           |
+| --------------- | ------------ | ---------------------------------- |
+| **main.rs**     | 服务器初始化 | HTTP 服务器搭建、CORS 配置、中间件 |
+| **handlers.rs** | API 端点逻辑 | 照片上传、获取、文件处理           |
+| **db.rs**       | 数据库操作   | 连接池管理、查询执行               |
+| **models.rs**   | 数据结构     | 照片元数据、数据库模式             |
 
 ### 前端组件
 
-| 组件 | 用途 | 核心功能 |
-| --- | --- | --- |
-| **App.jsx** | 主应用 | 照片画廊、上传界面、状态管理 |
-| **main.jsx** | React 初始化 | DOM 挂载、应用启动 |
+| 组件         | 用途         | 核心功能                     |
+| ------------ | ------------ | ---------------------------- |
+| **App.jsx**  | 主应用       | 照片画廊、上传界面、状态管理 |
+| **main.jsx** | React 初始化 | DOM 挂载、应用启动           |
 
 ## 数据流架构
 
-![](https://img.makis-life.cn/images/20251205082656472.png)
+![](https://img.makis-life.cn/images/20251205082656472.png?x-oss-process=style/yasuo)
 
 ## 配置文件
 
@@ -90,19 +90,18 @@ frontend/
 
 应用使用环境变量进行配置：
 
--   `DATABASE_URL`: MySQL 数据库连接字符串
--   `SERVER_HOST`: 服务器主机地址（默认：127.0.0.1）
--   `SERVER_PORT`: 服务器端口（默认：8080）
--   `UPLOAD_DIR`: 文件上传目录（默认：../uploads）
+- `DATABASE_URL`: MySQL 数据库连接字符串
+- `SERVER_HOST`: 服务器主机地址（默认：127.0.0.1）
+- `SERVER_PORT`: 服务器端口（默认：8080）
+- `UPLOAD_DIR`: 文件上传目录（默认：../uploads）
 
 ### 构建配置
 
--   **后端**: Rust 的 Cargo 系统管理编译和依赖
--   **前端**: Vite 提供快速开发服务器和优化构建
+- **后端**: Rust 的 Cargo 系统管理编译和依赖
+- **前端**: Vite 提供快速开发服务器和优化构建
 
 ## 工作流
 
-1.  **后端开发**: 进入 `backend/` 目录，使用 `cargo run` 启动 Rust 服务器
-2.  **前端开发**: 进入 `frontend/` 目录，使用 `npm run dev` 启动 Vite 开发服务器
-3.  **数据库设置**: 配置 MySQL 并设置 `DATABASE_URL` 环境变量
-
+1. **后端开发**: 进入 `backend/` 目录，使用 `cargo run` 启动 Rust 服务器
+2. **前端开发**: 进入 `frontend/` 目录，使用 `npm run dev` 启动 Vite 开发服务器
+3. **数据库设置**: 配置 MySQL 并设置 `DATABASE_URL` 环境变量

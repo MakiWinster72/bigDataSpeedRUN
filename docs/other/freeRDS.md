@@ -7,12 +7,12 @@
    > 图中高亮的为符合实验四要求的 RDS 云数据库。选择一个申请即可。
 
 3. 申请试用
-   ![](https://img.makis-life.cn/images/20251110181131202.png)
+   ![](https://img.makis-life.cn/images/20251110181131202.png?x-oss-process=style/yasuo)
    > [!note]
    > 若有 ECS 服务器，地域可以选择与 ECS 相同区域。
    > 》》实验要求 MySQL 5.6 但高可用只能选择 MySQL 8.0, 其实 8.0 也可以完成实验。
 
-![](https://img.makis-life.cn/images/20251110181131203.png)
+![](https://img.makis-life.cn/images/20251110181131203.png?x-oss-process=style/yasuo)
 
 > [!warning]
 > 若要与 ECS 服务器走内网，请确保选择相同的 vps 网络
@@ -32,7 +32,7 @@
 #### 控制页面
 
 点击右上角的“登录数据库”，即可进入 RDS 管理页面，在此处可清晰直观地查看和管理我们的云数据库
-![](https://img.makis-life.cn/images/20251110181131204.png)
+![](https://img.makis-life.cn/images/20251110181131204.png?x-oss-process=style/yasuo)
 
 #### 本地电脑远程连接
 

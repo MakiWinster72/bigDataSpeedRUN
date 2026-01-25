@@ -149,13 +149,13 @@ mkdir -p build
 javac -classpath $HADOOP_CLASSPATH -d build MergeMapper.java MergeReducer.java MergeDriver.java
 ```
 
-2. 打包为 jar：
+1. 打包为 jar：
 
 ```bash
 jar -cvf merge-dedup.jar -C build .
 ```
 
-3. 上传输入文件到 HDFS（创建目录并上传）：
+1. 上传输入文件到 HDFS（创建目录并上传）：
 
 ```bash
 hdfs dfs -mkdir -p /user/hadoop/merge_input
@@ -174,7 +174,7 @@ hadoop jar merge-dedup.jar MergeDriver /user/hadoop/merge_input /user/hadoop/out
 hdfs dfs -cat /user/hadoop/output/merge_dedup/part-*
 ```
 
-![](https://img.makis-life.cn/images/20251210050727832.png)
+![](https://img.makis-life.cn/images/20251210050727832.png?x-oss-process=style/yasuo)
 
 说明与注意事项：
 
@@ -190,7 +190,6 @@ hdfs dfs -cat /user/hadoop/output/merge_dedup/part-*
 现在有多个输入文件，每个文件中的每行内容均为一个整数。要求读取所有文件中的整数，进行升序排序后，输出到一个新的文件中，输出的数据格式为每行两个整数，第一个数字为第二个整数的排序位次，第二个整数为原待排列的整数。下面是输入文件和输出文件的一个样例供参考。
 
 > - 需求：合并多个文件中的整数（每行一个整数），升序排序后输出 `rank value`（rank 从 1 开始）。
->
 > - 实现思路：使用 **单个 reducer**（`-D mapreduce.job.reduces=1`），mapper 将每个整数作为 key 输出，Hadoop 在 reducer 处会按 key 排序（lexicographic->需确保数值排序：把 key 转为定长或使用数值排序）。
 
 ### 准备数据文件
@@ -367,7 +366,7 @@ hadoop jar sort-rank.jar SortDriver /user/hadoop/sort_input /user/hadoop/output/
 hdfs dfs -cat /user/hadoop/output/sort_rank/part-*
 ```
 
-![](https://img.makis-life.cn/images/20251210050637608.png)
+![](https://img.makis-life.cn/images/20251210050637608.png?x-oss-process=style/yasuo)
 
 ---
 
@@ -551,4 +550,4 @@ hadoop jar gp-extract.jar org.example.GPDriver /user/hadoop/gp_input /user/hadoo
 hdfs dfs -cat /user/hadoop/output/grandparent/part-*
 ```
 
-![](https://img.makis-life.cn/images/20251210050637609.png)
+![](https://img.makis-life.cn/images/20251210050637609.png?x-oss-process=style/yasuo)

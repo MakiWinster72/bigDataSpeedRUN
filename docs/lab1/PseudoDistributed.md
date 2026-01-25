@@ -67,7 +67,7 @@ start-dfs.sh
 
 使用 `jps` 可查看 Hadoop 启动的 Java 进程，如：
 
-![](https://img.makis-life.cn/images/20251110181522747.png)
+![](https://img.makis-life.cn/images/20251110181522747.png?x-oss-process=style/yasuo)
 
 ---
 
@@ -76,7 +76,7 @@ start-dfs.sh
 若在云服务器上运行，需要在控制台安全组中开放 **9870** 端口（用于访问 Hadoop Dashboard）。
 
 以阿里云为例：
-![](https://img.makis-life.cn/images/20251110181522748.png)
+![](https://img.makis-life.cn/images/20251110181522748.png?x-oss-process=style/yasuo)
 
 ---
 
@@ -88,7 +88,7 @@ start-dfs.sh
 http://<服务器IP>:9870
 ```
 
-![](https://img.makis-life.cn/images/20251110181522749.png)
+![](https://img.makis-life.cn/images/20251110181522749.png?x-oss-process=style/yasuo)
 
 ---
 
@@ -112,7 +112,7 @@ hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.
 hdfs dfs -cat output/*
 ```
 
-![](https://img.makis-life.cn/images/20251110181522750.png)
+![](https://img.makis-life.cn/images/20251110181522750.png?x-oss-process=style/yasuo)
 
 ---
 
@@ -122,5 +122,4 @@ hdfs dfs -cat output/*
 stop-dfs.sh
 ```
 
-![](https://img.makis-life.cn/images/20251110181522751.png)
-
+![](https://img.makis-life.cn/images/20251110181522751.png?x-oss-process=style/yasuo)

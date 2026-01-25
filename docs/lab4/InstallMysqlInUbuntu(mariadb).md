@@ -21,7 +21,7 @@ sudo systemctl enable mariadb // 开机自启
 sudo systemctl status mariadb
 ```
 
-![](https://img.makis-life.cn/images/20251203065924507.png)
+![](https://img.makis-life.cn/images/20251203065924507.png?x-oss-process=style/yasuo)
 
 > mariadb 正常运行中
 
@@ -35,25 +35,25 @@ sudo mysql_secure_installation
 
 按照提示输入 root 密码后，进入选项
 第一个选项根据提示选 n 即可
-![image.png](https://img.makis-life.cn/images/20251203070843582.png)
+![image.png](https://img.makis-life.cn/images/20251203070843582.png?x-oss-process=style/yasuo)
 
 删除匿名用户
-![image.png](https://img.makis-life.cn/images/20251203070917888.png)
+![image.png](https://img.makis-life.cn/images/20251203070917888.png?x-oss-process=style/yasuo)
 
 禁止 root 远程连接
-![image.png](https://img.makis-life.cn/images/20251203070933782.png)
+![image.png](https://img.makis-life.cn/images/20251203070933782.png?x-oss-process=style/yasuo)
 
 删除 test database
-![image.png](https://img.makis-life.cn/images/20251203071012946.png)
+![image.png](https://img.makis-life.cn/images/20251203071012946.png?x-oss-process=style/yasuo)
 
 刷新 privileges
-![](https://img.makis-life.cn/images/20251205082636201.png) 2. 进入 mariadb
+![](https://img.makis-life.cn/images/20251205082636201.png?x-oss-process=style/yasuo) 2. 进入 mariadb
 
 ```bash
 sudo mariadb
 ```
 
-![](https://img.makis-life.cn/images/20251205082636202.png) 3. **创建用户并允许远程访问：**  
+![](https://img.makis-life.cn/images/20251205082636202.png?x-oss-process=style/yasuo) 3. **创建用户并允许远程访问：**  
  假设密码是 `your_password`，远程 IP 可以用 `%` 表示任意 IP：
 
 ```mysql
@@ -61,7 +61,7 @@ CREATE USER 'user'@'%' IDENTIFIED BY 'your_password';
 ```
 
 > %指任意 ip 地址，或填写本机所在 ip 地址
-> ![](https://img.makis-life.cn/images/20251205082636203.png)
+> ![](https://img.makis-life.cn/images/20251205082636203.png?x-oss-process=style/yasuo)
 
 4. 授予权限（例如授予所有数据库的所有权限）：
 
@@ -69,12 +69,12 @@ CREATE USER 'user'@'%' IDENTIFIED BY 'your_password';
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' WITH GRANT OPTION;
 ```
 
-![](https://img.makis-life.cn/images/20251205082636204.png)
+![](https://img.makis-life.cn/images/20251205082636204.png?x-oss-process=style/yasuo)
 
 > 若只赋予某个 database，将" \*.\* "改为 " DATABASE.TABLE " ，对应你要赋予的数据库和表即可。
 
 5. 刷新 PRIVILEGES
-   ![](https://img.makis-life.cn/images/20251205082636205.png)
+   ![](https://img.makis-life.cn/images/20251205082636205.png?x-oss-process=style/yasuo)
 6. 退出 mysql
 
 ```mysql
@@ -90,7 +90,7 @@ exit
 bind-address = 0.0.0.0
 ```
 
-![](https://img.makis-life.cn/images/20251205082636206.png)
+![](https://img.makis-life.cn/images/20251205082636206.png?x-oss-process=style/yasuo)
 
 > 或使用`sudo mariadb --verbose --help | grep -A 1 "Default options"`查看正在使用哪个配置文件
 

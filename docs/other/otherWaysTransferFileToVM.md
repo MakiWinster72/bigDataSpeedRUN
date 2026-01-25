@@ -7,10 +7,10 @@
 #### Windows 启动 Python http 服务器
 
 按下`Windows`键，输入 cmd，按下`Enter`
-![](https://img.makis-life.cn/images/20251110181534127.png)
+![](https://img.makis-life.cn/images/20251110181534127.png?x-oss-process=style/yasuo)
 
 复制要共享的文件夹的路径，在 cmd 中输入`cd 路径`，回车
-![](https://img.makis-life.cn/images/20251110181534128.png)
+![](https://img.makis-life.cn/images/20251110181534128.png?x-oss-process=style/yasuo)
 
 > 注意路径是否有空格，比如有人的用户名有空格，或者最后文件夹是 shared folder 等，路径需要用**双引号**括起来。
 
@@ -21,12 +21,12 @@ python -m http.server -p 8000  #可以手动指定端口
 ```
 
 出现下图情况就是 Python 未安装，或者环境变量没配置好，请自行搜索安装 Python 的方法。
-![](https://img.makis-life.cn/images/20251110181534129.png)
+![](https://img.makis-life.cn/images/20251110181534129.png?x-oss-process=style/yasuo)
 
 #### 获取 windows IP 地址
 
 在 cmd 中输入`ipconfig`即可查看 ipv4 地址。
-![](https://img.makis-life.cn/images/20251110181534130.png)
+![](https://img.makis-life.cn/images/20251110181534130.png?x-oss-process=style/yasuo)
 记住图中 ipv4 地址，常见 192 或 172 开头。
 
 在虚拟机中，打开浏览器，一般默认安装了 Firefox。
@@ -43,10 +43,13 @@ http://WindowIP地址:8000
 > sudo apt install -y wget curl
 
 - 使用 `wget` 或 `curl` 下载文件：
+
   ```bash
   wget http://192.168.1.10:8080/filename.zip
   ```
+
   或者：
+
   ```bash
   curl -O http://192.168.1.10:8080/filename.zip
   ```
@@ -61,7 +64,7 @@ http://WindowIP地址:8000
 ip addr show
 ```
 
-2. 找到 `eth0` 或 `enp0s3`（网卡）下的 `inet` 地址，比如：
+1. 找到 `eth0` 或 `enp0s3`（网卡）下的 `inet` 地址，比如：
 
 ```
 inet 192.168.56.101/24
@@ -93,7 +96,7 @@ scp C:\Users\Maki\Documents\file.txt username@ip地址:/home/username/
 - `username`：Ubuntu 用户名
 - `/home/username/`：虚拟机目标路径
 
-2. 输入虚拟机密码后，文件即可传输。
+1. 输入虚拟机密码后，文件即可传输。
 
 #### 从 Ubuntu 拉文件到 Windows
 
@@ -113,8 +116,8 @@ scp username@1ip地址:/home/username/file.txt C:\Users\Maki\Downloads\
 sudo apt install -y rsync
 ```
 
-2. Windows 端安装 **Cygwin** 或 **WSL**，确保有 rsync 命令。
-3. 从 Windows 传文件到 Ubuntu：
+1. Windows 端安装 **Cygwin** 或 **WSL**，确保有 rsync 命令。
+2. 从 Windows 传文件到 Ubuntu：
 
 ```bash
 rsync -avz /mnt/c/Users/Maki/Documents/file.txt username@192.168.56.101:/home/username/
@@ -124,7 +127,7 @@ rsync -avz /mnt/c/Users/Maki/Documents/file.txt username@192.168.56.101:/home/us
 - `-v`：显示详细信息
 - `-z`：压缩传输
 
-4. 从 Ubuntu 拉文件到 Windows：
+1. 从 Ubuntu 拉文件到 Windows：
 
 ```bash
 rsync -avz username@192.168.56.101:/home/username/file.txt /mnt/c/Users/Maki/Downloads/

@@ -6,7 +6,7 @@
 ## hadoop 伪分布式
 
 为节省时间可预先下载好安装包与 sh 脚本放与同一目录下。脚本内也提供了下载连接[resources](../resources.md)，若未检测到安装包会询问是否在线下载。
-![111](https://img.makis-life.cn/images/20251110181116139.png)
+![111](https://img.makis-life.cn/images/20251110181116139.png?x-oss-process=style/yasuo)
 
 > 从 windows 向虚拟机传输文件可参考 [sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](otherWaysTransferFileToVM.md)
 > 为脚本赋予执行权限：
@@ -17,7 +17,7 @@ sudo chmod +x path/to/sh
 # sudo chmod +x ~/hadoopInstall.sh
 ```
 
-![](https://img.makis-life.cn/images/20251110181116140.png)
+![](https://img.makis-life.cn/images/20251110181116140.png?x-oss-process=style/yasuo)
 运行 sh 文件
 
 ```bash
@@ -25,7 +25,7 @@ bash path/to/sh
 # 例如 bash ~/hadoopInstall.sh
 ```
 
-![](https://img.makis-life.cn/images/20251110181116141.png)
+![](https://img.makis-life.cn/images/20251110181116141.png?x-oss-process=style/yasuo)
 普通用户在运行步骤 1 后，需要将脚本移动到 hadoop 目录下执行
 
 ```bash
@@ -37,10 +37,11 @@ sudo chmod ~/hadoopInstall.sh
 然后直接选步骤 10 即可。
 
 ## hadoop 完全分布式
+
 > 与集群搭建共用同一个shell脚本
 
 为节省时间可预先下载好安装包与 sh 脚本放与同一目录下。脚本内也提供了下载连接，若未检测到安装包会询问是否在线下载[resources](../resources.md)。
-![](https://img.makis-life.cn/images/20251110181116142.png)
+![](https://img.makis-life.cn/images/20251110181116142.png?x-oss-process=style/yasuo)
 
 > 从 windows 向虚拟机传输文件可参考 [sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](otherWaysTransferFileToVM.md)
 
@@ -48,12 +49,13 @@ sudo chmod ~/hadoopInstall.sh
 chmod +x hadoopCluster.sh
 bash hadoopCluster.sh
 ```
-![](https://img.makis-life.cn/images/20251210060725963.png)
+
+![](https://img.makis-life.cn/images/20251210060725963.png?x-oss-process=style/yasuo)
 选择1235即可
 
-在浏览器中打开http://localhost:9870
+在浏览器中打开<http://localhost:9870>
 
-![](https://img.makis-life.cn/images/20251110181116146.png)
+![](https://img.makis-life.cn/images/20251110181116146.png?x-oss-process=style/yasuo)
 
 执行完后请手`source ~/.bashrc`或重新打开一个终端才能识别 hdfs 命令
 
@@ -63,7 +65,7 @@ bash hadoopCluster.sh
 
 为节省时间可预先下载好安装包与 sh 脚本放与同一目录下。脚本内也提供了下载连接，若未检测到安装包会询问是否在线下载[resources](../resources.md)。
 
-![](https://img.makis-life.cn/images/20251110181116147.png)
+![](https://img.makis-life.cn/images/20251110181116147.png?x-oss-process=style/yasuo)
 
 > 从 windows 向虚拟机传输文件可参考 [sharedFolder](../lab1/sharedFolder.md)、[otherWaysTransferFile2VM](otherWaysTransferFileToVM.md)
 
@@ -81,7 +83,7 @@ bash path/to/hbaseInstall.sh
 
 会通过 echo $HADOOP_HOME 检测是否已经安装好 hdfs
 
-![](https://img.makis-life.cn/images/20251110181116148.png)
+![](https://img.makis-life.cn/images/20251110181116148.png?x-oss-process=style/yasuo)
 
 如果刚安装 hadoop,运行 hbaseInstall 还是提示 HADOOP_HOME 未设置，请执行
 
@@ -89,30 +91,33 @@ bash path/to/hbaseInstall.sh
 source ~/.bashrc
 ```
 
-![](https://img.makis-life.cn/images/20251110181116149.png)
+![](https://img.makis-life.cn/images/20251110181116149.png?x-oss-process=style/yasuo)
 
 输入 12,等待完成
 
-![](https://img.makis-life.cn/images/20251110181116150.png)
+![](https://img.makis-life.cn/images/20251110181116150.png?x-oss-process=style/yasuo)
 
 执行完后请手`source ~/.bashrc`或重新打开一个终端
 
 ## 集群搭建
 
 提前完成好
+
 1. 获取各主机IP地址
 2. 完成hadoop用户免密码执行sudo权限指令
 
 修改相应数据
+
 ```bash
 vim hadoopCluster.sh
 ```
 
-![](https://img.makis-life.cn/images/20251210060725965.png)
+![](https://img.makis-life.cn/images/20251210060725965.png?x-oss-process=style/yasuo)
 按下i进入插入模式，修改为对应的数据即可。下方mysql无需提前设置
 输入:wq保存并退出
 
 准备好各安装包和脚本同一目录，若版本号不同记得在sh文件中修改后保存
+
 ```
 packages
 ├── apache-hive-4.2.0-bin.tar.gz
@@ -131,4 +136,6 @@ packages
 chmod +x hadoopCluster.sh
 bash hadoopCluster.sh
 ```
-![](https://img.makis-life.cn/images/20251210060725966.png)
+
+![](https://img.makis-life.cn/images/20251210060725966.png?x-oss-process=style/yasuo)
+

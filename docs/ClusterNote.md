@@ -44,7 +44,7 @@ sudo visudo
 hadoop ALL=(ALL) NOPASSWD: ALL
 ```
 
-![](https://img.makis-life.cn/images/20251210053415876.png)
+![](https://img.makis-life.cn/images/20251210053415876.png?x-oss-process=style/yasuo)
 
 #### 通信
 
@@ -54,7 +54,7 @@ hadoop ALL=(ALL) NOPASSWD: ALL
 
 例如：
 
-![](https://img.makis-life.cn/images/20251210053415878.png)
+![](https://img.makis-life.cn/images/20251210053415878.png?x-oss-process=style/yasuo)
 
 <center>检查 Master 的 IP 地址</center>
 
@@ -81,7 +81,7 @@ ping 192.168.1.102 -c 3
 ping 192...（各 Slaves 的ip地址）
 ```
 
-![](https://img.makis-life.cn/images/20251210053415879.png)
+![](https://img.makis-life.cn/images/20251210053415879.png?x-oss-process=style/yasuo)
 
 #### 编辑 hosts 文件
 
@@ -89,7 +89,7 @@ ping 192...（各 Slaves 的ip地址）
 sudo nvim /etc/hosts
 ```
 
-![](https://img.makis-life.cn/images/20251210053415880.png)
+![](https://img.makis-life.cn/images/20251210053415880.png?x-oss-process=style/yasuo)
 
 将 hosts 文件传递给各主机
 
@@ -99,7 +99,7 @@ scp /etc/hosts hadoop@slave1:～
 ...
 ```
 
-![](https://img.makis-life.cn/images/20251210053415881.png)
+![](https://img.makis-life.cn/images/20251210053415881.png?x-oss-process=style/yasuo)
 
 #### 设置主机名
 
@@ -107,14 +107,14 @@ scp /etc/hosts hadoop@slave1:～
 sudo hostnamectl set-hostname master
 ```
 
-![](https://img.makis-life.cn/images/20251210053415882.png)
+![](https://img.makis-life.cn/images/20251210053415882.png?x-oss-process=style/yasuo)
 
 <center>Master 设置主机名</center>
 
 可见，再次输入`bash`，即刷新当前 SHELL，可以看见前面已经变为 hadoop@master，方便辨认 master 和 slaves
 
 更改各主机名
-![](https://img.makis-life.cn/images/20251210053415883.png)
+![](https://img.makis-life.cn/images/20251210053415883.png?x-oss-process=style/yasuo)
 通过 ssh 为各主机执行命令
 此处 sudo 已经不再需要密码，因为第一步已经允许 hadoop 用户免密码执行 sudo 权限指令
 
@@ -180,7 +180,7 @@ hadoop 集群需要 ssh 免密码登录才可正常运行
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 ```
 
-![](https://img.makis-life.cn/images/20251210053415884.png)
+![](https://img.makis-life.cn/images/20251210053415884.png?x-oss-process=style/yasuo)
 
 #### 分发密钥
 
@@ -193,7 +193,7 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub slave3
 ```
 
 会依次询问是否添加主机以及对应主机的密码。
-![](https://img.makis-life.cn/images/20251210053415885.png)
+![](https://img.makis-life.cn/images/20251210053415885.png?x-oss-process=style/yasuo)
 
 ```bash
 # 测试免密登录
@@ -204,7 +204,7 @@ ssh slave3
 ```
 
 可见现在 ssh slave1 已经不再需要输入密码，免登录设置成功。
-![](https://img.makis-life.cn/images/20251210053415886.png)
+![](https://img.makis-life.cn/images/20251210053415886.png?x-oss-process=style/yasuo)
 
 ### 安装 Java
 
@@ -233,10 +233,10 @@ export JAVA_HOME=/usr/lib/jvm/jdk21
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
-![](https://img.makis-life.cn/images/20251210053415887.png)
+![](https://img.makis-life.cn/images/20251210053415887.png?x-oss-process=style/yasuo)
 
 检验 java 是否安装成功
-![](https://img.makis-life.cn/images/20251210053415888.png)
+![](https://img.makis-life.cn/images/20251210053415888.png?x-oss-process=style/yasuo)
 
 #### 分发 java 并安装
 
@@ -248,7 +248,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 ```
 
 检查各个主机是否成功安装 java
-![](https://img.makis-life.cn/images/20251210053415889.png)
+![](https://img.makis-life.cn/images/20251210053415889.png?x-oss-process=style/yasuo)
 
 ### 安装 zookeeper
 
@@ -266,7 +266,7 @@ wget https://mirrors.aliyun.com/apache/zookeeper/zookeeper-3.8.5/apache-zookeepe
 scp 安装包路径 hadoop@master:~   # Windows 使用winscp
 ```
 
-![](https://img.makis-life.cn/images/20251210053415890.png)
+![](https://img.makis-life.cn/images/20251210053415890.png?x-oss-process=style/yasuo)
 
 在 master 上安装 zookeeper
 
@@ -280,7 +280,7 @@ sudo chown -R hadoop:hadoop /usr/local/zookeeper   # 改变文件所属用户
 > 如果你的用户不叫 hadoop，可以用`whoami`得知用户名，当然，可以把上述指令换成
 > sudo chown -R $(whoami):$(whoami) /usr/local/zookeeper
 
-![](https://img.makis-life.cn/images/20251210053415891.png)
+![](https://img.makis-life.cn/images/20251210053415891.png?x-oss-process=style/yasuo)
 
 创建工作目录
 
@@ -291,7 +291,7 @@ sudo mkdir -p /usr/local/zookeeper/logs
 
 #### 配置 ZooKeeper
 
-![](https://img.makis-life.cn/images/20251210053415892.png)
+![](https://img.makis-life.cn/images/20251210053415892.png?x-oss-process=style/yasuo)
 
 修改内容:
 
@@ -310,7 +310,7 @@ server.3=slave2:2888:3888
 server.4=slave3:2888:3888
 ```
 
-![](https://img.makis-life.cn/images/20251210053415893.png)
+![](https://img.makis-life.cn/images/20251210053415893.png?x-oss-process=style/yasuo)
 
 #### 分发 ZooKeeper 到 Slave 节点
 
@@ -320,7 +320,7 @@ server.4=slave3:2888:3888
 
 #### Slaves 节点安装 ZooKeeper
 
-![](https://img.makis-life.cn/images/20251210053415894.png)
+![](https://img.makis-life.cn/images/20251210053415894.png?x-oss-process=style/yasuo)
 
 设置各节点的 myid
 master -> 1, Slave1 -> 2, Slave2 -> 3, Slave3 -> 4
@@ -329,22 +329,22 @@ master -> 1, Slave1 -> 2, Slave2 -> 3, Slave3 -> 4
 ./run.sh slaves ssh "cat /usr/local/zookeeper/data/myid"
 ```
 
-![](https://img.makis-life.cn/images/20251210053415895.png)
+![](https://img.makis-life.cn/images/20251210053415895.png?x-oss-process=style/yasuo)
 
 检验是否配置成功
-![](https://img.makis-life.cn/images/20251210053415896.png)
+![](https://img.makis-life.cn/images/20251210053415896.png?x-oss-process=style/yasuo)
 
 #### 更新环境变量
 
 编辑`~/.profile`
-![](https://img.makis-life.cn/images/20251210053415897.png)
+![](https://img.makis-life.cn/images/20251210053415897.png?x-oss-process=style/yasuo)
 分发`~/.profile`
 
 ```bash
 ./run.sh slaves scp ~/.profile ~/.profile
 ```
 
-![](https://img.makis-life.cn/images/20251210053415898.png)
+![](https://img.makis-life.cn/images/20251210053415898.png?x-oss-process=style/yasuo)
 
 #### 启动 zookeeper
 
@@ -352,7 +352,7 @@ master -> 1, Slave1 -> 2, Slave2 -> 3, Slave3 -> 4
 zkServer.sh start
 ```
 
-![](https://img.makis-life.cn/images/20251210053415899.png)
+![](https://img.makis-life.cn/images/20251210053415899.png?x-oss-process=style/yasuo)
 
 #### 检查 ZooKeeper 集群状态
 
@@ -360,7 +360,7 @@ zkServer.sh start
 zkServer.sh status
 ```
 
-![](https://img.makis-life.cn/images/20251210053415900.png)
+![](https://img.makis-life.cn/images/20251210053415900.png?x-oss-process=style/yasuo)
 可以看见，Slave2 被选中成为 leader,其余为 follower。
 
 > [!note] 🎉
@@ -376,7 +376,7 @@ scp hadoop-3.4.2.tar.gz hadoop@master:~
 
 #### master 安装 hadoop
 
-![](https://img.makis-life.cn/images/20251210053415901.png)
+![](https://img.makis-life.cn/images/20251210053415901.png?x-oss-process=style/yasuo)
 
 #### 创建工作环境
 
@@ -403,7 +403,7 @@ export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
 ```
 
 目前 `~/.profile` 状态
-![](https://img.makis-life.cn/images/20251210053415902.png)
+![](https://img.makis-life.cn/images/20251210053415902.png?x-oss-process=style/yasuo)
 
 #### 配置 Hadoop 各组件
 
@@ -420,7 +420,7 @@ nvim hadoop-env.sh
 ```
 
 找到`export JAVA_HOME=`行，若使用 vim 可使用/进入搜索模式
-![](https://img.makis-life.cn/images/20251210053415903.png)
+![](https://img.makis-life.cn/images/20251210053415903.png?x-oss-process=style/yasuo)
 同样，编辑`yarn-env.sh`添加 JAVA_HOME，若找不到 JAVA_HOME 行则新增即可
 
 #### 配置 core-site.xml
@@ -540,8 +540,8 @@ slave3
 ./run.sh slaves ssh "sudo mv ~/hadoop /usr/local/hadoop"  # 移动到/usr/local文件夹
 ```
 
-![](https://img.makis-life.cn/images/20251210053415904.png)
-![](https://img.makis-life.cn/images/20251210053415905.png)
+![](https://img.makis-life.cn/images/20251210053415904.png?x-oss-process=style/yasuo)
+![](https://img.makis-life.cn/images/20251210053415905.png?x-oss-process=style/yasuo)
 
 #### 格式化 namenode
 
@@ -551,8 +551,8 @@ slave3
 hadoop namenode -format
 ```
 
-![](https://img.makis-life.cn/images/20251210053415906.png)
-![](https://img.makis-life.cn/images/20251210053415907.png)
+![](https://img.makis-life.cn/images/20251210053415906.png?x-oss-process=style/yasuo)
+![](https://img.makis-life.cn/images/20251210053415907.png?x-oss-process=style/yasuo)
 
 #### 在 master 中启动 hadoop
 
@@ -563,20 +563,20 @@ start-yarn.sh
 # 或 start-all.sh （已过时）
 ```
 
-![](https://img.makis-life.cn/images/20251210053415908.png)
+![](https://img.makis-life.cn/images/20251210053415908.png?x-oss-process=style/yasuo)
 
 #### 检查各节点 jps
 
 master
-![](https://img.makis-life.cn/images/20251210053415909.png)
+![](https://img.makis-life.cn/images/20251210053415909.png?x-oss-process=style/yasuo)
 
 slaves
-![](https://img.makis-life.cn/images/20251210053415910.png)
+![](https://img.makis-life.cn/images/20251210053415910.png?x-oss-process=style/yasuo)
 
 #### 访问 hadoopWeb
 
 浏览器访问 <http://master:9870> ，查看 datanode
-![](https://img.makis-life.cn/images/20251210053415911.png)
+![](https://img.makis-life.cn/images/20251210053415911.png?x-oss-process=style/yasuo)
 可以看见 Slaves 们的数据。
 
 > [!note] 🎉
@@ -593,12 +593,12 @@ wget https://mirrors.aliyun.com/apache/hbase/2.6.4/hbase-2.6.4-bin.tar.gz
 ```
 
 将 hbase 安装包发送到 master 上
-![](https://img.makis-life.cn/images/20251210053415912.png)
+![](https://img.makis-life.cn/images/20251210053415912.png?x-oss-process=style/yasuo)
 
 #### 安装
 
 解压并安装 hbase
-![](https://img.makis-life.cn/images/20251210053415913.png)
+![](https://img.makis-life.cn/images/20251210053415913.png?x-oss-process=style/yasuo)
 编辑 hbase-env.sh
 
 ```bash
@@ -614,7 +614,7 @@ export HBASE_CLASSPATH=/usr/local/hadoop/etc/hadoop
 export HBASE_DISABLE_HADOOP_CLASSPATH_LOOKUP="true"
 ```
 
-![](https://img.makis-life.cn/images/20251210053415914.png)
+![](https://img.makis-life.cn/images/20251210053415914.png?x-oss-process=style/yasuo)
 **复制 Hadoop 配置文件:**
 
 ```bash
@@ -671,7 +671,7 @@ vim $HBASE_HOME/conf/regionservers
 ```
 
 内容:
-![](https://img.makis-life.cn/images/20251210053415915.png)
+![](https://img.makis-life.cn/images/20251210053415915.png?x-oss-process=style/yasuo)
 
 #### 分发 HBase
 
@@ -679,14 +679,14 @@ vim $HBASE_HOME/conf/regionservers
 ./run.sh slaves scp /usr/local/hbase ~
 ```
 
-![](https://img.makis-life.cn/images/20251210053415916.png)
+![](https://img.makis-life.cn/images/20251210053415916.png?x-oss-process=style/yasuo)
 
 安装 hbase 到`/usr/local/hbase`
-![](https://img.makis-life.cn/images/20251210053415917.png)
+![](https://img.makis-life.cn/images/20251210053415917.png?x-oss-process=style/yasuo)
 
 #### 分发 profile 并检查
 
-![](https://img.makis-life.cn/images/20251210053415918.png)
+![](https://img.makis-life.cn/images/20251210053415918.png?x-oss-process=style/yasuo)
 
 #### 启动 HBase
 
@@ -697,12 +697,12 @@ start-hbase.sh
 ```
 
 浏览器访问 <https://master:16010>
-![](https://img.makis-life.cn/images/20251210053415919.png)
+![](https://img.makis-life.cn/images/20251210053415919.png?x-oss-process=style/yasuo)
 可以看见有三个 slave 节点
 
 **jps**
-![](https://img.makis-life.cn/images/20251210053415920.png)
-![](https://img.makis-life.cn/images/20251210053415921.png)
+![](https://img.makis-life.cn/images/20251210053415920.png?x-oss-process=style/yasuo)
+![](https://img.makis-life.cn/images/20251210053415921.png?x-oss-process=style/yasuo)
 
 #### 测试 HBase
 
@@ -730,11 +730,11 @@ get 'test', 'row1'
 exit
 ```
 
-![](https://img.makis-life.cn/images/20251210053415922.png)
+![](https://img.makis-life.cn/images/20251210053415922.png?x-oss-process=style/yasuo)
 上图可以看见，status 显示一个活跃的 master 节点，三个 server 节点。
 
 创建表后，在 web 界面可以看见新建的表
-![](https://img.makis-life.cn/images/20251210053415923.png)
+![](https://img.makis-life.cn/images/20251210053415923.png?x-oss-process=style/yasuo)
 
 > [!note] 🎉
 > 至此，HBase 集群搭建成功！
@@ -757,7 +757,7 @@ sudo mv 安装包 /usr/local/hive
 sudo chown -R hadoop:hadoop /usr/local/hive
 ```
 
-![](https://img.makis-life.cn/images/20251210053415924.png)
+![](https://img.makis-life.cn/images/20251210053415924.png?x-oss-process=style/yasuo)
 
 删除和 hadoop 重复的 slf4j 包
 
@@ -772,9 +772,9 @@ ls $HIVE_HOME/lib | grep guava
 ls $HADOOP_HOME/share/hadoop/common/lib/ | grep guava
 ```
 
-![](https://img.makis-life.cn/images/20251210053415925.png)
+![](https://img.makis-life.cn/images/20251210053415925.png?x-oss-process=style/yasuo)
 这里 hadoop 的版本比 hive 高，所以删除 hive，并把 hadoop 的 guava 复制过去
-![](https://img.makis-life.cn/images/20251210053415926.png)
+![](https://img.makis-life.cn/images/20251210053415926.png?x-oss-process=style/yasuo)
 
 更新环境变量
 编辑`~/.profile~
@@ -785,7 +785,7 @@ export PATH=$PATH:$HIVE_HOME/bin
 ```
 
 目前 profile 状态
-![](https://img.makis-life.cn/images/20251210053415927.png)
+![](https://img.makis-life.cn/images/20251210053415927.png?x-oss-process=style/yasuo)
 
 应用 profile
 
@@ -800,14 +800,14 @@ source ~/.profile
 ./run.sh slaves ssh "source ~/.profile && echo $HIVE_HOME"
 ```
 
-![](https://img.makis-life.cn/images/20251210053415928.png)
+![](https://img.makis-life.cn/images/20251210053415928.png?x-oss-process=style/yasuo)
 
 #### 配置 hive-site
 
 **修改`/usr/local/hive/conf`下的 hive-site.xml**
 进入 hive 配置文件夹，把`hive-default.xml.template`拷贝一份为`hive-default.xml`
 然后新建一个`hive-site.xml`文件
-![](https://img.makis-life.cn/images/20251210053415929.png)
+![](https://img.makis-life.cn/images/20251210053415929.png?x-oss-process=style/yasuo)
 
 内容如下
 
@@ -887,7 +887,7 @@ tar -xzf mysql-connector-java-8.0.29.tar.gz
 cp mysql-connector-java-8.0.29/mysql-connector-java-8.0.29.jar /usr/local/hive/lib
 ```
 
-![](https://img.makis-life.cn/images/20251210053415930.png)
+![](https://img.makis-life.cn/images/20251210053415930.png?x-oss-process=style/yasuo)
 
 ##### 启动并登录 mysql
 
@@ -901,7 +901,7 @@ sudo systemctl start mysql
 sudo systemctl status mysql
 ```
 
-![](https://img.makis-life.cn/images/20251210053415931.png)
+![](https://img.makis-life.cn/images/20251210053415931.png?x-oss-process=style/yasuo)
 可见 mysql 处于 running 状态
 
 ##### 登录 mysql
@@ -933,7 +933,7 @@ cd $HIVE_HOME/bin
 ./schematool -dbType mysql -initSchema
 ```
 
-![](https://img.makis-life.cn/images/20251210053415932.png)
+![](https://img.makis-life.cn/images/20251210053415932.png?x-oss-process=style/yasuo)
 
 #### 启动 hive
 
@@ -943,7 +943,7 @@ cd $HIVE_HOME/bin
 hive
 ```
 
-![](https://img.makis-life.cn/images/20251210053415933.png)
+![](https://img.makis-life.cn/images/20251210053415933.png?x-oss-process=style/yasuo)
 成功进入 beeline
 退出：`Ctrl + C`
 
@@ -974,7 +974,7 @@ hive
 # 然后输入hive-site里面的账号密码
 ```
 
-![](https://img.makis-life.cn/images/20251210053415934.png)
+![](https://img.makis-life.cn/images/20251210053415934.png?x-oss-process=style/yasuo)
 
 创建表格
 
@@ -987,7 +987,7 @@ create table test(
 ```
 
 执行成功
-![](https://img.makis-life.cn/images/20251210053415935.png)
+![](https://img.makis-life.cn/images/20251210053415935.png?x-oss-process=style/yasuo)
 
 查看表格
 
@@ -996,8 +996,8 @@ SHOW TABLES;
 DESCRIBE test;
 ```
 
-![](https://img.makis-life.cn/images/20251210053415936.png)
-![](https://img.makis-life.cn/images/20251210053415937.png)
+![](https://img.makis-life.cn/images/20251210053415936.png?x-oss-process=style/yasuo)
+![](https://img.makis-life.cn/images/20251210053415937.png?x-oss-process=style/yasuo)
 
 加载刚才的 test 文件
 
@@ -1011,7 +1011,7 @@ LOAD DATA LOCAL INPATH '/home/hadoop/test' INTO TABLE test;
 SELECT * FROM test;
 ```
 
-![](https://img.makis-life.cn/images/20251210053415938.png)
+![](https://img.makis-life.cn/images/20251210053415938.png?x-oss-process=style/yasuo)
 
 > [!note] 🎉
 > 至此 hive 安装完成
@@ -1043,7 +1043,7 @@ export PATH=$SCALA_HOME/bin:$PATH
 ```
 
 目前 profile 状态
-![](https://img.makis-life.cn/images/20251210053415939.png)
+![](https://img.makis-life.cn/images/20251210053415939.png?x-oss-process=style/yasuo)
 `source ~/.profile` 并分发
 
 #### 分发 Scala
@@ -1053,7 +1053,7 @@ export PATH=$SCALA_HOME/bin:$PATH
 ./run.sh slaves ssh "sudo mv ~/scala /usr/local/scala"
 ```
 
-![](https://img.makis-life.cn/images/20251210053415940.png)
+![](https://img.makis-life.cn/images/20251210053415940.png?x-oss-process=style/yasuo)
 
 ### 安装 Spark
 
@@ -1146,7 +1146,7 @@ cp workers.template workers
 vim workers
 ```
 
-![](https://img.makis-life.cn/images/20251210053415941.png)
+![](https://img.makis-life.cn/images/20251210053415941.png?x-oss-process=style/yasuo)
 
 #### 更新环境变量
 
@@ -1171,8 +1171,8 @@ export PATH=$SPARK_HOME/bin:$PATH
 ./run.sh slaves ssh "sudo mv ~/spark /usr/local/spark"
 ```
 
-![](https://img.makis-life.cn/images/20251210053415942.png)
-![](https://img.makis-life.cn/images/20251210053415943.png)
+![](https://img.makis-life.cn/images/20251210053415942.png?x-oss-process=style/yasuo)
+![](https://img.makis-life.cn/images/20251210053415943.png?x-oss-process=style/yasuo)
 
 #### 启动 spark
 
@@ -1181,7 +1181,7 @@ spark-shell
 ```
 
 可以看见欢迎界面
-![](https://img.makis-life.cn/images/20251210053415944.png)
+![](https://img.makis-life.cn/images/20251210053415944.png?x-oss-process=style/yasuo)
 
 #### 简单测试 Spark
 
@@ -1214,7 +1214,7 @@ textFile.map(line => line.split(" ").length).reduce((a, b) => if (a > b) a else 
 :quit
 ```
 
-![](https://img.makis-life.cn/images/20251210053415945.png)
+![](https://img.makis-life.cn/images/20251210053415945.png?x-oss-process=style/yasuo)
 
 > [!note] 🎉
 > 至此，Spark 安装完成！
@@ -1265,4 +1265,3 @@ sudo resize2fs /dev/ubuntu-vg/ubuntu-lv
 5. 调试与问题解决能力：解决端口/防火墙（ufw）问题、JDK 版本不一致导致的兼容性问题、依赖包冲突（如 guava/slf4j）、磁盘扩容（LVM resize）等常见故障。
 6. 集群验证与使用：会使用`hadoop namenode -format`、`start-dfs.sh`、`start-yarn.sh`、`start-hbase.sh`、`zkServer.sh start`等命令启动服务，并通过 Web UI（NameNode/HBase Master/Spark）与`jps`、HBase Shell、Hive(Beeline) 等工具验证集群健康与功能。
 7. 大数据工具理解：明确各组件职责与适用场景，能够针对数据存储、实时读写与批处理等需求选择合适工具。
-

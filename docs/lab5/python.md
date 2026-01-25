@@ -43,7 +43,7 @@ hdfs dfs -put fileA fileB /user/hadoop/merge_input/
 hdfs dfs -ls /user/hadoop/merge_input
 ```
 
-### mapper (`merge_mapper.py`)：
+### mapper (`merge_mapper.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -71,7 +71,7 @@ for line in sys.stdin:
 > **`print(f"{line}\t1")`**  
 > 打印格式化的字符串，将原始内容和数字 `1` 用制表符 (`\t`) 分隔。
 
-### reducer (`merge_reducer.py`)：
+### reducer (`merge_reducer.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -99,7 +99,7 @@ for line in sys.stdin:
 > **`prev_key = key`**  
 > 更新 `prev_key` 为当前 key，为下一轮循环做比较。
 
-### 运行命令（Hadoop Streaming）：
+### 运行命令（Hadoop Streaming）
 
 ```bash
 # 上传文件到hdfs
@@ -118,7 +118,7 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
 ```
 
 - 结果查看：`hdfs dfs -cat /user/hadoop/output/merge_dedup/part-*`
-  ![](https://img.makis-life.cn/images/20251210050727832.png)
+  ![](https://img.makis-life.cn/images/20251210050727832.png?x-oss-process=style/yasuo)
 
 ---
 
@@ -127,7 +127,6 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
 现在有多个输入文件，每个文件中的每行内容均为一个整数。要求读取所有文件中的整数，进行升序排序后，输出到一个新的文件中，输出的数据格式为每行两个整数，第一个数字为第二个整数的排序位次，第二个整数为原待排列的整数。下面是输入文件和输出文件的一个样例供参考。
 
 > - 需求：合并多个文件中的整数（每行一个整数），升序排序后输出 `rank value`（rank 从 1 开始）。
->
 > - 实现思路：使用 **单个 reducer**（`-D mapreduce.job.reduces=1`），mapper 将每个整数作为 key 输出，Hadoop 在 reducer 处会按 key 排序（lexicographic->需确保数值排序：把 key 转为定长或使用数值排序）。
 
 ### 准备数据文件
@@ -176,7 +175,7 @@ hdfs dfs -mkdir -p /user/hadoop/sort_input
 hdfs dfs -put one two three /user/hadoop/sort_input/
 ```
 
-### mapper (`sort_mapper.py`)：
+### mapper (`sort_mapper.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -264,7 +263,7 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
 ```
 
 - 结果查看：`hdfs dfs -cat /user/hadoop/output/sort_rank/part-*`
-  ![](https://img.makis-life.cn/images/20251210050637608.png)
+  ![](https://img.makis-life.cn/images/20251210050637608.png?x-oss-process=style/yasuo)
 
 ---
 
@@ -308,12 +307,11 @@ hdfs dfs -ls /user/hadoop/gp_input/
 ```
 
 - 思路：针对每条 (child, parent) 记录，mapper 为可能的“中间人” M 发两个标记：
-
   - emit key = parent, value = `CHILD:<child>`（表示 M 的子）
   - emit key = child, value = `PARENT:<parent>`（表示 M 的父）
     在 reducer 中，针对中间人 M，将所有 CHILD 列表与 PARENT 列表笛卡尔组合，输出 (grandchild, grandparent)。
 
-#### mapper (`gp_mapper.py`)：
+#### mapper (`gp_mapper.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -353,7 +351,7 @@ for line in sys.stdin:
 > **`print(f"{child}\tPARENT:{parent}")`**  
 > 输出另一条记录，key 为子节点，value 表示其父节点。
 
-#### reducer (`gp_reducer.py`)：
+#### reducer (`gp_reducer.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -425,7 +423,7 @@ if current is not None:
 >
 > 适用于 MapReduce 或关系映射分析。
 
-#### 运行命令：
+#### 运行命令
 
 ```bash
 hdfs dfs -mkdir -p /user/maki/gp_input
@@ -442,4 +440,4 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
 ```
 
 - 结果查看：`hdfs dfs -cat /user/maki/output/grandparent/part-*`
-  ![](https://img.makis-life.cn/images/20251210050637609.png)
+  ![](https://img.makis-life.cn/images/20251210050637609.png?x-oss-process=style/yasuo)

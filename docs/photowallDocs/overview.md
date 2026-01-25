@@ -5,7 +5,8 @@ photowall使用 Rust 和 React 构建照片墙应用。
 
 应用程序采用清晰的客户端-服务器架构，各层职责分明：
 
-![](https://img.makis-life.cn/images/20251205082649473.png)
+![](https://img.makis-life.cn/images/20251205082649473.png?x-oss-process=style/yasuo)
+
 ## 核心技术
 
 | 层级       | 技术               | 用途                              |
@@ -39,8 +40,8 @@ photowall使用 Rust 和 React 构建照片墙应用。
 
 ```
 rustPac_photowall/
-├── backend/  
-│   ├── src/                  
+├── backend/
+│   ├── src/
 │   │   ├── main.rs            # 服务器入口点和配置
 │   │   ├── handlers.rs        # HTTP 请求处理器
 │   │   ├── models.rs          # 数据模型和结构
@@ -85,3 +86,4 @@ CREATE TABLE photos (
 
 1. [quickStart](quickStart.md)
 2. [projectStruct](projectStruct.md)
+

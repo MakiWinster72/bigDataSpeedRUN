@@ -25,7 +25,7 @@ sudo visudo
 hadoop ALL=(ALL) NOPASSWD: ALL
 ```
 
-![](https://img.makis-life.cn/images/20251210022335976.png)
+![](https://img.makis-life.cn/images/20251210022335976.png?x-oss-process=style/yasuo)
 
 ### 通信
 
@@ -35,7 +35,7 @@ hadoop ALL=(ALL) NOPASSWD: ALL
 
 例如：
 
-![](https://img.makis-life.cn/images/20251210022335977.png)
+![](https://img.makis-life.cn/images/20251210022335977.png?x-oss-process=style/yasuo)
 
 <center>检查 Master 的 IP 地址</center>
 
@@ -63,7 +63,7 @@ ping 192.168.1.101 -c 3
 ping 192.168.1.105 -c 3
 ```
 
-![](https://img.makis-life.cn/images/20251210022335978.png)
+![](https://img.makis-life.cn/images/20251210022335978.png?x-oss-process=style/yasuo)
 
 ### 编辑 hosts 文件
 
@@ -80,7 +80,7 @@ sudo nvim /etc/hosts
 192.168.1.105 slave3
 ```
 
-![](https://img.makis-life.cn/images/20251210022335979.png)
+![](https://img.makis-life.cn/images/20251210022335979.png?x-oss-process=style/yasuo)
 
 将 hosts 文件传递给各主机
 
@@ -96,7 +96,7 @@ scp /etc/hosts hadoop@slave3:~
 sudo mv ~/hosts /etc/hosts
 ```
 
-![](https://img.makis-life.cn/images/20251210022335980.png)
+![](https://img.makis-life.cn/images/20251210022335980.png?x-oss-process=style/yasuo)
 
 ### 设置主机名
 
@@ -106,7 +106,7 @@ sudo mv ~/hosts /etc/hosts
 sudo hostnamectl set-hostname master
 ```
 
-![](https://img.makis-life.cn/images/20251210022335981.png)
+![](https://img.makis-life.cn/images/20251210022335981.png?x-oss-process=style/yasuo)
 
 <center>Master 设置主机名</center>
 
@@ -125,7 +125,7 @@ sudo hostnamectl set-hostname slave2
 sudo hostnamectl set-hostname slave3
 ```
 
-![](https://img.makis-life.cn/images/20251210022335982.png)
+![](https://img.makis-life.cn/images/20251210022335982.png?x-oss-process=style/yasuo)
 
 ### 配置 ssh 免密码登录
 
@@ -140,7 +140,7 @@ hadoop 集群需要 ssh 免密码登录才可正常运行
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 ```
 
-![](https://img.makis-life.cn/images/20251210022335983.png)
+![](https://img.makis-life.cn/images/20251210022335983.png?x-oss-process=style/yasuo)
 
 #### 分发密钥
 
@@ -154,7 +154,7 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub slave3
 
 会依次询问是否添加主机以及对应主机的密码。
 
-![](https://img.makis-life.cn/images/20251210022335984.png)
+![](https://img.makis-life.cn/images/20251210022335984.png?x-oss-process=style/yasuo)
 
 #### 测试免密登录
 
@@ -167,7 +167,7 @@ ssh slave3
 
 可见现在 ssh slave1 已经不再需要输入密码，免登录设置成功。
 
-![](https://img.makis-life.cn/images/20251210022335985.png)
+![](https://img.makis-life.cn/images/20251210022335985.png?x-oss-process=style/yasuo)
 
 ## 安装 Java
 
@@ -202,7 +202,7 @@ export JAVA_HOME=/usr/lib/jvm/jdk21
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
-![](https://img.makis-life.cn/images/20251210022335986.png)
+![](https://img.makis-life.cn/images/20251210022335986.png?x-oss-process=style/yasuo)
 
 应用环境变量：
 
@@ -216,7 +216,7 @@ source ~/.profile
 java -version
 ```
 
-![](https://img.makis-life.cn/images/20251210022335987.png)
+![](https://img.makis-life.cn/images/20251210022335987.png?x-oss-process=style/yasuo)
 
 ### 分发 java 并安装
 
@@ -256,7 +256,7 @@ source ~/.profile
 java -version
 ```
 
-![](https://img.makis-life.cn/images/20251210022335988.png)
+![](https://img.makis-life.cn/images/20251210022335988.png?x-oss-process=style/yasuo)
 
 ## 安装 Hadoop 集群
 
@@ -278,7 +278,7 @@ sudo mv hadoop-3.4.2 /usr/local/hadoop
 sudo chown -R hadoop:hadoop /usr/local/hadoop
 ```
 
-![](https://img.makis-life.cn/images/20251210022335989.png)
+![](https://img.makis-life.cn/images/20251210022335989.png?x-oss-process=style/yasuo)
 
 ### 创建工作环境
 
@@ -312,7 +312,7 @@ export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
 
 目前 `~/.profile` 状态：
 
-![](https://img.makis-life.cn/images/20251210022335990.png)
+![](https://img.makis-life.cn/images/20251210022335990.png?x-oss-process=style/yasuo)
 
 应用环境变量：
 
@@ -340,7 +340,7 @@ vim hadoop-env.sh
 export JAVA_HOME=/usr/lib/jvm/jdk21
 ```
 
-![](https://img.makis-life.cn/images/20251210022335991.png)
+![](https://img.makis-life.cn/images/20251210022335991.png?x-oss-process=style/yasuo)
 
 #### 配置 yarn-env.sh
 
@@ -515,7 +515,7 @@ source ~/.profile
 echo $HADOOP_HOME
 ```
 
-![](https://img.makis-life.cn/images/20251210022335992.png)
+![](https://img.makis-life.cn/images/20251210022335992.pn?x-oss-process=style/yasuog)
 
 #### 分发 hadoop 目录
 
@@ -525,7 +525,7 @@ scp -r /usr/local/hadoop hadoop@slave2:~
 scp -r /usr/local/hadoop hadoop@slave3:~
 ```
 
-![](https://img.makis-life.cn/images/20251210022335994.png)
+![](https://img.makis-life.cn/images/20251210022335994.png?x-oss-process=style/yasuo)
 
 在各 slave 节点执行：
 
@@ -542,11 +542,11 @@ sudo chown -R hadoop:hadoop /usr/local/hadoop
 hadoop namenode -format
 ```
 
-![](https://img.makis-life.cn/images/20251210022335995.png)
+![](https://img.makis-life.cn/images/20251210022335995.png?x-oss-process=style/yasuo)
 
 看到 "Storage directory /usr/local/hadoop/hdfs/name has been successfully formatted" 表示格式化成功。
 
-![](https://img.makis-life.cn/images/20251210022335996.png)
+![](https://img.makis-life.cn/images/20251210022335996.png?x-oss-process=style/yasuo)
 
 ### 启动 Hadoop 集群
 
@@ -557,7 +557,7 @@ start-dfs.sh
 start-yarn.sh
 ```
 
-![](https://img.makis-life.cn/images/20251210022335997.png)
+![](https://img.makis-life.cn/images/20251210022335997.png?x-oss-process=style/yasuo)
 
 ### 检查各节点进程
 
@@ -573,7 +573,7 @@ jps
 - SecondaryNameNode
 - ResourceManager
 
-![](https://img.makis-life.cn/images/20251210022335998.png)
+![](https://img.makis-life.cn/images/20251210022335998.png?x-oss-process=style/yasuo)
 
 #### Slave 节点
 
@@ -588,7 +588,7 @@ jps
 - DataNode
 - NodeManager
 
-![](https://img.makis-life.cn/images/20251210022335999.png)
+![](https://img.makis-life.cn/images/20251210022335999.png?x-oss-process=style/yasuo)
 
 ### 访问 Hadoop Web UI
 
@@ -597,7 +597,7 @@ jps
 - HDFS Web UI: `http://master:9870`
 - YARN Web UI: `http://master:8088`
 
-![](https://img.makis-life.cn/images/20251210022336000.png)
+![](https://img.makis-life.cn/images/20251210022336000.png?x-oss-process=style/yasuo)
 
 可以看见所有 DataNode 的信息，表示 Hadoop 集群搭建成功！
 
