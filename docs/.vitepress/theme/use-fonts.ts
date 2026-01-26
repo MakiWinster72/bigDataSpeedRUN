@@ -1,5 +1,5 @@
 import hmUrl from "./fonts/hm-m.woff2";
-import recursiveUrl from "./fonts/Recursive.woff2";
+import hurmitUrl from "./fonts/HurmitNerdFontMono-Regular.woff2";
 
 function createStyle(css: string) {
   const style = document.createElement("style");
@@ -31,7 +31,7 @@ export function injectSiteFonts() {
 
   // Ensure URLs are present
   const hm = String(hmUrl || "");
-  const rec = String(recursiveUrl || "");
+  const hurmit = String(hurmitUrl || "");
 
   const css = `
 /* HM-M for body text */
@@ -43,25 +43,25 @@ export function injectSiteFonts() {
   font-display: swap;
 }
 
-/* Recursive for code blocks (as requested) */
+/* Hurmit for code blocks (as requested) */
 @font-face {
-  font-family: "Recursive";
-  src: local("Recursive"), local("Recursive Variable"), url("${rec}") format("woff2");
-  font-weight: 100 900;
+  font-family: "Hurmit";
+  src: local("Hurmit"), local("HurmitNerdFontMono"), url("${hurmit}") format("woff2");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
-/* Override VitePress font variables: body uses HM-M, monospace (code) uses Recursive */
+/* Override VitePress font variables: body uses HM-M, monospace (code) uses Hurmit */
 :root {
   --vp-font-family-base: "HM-M", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --vp-font-family-mono: "Recursive", ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  --vp-font-family-mono: "Hurmit", ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
 }
 `;
 
   createStyle(css);
 
-  if (rec) addPreload(rec);
+  if (hurmit) addPreload(hurmit);
   if (hm) addPreload(hm);
 }
 
