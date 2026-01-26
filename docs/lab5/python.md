@@ -1,5 +1,7 @@
 # MapReduce
 
+> 因为要写 python 程序，可以选择使用 VSCode 远程登录，或者Ubuntu Desktop 的可以直接在虚拟机安装 VSCode，也可以尝试新的编辑器 Neovim！
+
 ## 实验目的
 
 1.通过实验掌握基本的 MapReduce 编程方法；
@@ -190,13 +192,13 @@ for line in sys.stdin:
             continue
 ```
 
-> **`for line in sys.stdin:`**  
-> 从标准输入（_standard input_）逐行读取数据。  
-> **`s = line.strip()`**  
-> 去掉每行开头和结尾的空白字符，包括空格、换行符等。  
-> **`if s:`**  
-> 判断该行是否非空，空行会被跳过。  
-> **`v = int(s)`**  
+> **`for line in sys.stdin:`**
+> 从标准输入（_standard input_）逐行读取数据
+> **`s = line.strip()`**
+> 去掉每行开头和结尾的空白字符，包括空格、换行符等。
+> **`if s:`**
+> 判断该行是否非空，空行会被跳过。
+> **`v = int(s)`**
 > 将字符串 `s` 转换为整数，如果无法转换会抛出异常。
 
 ### reducer (`sort_reducer.py`)

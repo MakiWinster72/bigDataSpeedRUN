@@ -40,40 +40,34 @@ npm run docs:dev
 
 ## 📚 实验内容
 
-### 实验1：虚拟机环境搭建
+### 1. 环境准备
 
-- 虚拟机安装与配置
-- 共享文件夹设置
-- 文件传输方式
-- Hadoop 安装与配置
-- 伪分布式模式
-- 完全分布式集群
+**虚拟机配置**：安装 Ubuntu 系统，配置网络和共享文件夹
+**基础软件**：安装 Java、SSH 等必要工具
+**文件传输**：掌握主机和虚拟机间多种文件传输方式
 
-### 实验2：HDFS 分布式文件系统
+### 2. HDFS 实验
 
-- HDFS 基本操作
-- HDFS Java API
-- HDFS Python API
+**伪分布式模式**：单节点 Hadoop 环境搭建
+**完全分布式**：多节点 Hadoop 集群配置
+**HDFS 操作**：文件系统基本命令和使用
 
-### 实验3：HBase 非关系型数据库
+### 3. HBase 实验
 
-- HBase 安装与配置
-- HBase Shell 操作
-- HBase Java API
-- HBase Python API
-- HBase 常见问题解决
+**HBase 安装**：在 Hadoop 基础上安装 HBase
+**Shell 操作**：HBase 基本命令和表操作
 
-### 实验4：数据库与 NoSQL
+### 4. 数据库实验
 
-- RDS for MySQL 使用
-- SQL 与 NoSQL 对比
-- 云数据库实践
+**云数据库**：RDS for MySQL 的使用
+**SQL 对比**：传统 SQL 与 NoSQL 的使用对比
 
-### 实验5：MapReduce 编程
+### 5. MapReduce
 
-- MapReduce 编程模型
-- MapReduce Python 实现
-- 实际案例分析
+**编程模型**：Map 和 Reduce 函数编写
+**案例实践**：词频统计、数据分析等
+
+### 6. 集群搭建
 
 ## 贡献名单
 
@@ -93,5 +87,5 @@ npm run docs:dev
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+本项目采用 MIT 许可证
 

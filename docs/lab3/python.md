@@ -3,6 +3,8 @@
 >
 > 请先完成 [伪分布式](../lab1/PseudoDistributed.md) 安装。
 
+> 因为要写 python 程序，可以选择使用 VSCode 远程登录，或者Ubuntu Desktop 的直接在虚拟机安装 VSCode，也可以尝试新的编辑器 Neovim！
+
 ### python 环境前置
 
 ```bash

@@ -63,7 +63,7 @@ CREATE USER 'user'@'%' IDENTIFIED BY 'your_password';
 > %指任意 ip 地址，或填写本机所在 ip 地址
 > ![](https://img.makis-life.cn/images/20251205082636203.png?x-oss-process=style/yasuo)
 
-4. 授予权限（例如授予所有数据库的所有权限）：
+4. 授予权限（这里是授予所有的 databases 的所有table权限）：
 
 ```mysql
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' WITH GRANT OPTION;

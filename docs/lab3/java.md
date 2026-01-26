@@ -3,6 +3,8 @@
 >
 > 请先完成 [伪分布式](../lab1/PseudoDistributed.md) 安装。
 
+> 因为要写 java 程序，可以选择使用 VSCode 远程登录，或者Ubuntu Desktop 的直接在虚拟机安装 VSCode，也可以尝试新的编辑器 Neovim！
+
 ## 一、列出所有表信息
 
 **Java 实现**：
@@ -28,11 +30,14 @@ public class ListTables {
     }
 }
 ```
+
 #### 运行
+
 ```bash
 javac -cp $(hbase classpath) ListTables.java
 java -cp .:$(hbase classpath) ListTables
 ```
+
 **HBase Shell 等价命令**：
 
 ```bash
@@ -81,7 +86,9 @@ public class ScanTable {
     }
 }
 ```
+
 #### 运行
+
 ```bash
 # 编译
 javac -cp $(hbase classpath) ScanTable.java
@@ -90,6 +97,7 @@ javac -cp $(hbase classpath) ScanTable.java
 java -cp .:$(hbase classpath) ScanTable mytable
 
 ```
+
 **HBase Shell 等价命令**：
 
 ```shell
@@ -142,7 +150,9 @@ public class ModifyColumnFamily {
     }
 }
 ```
+
 #### 运行
+
 ```bash
 # 编译
 javac -cp $(hbase classpath) ModifyColumnFamily.java
@@ -155,14 +165,12 @@ java -cp .:$(hbase classpath) ModifyColumnFamily mytable newcf
 java -cp .:$(hbase classpath) ModifyColumnFamily mytable "" oldcf
 
 ```
+
 说明：
 
 1. `$(hbase classpath)` 展开为 HBase 的依赖 jar 路径，保证编译和运行都能找到 HBase 类。
-    
 2. `"."` 表示当前目录，确保能找到 `ModifyColumnFamily` 类。
-    
 3. 添加列族时第二个参数为要添加的列族名，删除列族时第二个参数可填空字符串 `""`，第三个参数为要删除的列族名。
-    
 4. 如果不传第二、第三个参数，程序会提示 `"No operation specified."`。
 
 **HBase Shell 等价命令**：
@@ -220,7 +228,9 @@ public class TruncateTable {
     }
 }
 ```
+
 #### 运行
+
 ```bash
 # 编译
 javac -cp $(hbase classpath) TruncateTable.java
@@ -229,6 +239,7 @@ javac -cp $(hbase classpath) TruncateTable.java
 java -cp .:$(hbase classpath) TruncateTable mytable
 
 ```
+
 **HBase Shell 等价命令**：
 
 ```shell
@@ -266,7 +277,9 @@ public class CountRows {
     }
 }
 ```
+
 #### 运行
+
 ```bash
 # 编译
 javac -cp $(hbase classpath) CountRows.java
@@ -274,6 +287,7 @@ javac -cp $(hbase classpath) CountRows.java
 # 运行示例
 java -cp .:$(hbase classpath) CountRows mytable
 ```
+
 **HBase Shell 等价命令**：
 
 ```shell

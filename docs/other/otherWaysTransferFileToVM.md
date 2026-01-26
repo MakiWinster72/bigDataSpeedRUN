@@ -81,7 +81,6 @@ inet 192.168.56.101/24
 ```bash
 sudo apt install -y openssh-server
 sudo systemctl enable ssh
-sudo systemctl start ssh
 ```
 
 #### 从 Windows 传文件到 Ubuntu

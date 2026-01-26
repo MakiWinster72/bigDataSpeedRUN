@@ -11,7 +11,7 @@
 <configuration>
   <property>
     <name>hadoop.tmp.dir</name>
-    <value>file:/usr/local/hadoop/tmp</value> <!-- Hadoop 安装路径 -->
+    <value>file:/usr/local/hadoop/tmp</value>
     <description>A base for other temporary directories.</description>
   </property>
   <property>
@@ -31,11 +31,11 @@
   </property>
   <property>
     <name>dfs.namenode.name.dir</name>
-    <value>file:/usr/local/hadoop/tmp/dfs/name</value> <!-- Hadoop 安装路径 -->
+    <value>file:/usr/local/hadoop/tmp/dfs/name</value>
   </property>
   <property>
     <name>dfs.datanode.data.dir</name>
-    <value>file:/usr/local/hadoop/tmp/dfs/data</value> <!-- Hadoop 安装路径 -->
+    <value>file:/usr/local/hadoop/tmp/dfs/data</value>
   </property>
 </configuration>
 ```
@@ -62,7 +62,15 @@ start-dfs.sh
 > 若报错找不到 `JAVA_HOME`，需在 `$HADOOP_HOME/etc/hadoop/hadoop-env.sh` 中添加：
 >
 > ```bash
-> export JAVA_HOME=/path/to/ur/jdk
+>
+> ```
+
+# 替换为你的jdk位置，一般在/usr/lib/jvm/java-21-openjdk
+
+> export JAVA_HOME=/path/to/your/jdk
+>
+> ```
+>
 > ```
 
 使用 `jps` 可查看 Hadoop 启动的 Java 进程，如：
@@ -83,6 +91,8 @@ start-dfs.sh
 ### 访问 Hadoop Dashboard
 
 在浏览器访问：
+
+> 如果是桌面版，直接打开firefox输入下面的链接就可以。如果是 server 版，使用 `ip addr show` 查看虚拟机的ip地址，然后在主机的浏览器输入http://<虚拟机ip>::9870
 
 ```bash
 http://<服务器IP>:9870

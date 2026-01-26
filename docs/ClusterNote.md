@@ -1,3 +1,5 @@
+# 集群搭建
+
 ## 实验设备
 
 ### 硬件
@@ -7,7 +9,8 @@
 | 计算机<br>         | 4    | 成员设备，用于运行 ubuntu 虚拟机 |
 | 路由器：HUAWEI AX6 | 1    | 通信设备，用于为各主机建立连接   |
 
-> 单计算机多虚拟机也可以，服务器也可以，全服务器也可以。核心是通过ip通信，服务器建议各主机在同一个vps网络中。
+> 单计算机多虚拟机也可以，部分是服务器也可以，全服务器也可以。核心是通过ip通信，服务器建议各主机在同一个vps网络中。
+> 也可以小组内连接同一个手机热点，确保虚拟机是**桥接模式**，使用`ip addr show`即可查看ip地址，使用ssh即可连接
 
 ### 软件
 
@@ -86,7 +89,7 @@ ping 192...（各 Slaves 的ip地址）
 #### 编辑 hosts 文件
 
 ```bash
-sudo nvim /etc/hosts
+sudo vim /etc/hosts
 ```
 
 ![](https://img.makis-life.cn/images/20251210053415880.png?x-oss-process=style/yasuo)
@@ -416,7 +419,7 @@ export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
 
 ```bash
 cd $HADOOP_HOME/etc/hadoop
-nvim hadoop-env.sh
+vim hadoop-env.sh
 ```
 
 找到`export JAVA_HOME=`行，若使用 vim 可使用/进入搜索模式
@@ -602,7 +605,7 @@ wget https://mirrors.aliyun.com/apache/hbase/2.6.4/hbase-2.6.4-bin.tar.gz
 编辑 hbase-env.sh
 
 ```bash
-nvim /usr/local/hbase/conf/hbase.env.sh
+vim /usr/local/hbase/conf/hbase.env.sh
 ```
 
 查找或直接在文件头新增以下四行
@@ -838,7 +841,7 @@ source ~/.profile
 </configuration>
 ```
 
-在`nvim $HADOOP_HOME/etc/hadoop/core-site.xml`新增
+在`$HADOOP_HOME/etc/hadoop/core-site.xml`新增
 
 ```xml
 <property>

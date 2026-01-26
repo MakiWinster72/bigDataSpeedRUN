@@ -1,6 +1,8 @@
 # 本教程使用Ubuntu24.04.03 LTS
 
-iso文件请前往resources页面下载: [resources](../resources.md)
+系统镜像文件请前往resources页面下载: [resources](../resources.md)
+
+然后选择你的软件 => [VMWare](#vmware) [VirtualBox](#virtualbox)
 
 ## VMWare
 
@@ -8,21 +10,25 @@ iso文件请前往resources页面下载: [resources](../resources.md)
    ![Pasted image 20251209230644](https://img.makis-life.cn//images/20251210071449582.png?x-oss-process=style/yasuo)
 2. 选择典型安装
    ![Pasted image 20251209230721](https://img.makis-life.cn//images/20251210071449583.png?x-oss-process=style/yasuo)
-3. 点击`浏览`，选中下载好的ISO文件
+3. 点击`浏览`，选中刚才下载好的ISO文件
    ![Pasted image 20251209230803](https://img.makis-life.cn//images/20251210071449584.png?x-oss-process=style/yasuo)
 4. 填写信息
    ![Pasted image 20251209230845](https://img.makis-life.cn//images/20251210071449585.png?x-oss-process=style/yasuo)
 5. 一直下一步到这，选择`自定义硬件`
    ![Pasted image 20251209230920](https://img.makis-life.cn//images/20251210071449586.png?x-oss-process=style/yasuo)
 6. 网络改为桥接模式
+
+<div id="network"></div>
+
    ![Pasted image 20251209231010](https://img.makis-life.cn//images/20251210071449587.png?x-oss-process=style/yasuo)
+
 7. 点击关闭，然后完成
 
 > [!info]
 >
 > 请选择:
-> [Install UbuntuDesktop](<#Ubuntu Desktop>)
-> [Install UbuntuServer(推荐)](<#Ubuntu Server>)
+> [安装Ubuntu桌面版](<#Ubuntu Desktop>)
+> [安装Ubuntu服务器版(无图形界面)](<#Ubuntu Server>)
 
 ## VirtualBox
 
@@ -50,8 +56,8 @@ iso文件请前往resources页面下载: [resources](../resources.md)
 > [!info]
 >
 > 请选择:
-> [Install UbuntuDesktop](<#Ubuntu Desktop>)
-> [Install UbuntuServer(推荐)](<#Ubuntu Server>)
+> [安装Ubuntu桌面版](<#Ubuntu Desktop>)
+> [安装Ubuntu服务器版(无图形界面)](<#Ubuntu Server>)
 
 ## Ubuntu Desktop
 
@@ -60,16 +66,16 @@ iso文件请前往resources页面下载: [resources](../resources.md)
 1. 点击try or install ubuntu
    ![](https://img.makis-life.cn/images/20251110181431335.png?x-oss-process=style/yasuo)
 
-2. 选英文选英文选英文选英文选英文选英文选英文选英文
+2. 建议选英文
    ![](https://img.makis-life.cn/images/20251110181431336.png?x-oss-process=style/yasuo)
 
 > 强烈建议在使用Linux系统时默认使用英文作为首选语言，中文输入法可通过安装fcitx5或者ibus解决。
 
-1. 一直下一步就可以了
+3. 一直下一步就可以了
 
-> 如果你是真机安装，那么还是请注意每一步的意义清楚每一步的后果。
+> 如果你是真机安装，那么还是请注意每一步的意义，清楚每一步的后果。
 
-1. 设置名字和主机名、密码等
+4. 设置名字和主机名、密码等
    ![](https://img.makis-life.cn/images/20251110181431337.png?x-oss-process=style/yasuo)
    > 其实这一步就可以直接叫hadoop了，后续实验基本用不上默认用户。
    > 密码建议非常弱小的密码，因为后续我们将会一遍又一遍地频繁输入，你也不想每次都输入大小写字母数字+特殊符号的密码吧...真机看自己
@@ -81,46 +87,52 @@ iso文件请前往resources页面下载: [resources](../resources.md)
 
 ### 重启后安装基本软件
 
+打开终端(Terminal)
+
 ```bash
 sudo apt update
-sudo apt install -y wget curl vim zip unzip tar openssh-server htop lsof git net-tools
+sudo apt install -y wget curl vim zip unzip tar openssh-server htop lsof net-tools
 ```
 
 ## Ubuntu Server
 
 1. 选择`Try or install ubuntu`
-2. 选英文选英文选英文选英文选英文！！
+2. 建议选英文
    ![](https://img.makis-life.cn/images/20251110181431338.png?x-oss-process=style/yasuo)
 
 > 强烈建议在使用Linux系统时默认使用英文作为首选语言，中文输入法可通过安装fcitx5或者ibus解决。
 
-1. 然后一直`Enter`
-2. 通过`Tab`切换选择，安装minimized
+3. 然后一直`Enter`
+4. 通过`Tab`切换选择，安装minimized
    ![](https://img.makis-life.cn/images/20251110181431339.png?x-oss-process=style/yasuo)
-3. 下一步是网络配置，这一步确保之前选择了`桥接`模式，会发现已经自动帮我们配置好了新的IP。
+5. 下一步是网络配置，这一步确保之前选择了[桥接](#network)模式，会发现已经自动帮我们配置好了新的IP。
+
    ![](https://img.makis-life.cn/images/20251110181431340.png?x-oss-process=style/yasuo)
+
    > 也可手动分配ip,例如 namenode 是 192.168.1.200/24, dn1 是 201, dn2 是 202
-4. 一直下一步，会到选择镜像(mirror)配置，会自动选择镜像站，正常测试到清华源即可
+6. 一直下一步，会到选择镜像(mirror)配置，会自动选择镜像站，正常测试到清华源即可
    ![](https://img.makis-life.cn/images/20251110181431341.png?x-oss-process=style/yasuo)
-5. 存储配置也是默认即可
+7. 存储配置也是默认即可
    ![](https://img.makis-life.cn/images/20251110181431342.png?x-oss-process=style/yasuo)
    > 真机这一步必须谨慎配置，尤其是和Windows共存一块硬盘的情况。
 
-一直下一步，在最后选择`Continue`继续即可。8. 配置用户名、主机名以及密码
+一直下一步，在最后选择`Continue`继续即可。
+
+8. 配置用户名、主机名以及密码
 ![](https://img.makis-life.cn/images/20251110181431343.png?x-oss-process=style/yasuo)
 
 > 其实这一步就可以直接叫hadoop了，后续实验基本用不上默认用户。
 > 密码建议非常弱小的密码，因为后续我们将会<u>一遍又一遍地频繁输入</u>，你也不想每次都输入*大小写字母数字+特殊符号*的密码吧...真机看自己
 
-1. 一直下一步，选择安装openssh-server ![](https://img.makis-life.cn/images/20251110181431344.png?x-oss-process=style/yasuo)
+9. 一直下一步，选择安装openssh-server ![](https://img.makis-life.cn/images/20251110181431344.png?x-oss-process=style/yasuo)
 
    > 忘记勾选也没事，后续sudo apt install openssh-server就可以了
 
-2. 这一步是问你是否要预装一些服务器应用，我们用不上，后续需要使用也可以手动安装，这一步选择`Done`就开始安装系统了
+10. 这一步是问你是否要预装一些服务器应用，我们用不上，后续需要使用也可以手动安装，这一步选择`Done`就开始安装系统了
    ![](https://img.makis-life.cn/images/20251110181431345.png?x-oss-process=style/yasuo)
-3. 等待一会后，选择`Reboot Now`，一会会提示你拔出安装媒介，不必操作按Enter，随后即可进入全新的Ubuntu Server
+11. 等待一会后，选择`Reboot Now`，一会会提示你拔出安装媒介，不必操作按Enter，随后即可进入全新的Ubuntu Server
    ![](https://img.makis-life.cn/images/20251110181431346.png?x-oss-process=style/yasuo)
-4. 输入用户名以及密码即可登录进入系统
+12. 输入用户名以及密码即可登录进入系统
    ![](https://img.makis-life.cn/images/20251110181431347.png?x-oss-process=style/yasuo)
    > [!warning]
    > 公网主机请勿展示sshkey
@@ -148,7 +160,7 @@ sudo apt update
 ```
 
 ```bash
-sudo apt install -y wget curl vim nano zip unzip tar openssh-server htop lsof git build-essential sshpass
+sudo apt install -y wget curl vim nano zip unzip tar openssh-server htop lsof build-essential sshpass
 ```
 
 ### (可选)Server配置无密码登录

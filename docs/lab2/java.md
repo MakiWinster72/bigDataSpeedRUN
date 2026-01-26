@@ -3,8 +3,7 @@
 > 需确保已正确配置 `HADOOP_HOME` 环境变量。
 > [Hadoop伪分布式安装](../lab1/PseudoDistributed.md)
 
-
----
+> 因为要写 java 程序，可以选择使用 VSCode 远程登录，或者Ubuntu Desktop 的直接在虚拟机安装 VSCode，也可以尝试新的编辑器 Neovim！
 
 ## 一、编译与运行环境举例
 
@@ -12,6 +11,8 @@
 
 ```bash
 vim UploadFileHDFS.java
+
+# 或安装了 neovim 的使用 nvim
 ```
 
 2. 使用 `javac` 并显式加入 Hadoop 依赖
@@ -21,9 +22,11 @@ javac -cp $(hadoop classpath) *.java
 ```
 
 3. 打包为jar文件
+
 ```bash
 jar -cvf jar文件名 class文件
 ```
+
 > 或直接运行 `java -cp .:$(hadoop classpath) 类 参数1 参数2...`
 
 4. 运行示例
@@ -75,6 +78,7 @@ public class UploadFileHDFS {
 ```
 
 #### 运行
+
 ```bash
 javac -cp $(hadoop classpath) UploadFileHDFS.java
 
@@ -82,6 +86,7 @@ jar -cvf UploadFileHDFS.jar UploadFileHDFS.class
 
 hadoop jar UploadFileHDFS.jar UploadFileHDFS test /input/test false
 ```
+
 **对应命令：**
 
 ```bash
@@ -581,6 +586,7 @@ public class MoveFileHDFS {
     }
 }
 ```
+
 #### 运行
 
 编译 Java 文件：

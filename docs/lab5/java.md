@@ -1,5 +1,7 @@
 # MapReduce
 
+> 因为要写 java 程序，可以选择使用 VSCode 远程登录，或者Ubuntu Desktop 的直接在虚拟机安装 VSCode，也可以尝试新的编辑器 Neovim！
+
 ## 实验目的
 
 1.通过实验掌握基本的 MapReduce 编程方法；

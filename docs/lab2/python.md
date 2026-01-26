@@ -3,10 +3,10 @@
 > 需确保已正确配置 `HADOOP_HOME` 环境变量。
 > [Hadoop伪分布式安装](../lab1/PseudoDistributed.md)
 
-
----
+> 因为要写 python 程序，可以选择使用 VSCode 远程登录，或者Ubuntu Desktop 的直接在虚拟机安装 VSCode，也可以尝试新的编辑器 Neovim！
 
 使用python操控hdfs需要预安装hdfs依赖
+
 ```bash
 sudo apt install pip python3.12-venv
 # 使用虚拟环境
@@ -58,9 +58,9 @@ if __name__ == "__main__":
 >
 > **函数参数说明：**
 >
-> * `sys.argv[1]`：本地文件路径。
-> * `sys.argv[2]`：HDFS 上的目标路径。
-> * `sys.argv[3]`：是否以追加（`True`/`False`）方式写入。
+> - `sys.argv[1]`：本地文件路径。
+> - `sys.argv[2]`：HDFS 上的目标路径。
+> - `sys.argv[3]`：是否以追加（`True`/`False`）方式写入。
 >
 > **`client = InsecureClient('http://localhost:9870', user='hadoop')`**
 > 创建 HDFS 客户端，连接到 `http://localhost:9870`，用户为 `hadoop`。
@@ -71,8 +71,8 @@ if __name__ == "__main__":
 > **`if append:`**
 > 若选择追加模式：
 >
-> * 打开本地文件并读取全部数据；
-> * 使用 `client.write(..., append=True)` 将内容追加到 HDFS 文件末尾。
+> - 打开本地文件并读取全部数据；
+> - 使用 `client.write(..., append=True)` 将内容追加到 HDFS 文件末尾。
 >
 > **`else:`**
 > 若非追加模式，则调用 `client.upload(..., overwrite=True)` 覆盖上传目标文件。
@@ -158,7 +158,6 @@ if __name__ == "__main__":
 > **`print(reader.read())`**
 > 读取整个文件内容并输出到终端。
 
-
 **Shell 命令：**
 
 ```bash
@@ -205,7 +204,6 @@ if __name__ == "__main__":
 >
 > **`print("路径:", status['pathSuffix'])`**
 > 输出文件在 HDFS 中的路径后缀（不含父目录）。
-
 
 **Shell 命令：**
 
@@ -402,9 +400,9 @@ if __name__ == "__main__":
 > **`else:`**
 > 若选择追加到开头：
 >
-> * 先下载原 HDFS 文件到临时文件；
-> * 读取原文件内容；
-> * 将新内容与原内容合并后覆盖写入 HDFS，实现“追加到开头”。
+> - 先下载原 HDFS 文件到临时文件；
+> - 读取原文件内容；
+> - 将新内容与原内容合并后覆盖写入 HDFS，实现“追加到开头”。
 
 **Shell 命令：**
 

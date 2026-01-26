@@ -1,18 +1,15 @@
 > [!tip] 🎉
 > 已有sh脚本可一键安装完成 -> [shell](../other/shell.md#hadoop完全分布式)
 
-本文是Hadoop完全分布式安装教程
-
 # Hadoop 完全分布式集群安装指南
 
 ## 环境准备
 
 ### 允许 hadoop 免密码 sudo
 
-> 主要为了后续 master 可直接远程 ssh Slaves 主机，这样无需登录终端输入密码。
-> 也可选择配置允许远程 root 登录
+> 这一步允许 sudo 命令无须密码，方便后续执行
 
-在 master 和 slave1 ～ 3 都执行
+在 master 和 slave1 ～ n 都执行
 
 ```bash
 sudo visudo
@@ -68,7 +65,7 @@ ping 192.168.1.105 -c 3
 ### 编辑 hosts 文件
 
 ```bash
-sudo nvim /etc/hosts
+sudo vim /etc/hosts
 ```
 
 添加以下内容：
@@ -110,7 +107,7 @@ sudo hostnamectl set-hostname master
 
 <center>Master 设置主机名</center>
 
-可见，再次输入`bash`，即刷新当前 SHELL，可以看见前面已经变为 hadoop@master，方便辨认 master 和 slaves
+可见，再次输入`bash`(或重新打开一个新的终端)，即刷新当前 SHELL，可以看见前面已经变为 hadoop@master，方便辨认 master 和 slaves
 
 在各 slave 节点分别执行：
 
@@ -152,7 +149,7 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub slave2
 ssh-copy-id -i ~/.ssh/id_rsa.pub slave3
 ```
 
-会依次询问是否添加主机以及对应主机的密码。
+会依次询问是否添加主机以及对应主机的密码，全部yes即可。
 
 ![](https://img.makis-life.cn/images/20251210022335984.png?x-oss-process=style/yasuo)
 
@@ -173,19 +170,20 @@ ssh slave3
 
 ### 下载
 
-前往[华为 Openjdk](https://mirrors.huaweicloud.com/openjdk/)
-或 wget 下载
+前往[华为 Openjdk](https://mirrors.huaweicloud.com/openjdk/) 或 [资源页](../resources.md#JAVA) 下载
 
 ```bash
 wget https://mirrors.huaweicloud.com/openjdk/21/openjdk-21_linux-x64_bin.tar.gz
 ```
 
+> 当然也可以 sudo apt install openjdk-21-jdk, 此时安装路径为/usr/lib/jvm/java-21-openjdk
+
 ### 安装
 
 ```bash
-tar -xzf openjdk-21_linux-x64_bin.tar.gz
-sudo mkdir -p /usr/lib/jvm
-sudo mv jdk-21 /usr/lib/jvm/jdk21
+tar -xzf openjdk-21_linux-x64_bin.tar.gz  # 解压缩
+sudo mkdir -p /usr/lib/jvm                # 创建目录
+sudo mv jdk-21 /usr/lib/jvm/jdk21         # 把jdk-21移动到jvm并重命名为jdk21
 ```
 
 编辑`~/.profile`文件，写入 JAVA_HOME
@@ -262,7 +260,7 @@ java -version
 
 ### 下载 Hadoop
 
-前往 [Apache Hadoop 下载页](https://hadoop.apache.org/releases.html) 或使用 wget：
+前往 [资源页](../resources.md#大数据组件) 或使用 wget：
 
 ```bash
 wget https://mirrors.aliyun.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
@@ -273,9 +271,9 @@ wget https://mirrors.aliyun.com/apache/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.t
 将 hadoop 安装包上传到 master 节点后执行：
 
 ```bash
-tar -xzf hadoop-3.4.2.tar.gz
-sudo mv hadoop-3.4.2 /usr/local/hadoop
-sudo chown -R hadoop:hadoop /usr/local/hadoop
+tar -xzf hadoop-3.4.2.tar.gz                   # 解压缩
+sudo mv hadoop-3.4.2 /usr/local/hadoop         # 移动hadoop-3.4.2到hadoop文件夹并重命名
+sudo chown -R hadoop:hadoop /usr/local/hadoop  # 更改文件所属权
 ```
 
 ![](https://img.makis-life.cn/images/20251210022335989.png?x-oss-process=style/yasuo)
@@ -398,6 +396,7 @@ vim hdfs-site.xml
 ```xml
 <configuration>
     <property>
+    <!-- 这里配置了冗余存储多少份，根据slaves数量决定 -->
         <name>dfs.replication</name>
         <value>3</value>
     </property>

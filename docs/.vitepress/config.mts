@@ -153,7 +153,7 @@ export default defineConfig({
           { text: "资源下载", link: "/resources" },
           { text: "sh脚本一键安装", link: "/other/shell" },
           { text: "共享文件夹", link: "/lab1/sharedFolder" },
-          { text: "更多文件传输方式", link: "/lab1/otherWaysTransferFileToVM" },
+          { text: "更多文件传输方式", link: "/other/otherWaysTransferFileToVM" },
           { text: "领取ECS", link: "/other/freeECS" },
           { text: "领取RDS", link: "/other/freeRDS" },
         ],
